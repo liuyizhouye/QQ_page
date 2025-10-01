@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
+<link href="assets/images/favicon.png" rel="icon" />
+<title>Documentation | Simone - Personal Portfolio Template</title>
+<meta name="description" content="Documentation">
+<meta name="author" content="harnishdesign.net">
+
+<!-- Stylesheet
+============================== -->
+<!-- Bootstrap -->
+<link rel="stylesheet" type="text/css" href="assets/vendor/bootstrap/css/bootstrap.min.css" />
+<!-- Font Awesome Icon -->
+<link rel="stylesheet" type="text/css" href="assets/vendor/font-awesome/css/all.min.css" />
+<!-- Magnific Popup -->
+<link rel="stylesheet" type="text/css" href="assets/vendor/magnific-popup/magnific-popup.min.css" />
+<link rel="stylesheet" type="text/css" href="assets/vendor/highlight.js/styles/github.css" />
+
+<!-- Custom Stylesheet -->
+<link rel="stylesheet" type="text/css" href="assets/css/stylesheet.css" />
+</head>
+
+<body data-spy="scroll" data-target=".idocs-navigation" data-offset="125">
+
+<!-- Preloader -->
+<div class="preloader">
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</div>
+<!-- Preloader End --> 
+
+<!-- Document Wrapper   
+=============================== -->
+<div id="main-wrapper"> 
+  
+  <!-- Header
+  ============================ -->
+  <header id="header" class="sticky-top"> 
+    <!-- Navbar -->
+    <nav class="primary-menu navbar navbar-expand-lg navbar-dropdown-dark">
+      <div class="container-fluid">
+        <button id="sidebarCollapse" class="navbar-toggler d-block d-md-none" type="button"><span></span><span class="w-75"></span><span></span></button>
+        <!-- Logo --> 
+        <a class="logo ml-md-3" href="index.html" title="Simone"> <img src="assets/images/logo.png" alt="Simone"/> </a> <span class="text-2 ml-2">v2.3</span> 
+        <!-- Logo End -->
+        <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#header-nav"><span></span><span></span><span></span></button>
+        <div id="header-nav" class="collapse navbar-collapse justify-content-end">
+          <ul class="navbar-nav">
+            <li><a target="_blank" href="https://themeforest.net/user/harnishdesign/portfolio">Other Template</a></li>
+            <li><a target="_blank" href="https://themeforest.net/item/simone-personal-portfolio-template/28476751/support">Support</a></li>
+          </ul>
+        </div>
+        <ul class="social-icons social-icons-sm ml-lg-2 mr-2">
+          <li class="social-icons-twitter"><a data-toggle="tooltip" href="http://www.twitter.com/harnishdesign/" target="_blank" title="" data-original-title="Twitter"><i class="fab fa-twitter"></i></a></li>
+          <li class="social-icons-facebook"><a data-toggle="tooltip" href="http://www.facebook.com/harnishdesign/" target="_blank" title="" data-original-title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+		  <li class="social-icons-instagram"><a data-toggle="tooltip" href="https://instagram.com/harnishdesign/" target="_blank" title="" data-original-title="Instagram"><i class="fab fa-instagram"></i></a></li>
+          <li class="social-icons-dribbble"><a data-toggle="tooltip" href="http://www.dribbble.com/harnishdesign/" target="_blank" title="" data-original-title="Dribbble"><i class="fab fa-dribbble"></i></a></li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Navbar End --> 
+  </header>
+  <!-- Header End --> 
+  
+  <!-- Content
+  ============================================= -->
+  <div id="content" role="main">
+    <div class="idocs-navigation bg-light">
+      <ul class="nav flex-column ">
+        <li class="nav-item"><a class="nav-link active" href="#start">Start</a>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="#installation">Installation</a></li>
+            <li class="nav-item"><a class="nav-link" href="#html_structure">HTML Structure</a></li>
+            <li class="nav-item"><a class="nav-link" href="#fonts">Changing Fonts</a></li>
+            <li class="nav-item"><a class="nav-link" href="#icons">Icons</a></li>
+            <li class="nav-item"><a class="nav-link" href="#sass">Sass</a></li>
+            <li class="nav-item"><a class="nav-link" href="#color_schemes">Color Schemes</a></li>
+            <li class="nav-item"><a class="nav-link" href="#theme_customization">Customization</a></li>
+            <li class="nav-item"><a class="nav-link" href="#logo_settings">Logo Settings</a></li>
+			<li class="nav-item"><a class="nav-link" href="#rtl">Setting up RTL</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#headerMenu">Header and Menu</a>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="#classic_header_light">Light Header</a></li>
+			<li class="nav-item"><a class="nav-link" href="#classic_header">Transparent Header</a></li>
+			<li class="nav-item"><a class="nav-link" href="#left_sidebar">Sidebar Header - Left</a></li>
+            <li class="nav-item"><a class="nav-link" href="#right_sidebar">Sidebar Header - Right</a></li>
+            <li class="nav-item"><a class="nav-link" href="#left_sidebar_dark">Sidebar Header Dark</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#footer">Footer</a></li>
+        <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#shortcodes">Shortcodes</a>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a class="nav-link" href="#hero_bg">Hero Background</a>
+				<ul class="nav flex-column">
+					<li class="nav-item"><a class="nav-link" href="#hero_bg">Image</a></li>
+					<li class="nav-item"><a class="nav-link" href="#youtube_bg">Youtube Video</a></li>
+				</ul>
+			</li>
+			<li class="nav-item"><a class="nav-link" href="#owlcarousel">Owl Carousel</a></li>
+            <li class="nav-item"><a class="nav-link" href="#accordion_toggle">Accordion</a></li>
+            <li class="nav-item"><a class="nav-link" href="#tabs">Tabs</a></li>
+            <li class="nav-item"><a class="nav-link" href="#team">Team</a></li>
+            <li class="nav-item"><a class="nav-link" href="#social_icon">Social Icon</a></li>
+            <li class="nav-item"><a class="nav-link" href="#helper_classes">Helper Classes</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#contact_form">Contact Form</a>
+		<ul class="nav flex-column">
+		<li class="nav-item"><a class="nav-link" href="#contact_form">Form Setup</a></li>
+		<li class="nav-item"><a class="nav-link" href="#reCaptcha">Google reCaptcha</a>
+			<ul class="nav flex-column">
+			<li class="nav-item"><a class="nav-link" href="#reCaptcha-v2">reCaptcha v2</a></li>
+			<li class="nav-item"><a class="nav-link" href="#reCaptcha-v3">reCaptcha v3</a></li>
+			</ul>
+		</li>
+		</ul>
+		</li>
+        <li class="nav-item"><a class="nav-link" href="#theme_support">Support</a></li>
+        <li class="nav-item"><a class="nav-link" href="#source_credits">Source & Credits</a></li>
+		<li class="nav-item"><a class="nav-link" href="#changelog">Changelog</a></li>
+		<li class="nav-item"><a class="nav-link" href="#our_templates">Other Templates</a></li>
+      </ul>
+    </div>
+    
+    <!-- Docs Content
+	============================ -->
+    <div class="idocs-content">
+      <div class="container"> 
+        
+        <!-- Start -->
+        <section id="start">
+        <h1>Documentation</h1>
+        <h2 class="text-primary">Simone - Personal Portfolio Template</h2>
+        <p class="lead">Thank you for purchasing Simone - Personal Portfolio Template on ThemeForest.</p>
+        
+		<hr>
+		
+        <ul class="list-unstyled">
+          <li><strong>Version:</strong> 2.3</li>
+          <li><strong>Created by:</strong> <a href="http://www.harnishdesign.net" target="_blank">Harnish Design</a></li>
+        </ul>
+        <p class="alert alert-info">If you have any questions that are beyond the scope of this help file, Please feel free to email via <a target="_blank" href="https://themeforest.net/item/simone-personal-portfolio-template/28476751/support">Item Support Page</a>.</p>
+        </section>
+        
+		<hr class="divider">
+		
+        <!-- Installation -->
+        <section id="installation">
+          <h2>Installation</h2>
+          <p>Follow the steps below to setup your site template:</p>
+          <ol>
+            <li>Unzip the downloaded package and open the <strong>/HTML</strong> folder to find all the template files. You will need to upload these files to your hosting web server using FTP or localhost in order to use it on your website.</li>
+            <li>Below is the folder structure and needs to be uploaded to your website or localhost root directory:
+              <ul>
+                <li><code>HTML/ajax</code> - HTMl files for Ajax Portfolio</li>
+                <li><code>HTML/css</code> - Stylesheet files</li>
+                <li><code>HTML/images</code> - Image files</li>
+                <li><code>HTML/js</code> - Javacript files</li>
+                <li><code>HTML/php</code> - PHP file for Contact form</li>
+                <li><code>HTML/sass</code> - Sass files</li>
+                <li><code>HTML/vendor</code> – All external libs. We keep all of them in this folder to make updates easily.</li>
+              </ul>
+            </li>
+            <li>You should upload all or specific HTML files as per your need.</li>
+            <li>You're now good to go..!</li>
+          </ol>
+        </section>
+        
+		<hr class="divider">
+		
+        <!-- HTML Structure -->
+        <section id="html_structure">
+          <h2>HTML Structure</h2>
+          <p>Simone follows a simple and easy to customize coding structure. Here is the sample for your reference:<br>
+            The template is based on <a class="ml-1" target="_blank" href="https://getbootstrap.com/"><i class="fas fa-external-link-alt"></i> Bootstrap Framework</a></p>
+          <pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;!-- Your Stylesheets, Scripts &amp; Title
+============================================= --&gt;
+&lt;/head&gt;
+
+&lt;body class=&quot;side-header&quot; data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;.navbar&quot; data-bs-offset=&quot;1&quot;&gt;
+
+&lt;!-- Document Wrapper   
+=============================== --&gt;
+&lt;div id=&quot;main-wrapper&quot;&gt; 
+  
+  &lt;!-- Header
+  ============================ --&gt;
+  &lt;header id=&quot;header&quot; class=&quot;sticky-top&quot;&gt; 
+    &lt;!-- Navbar --&gt;
+    &lt;nav class=&quot;primary-menu navbar navbar-expand-lg bg-dark navbar-text-light border-bottom-0&quot;&gt;
+    &lt;/nav&gt;
+    &lt;!-- Navbar End --&gt; 
+  &lt;/header&gt;
+  &lt;!-- Header End --&gt; 
+  
+  &lt;!-- Content
+  ================================ --&gt;
+  &lt;div id=&quot;content&quot; role=&quot;main&quot;&gt; 
+    
+    &lt;!-- Start sections
+    ================================== --&gt;
+    &lt;section id=&quot;about&quot; class=&quot;section&quot;&gt;
+      &lt;div class=&quot;container&quot;&gt; ...... &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;!-- Start sections end --&gt; 
+    
+    &lt;!-- Start sections
+    =============================== --&gt;
+    &lt;section id=&quot;services&quot; class=&quot;section bg-light&quot;&gt;
+      &lt;div class=&quot;container&quot;&gt; ...... &lt;/div&gt;
+    &lt;/section&gt;
+    &lt;!-- Start sections end --&gt; 
+    
+  &lt;/div&gt;
+  &lt;!-- Content end --&gt; 
+  
+  &lt;!-- Footer
+  ============================================= --&gt;
+  &lt;footer id=&quot;footer&quot; class=&quot;section&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt; .......... &lt;/div&gt;
+  &lt;/footer&gt;
+  &lt;!-- Footer end --&gt; 
+  
+&lt;/div&gt;
+&lt;!-- Document Wrapper end --&gt; 
+
+&lt;!-- JavaScript --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+          <p class="alert alert-info">If you need more information, please visit bootstrap site: <a target="_blank" href="https://getbootstrap.com/docs/5.2/layout/grid/">https://getbootstrap.com/docs/5.2/layout/grid/</a></p>
+        </section>
+        
+		<hr class="divider">
+		
+        <!-- Fonts -->
+        <section id="fonts">
+          <h2>Changing Fonts</h2>
+          <p>Simone template use fonts: <strong>Poppins</strong> from the <a href="https://fonts.google.com/">Google Fonts Library</a>. You can change the fonts from page head in HTML files (as following code). </p>
+          <pre><code class="html">&lt;!-- Web Fonts
+============================================= --&gt;
+&lt;link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap' &gt;
+</code></pre>
+          <ul>
+		  <li>In order to change the Fonts, you will need to Edit the Above Links with your Chosen Google Fonts.</li>
+		  <li>Then Replace the <code>font-family</code> CSS Property in the <code>css/stylesheet.css</code> File with your Newly Added Fonts.</li>
+		  </ul>
+          <div class="alert alert-info">If you want to use self hosted fonts other than Google fonts then here is an example of <a class="ml-1" target="_blank" href="https://css-tricks.com/snippets/css/using-font-face/"><i class="fas fa-external-link-alt"></i> Self Hosted Fonts</a>.</div>
+        </section>
+        
+		<hr class="divider">
+        
+		<!-- Icons -->
+        <section id="icons">
+          <h2>Icons</h2>
+          <p><strong>Font Awesome</strong> icon sets are used in this template.</p>
+          <pre><code class="html">&lt;i class=&quot;fas fa-mobile-alt&quot;&gt;&lt;/i&gt;
+&lt;i class=&quot;fas fa-tv&quot;&gt;&lt;/i&gt;
+&lt;i class=&quot;fas fa-credit-card&quot;&gt;&lt;/i&gt;
+&lt;i class=&quot;fas fa-phone&quot;&gt;&lt;/i&gt;
+......</code></pre>
+<p><span class="badge badge-danger text-uppercase mr-2">Note</span>Please go to their official documentation pages for a full list of icons: <a class="btn btn-primary" target="_blank" href="https://fontawesome.com/icons"><i class="fas fa-external-link-alt mr-1"></i> Font Awesome</a></p>
+        </section>
+        
+		<hr class="divider">
+        
+		<!-- Sass -->
+        <section id="sass">
+          <h2>Sass</h2>
+          <p>We have added SASS <code>.scss</code> files in template. If you know how to use SASS you can change sass files and compile the css as well.
+            You can find sass file here - <code>HTML/sass</code></p>
+          <p>Open the <code>sass/_variables.scss</code> and Edit the values according to your needs. If you need more Advanced Setup then you can Edit the Respective Files yourself which have been branched inside the same Folder. It is completely at your discretion only to include the Required <code>.scss</code> Files you need to minimize the amount of CSS & including only the Styles of the Blocks you need. This can be setup in your <code>stylesheet.scss</code> File.</p>
+        </section>
+        
+		<hr class="divider">
+		
+        <section id="color_schemes">
+          <h2>Color Schemes</h2>
+          <p>You can change your Website's Color Scheme in an instant. We have build <strong>10 Color</strong> css file for change template primary color.</p>
+          <ul>
+            <li><code>color-blue.css</code> - Blue Color</li>
+            <li><code>color-brown.css</code> - Brown Color</li>
+            <li><code>color-cyan.css</code> - Cyan Color</li>
+            <li><code>color-green.css</code> - Green Color</li>
+            <li><code>color-orange.css</code> - Orange Color</li>
+            <li><code>color-indigo.css</code> - Indigo Color</li>
+            <li><code>color-purple.css</code> - Purple Color</li>
+            <li><code>color-red.css</code> - Red Color</li>
+            <li><code>color-pink.css</code> - Teal Color</li>
+            <li><code>color-yellow.css</code> - Yellow Color</li>
+          </ul>
+          <p>Simply add Color CSS file link it in the Document <code>&lt;head&gt;</code>.<br>
+            Make sure you add the <code>css/color-blue.css</code> stylesheet in your head after the <code>css/stylesheet.css</code> file linking from above mentioned 10 color css file.</p>
+          <p><strong>For Example:</strong></p>
+          <pre><code class="html">&lt;head&gt;
+&lt;!-- Stylesheet
+============================================= --&gt;
+&lt;!-- Bootstrap --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/bootstrap/css/bootstrap.min.css&quot; /&gt;
+&lt;!-- Font Awesome Icon --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/font-awesome/css/all.min.css&quot; /&gt;
+&lt;!-- Owl Carousel --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/owl.carousel/assets/owl.carousel.min.css&quot; /&gt;
+&lt;!-- Magnific Popup --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/magnific-popup/magnific-popup.min.css&quot; /&gt;
+&lt;!-- Custom Stylesheet --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/stylesheet.css&quot; /&gt;
+
+&lt;!-- Here goes your Colors Css --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/color-blue.css&quot; /&gt;
+&lt;/head&gt;</code></pre>
+        </section>
+        
+		<hr class="divider">
+		
+        <section id="theme_customization">
+          <h2>Theme Customization</h2>
+          <p>We have include a Custom CSS File in the <code>css</code> Folder so that you can better handle your Customizations for New Styles or
+            Overwriting Default Theme Styles. Simply add all your Custom CSS Codes in the <code>css/custom.css</code> File and link it in the Document <code>&lt;head&gt;</code> after the <code>css/stylesheet.css</code> Linking. Also make sure that this is the Last Linked CSS File in the Document <code>&lt;head&gt;</code> so that your Custom CSS Styles are Overwritten properly.</p>
+          <pre><code class="html">&lt;!-- Stylesheet
+============================================= --&gt;
+&lt;!-- Bootstrap --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/bootstrap/css/bootstrap.min.css&quot; /&gt;
+&lt;!-- Font Awesome Icon --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/font-awesome/css/all.min.css&quot; /&gt;
+&lt;!-- Owl Carousel --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/owl.carousel/assets/owl.carousel.min.css&quot; /&gt;
+&lt;!-- Magnific Popup --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/magnific-popup/magnific-popup.min.css&quot; /&gt;
+&lt;!-- Custom Stylesheet --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/stylesheet.css&quot; /&gt;
+
+&lt;!-- Here goes your custom.css
+============================================= --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;css/custom.css&quot; /&gt;
+</code></pre>
+        </section>
+        
+		<hr class="divider">
+		
+        <!-- Logo -->
+        <section id="logo_settings">
+          <h2>Logo Settings</h2>
+          <p>The Logo Container can be found in the Header Container - <code>&lt;header&gt;</code></p>
+          <pre><code class="html">&lt;!-- Logo --&gt; 
+&lt;a href=&quot;index.html&quot; class=&quot;mb-lg-auto&quot;&gt;
+    &lt;span class=&quot;bg-dark-2 rounded-pill p-2 mb-lg-1 d-none d-lg-inline-block&quot;&gt;
+        &lt;img class=&quot;img-fluid rounded-pill d-block&quot; src=&quot;images/profile.jpg&quot; title=&quot;I'm Simone&quot; alt=&quot;&quot;&gt;
+    &lt;/span&gt;
+    &lt;h1 class=&quot;text-5 text-white text-center mb-0 d-lg-block&quot;&gt;Simone Olivia&lt;/h1&gt;
+&lt;/a&gt; 
+&lt;!-- Logo End --&gt;
+</code></pre>
+        </section>
+		
+		<hr class="divider">
+		
+		<!-- RTL -->
+        <section id="rtl">
+          <h2>Setting up RTL</h2>
+          <p>We have included all the Tools to make your Website completely <strong>RTL</strong> ready. Simply follow the steps below:</p>
+		  <h3 class="mt-5">Code Example:</h3>
+		  <ul>
+		  <li>
+			<h4 class="mb-0">Step 1</h4>
+			<p>Add the <code>dir="rtl"</code> to the <code>&lt;html&gt;</code> element.<br>
+			Add an appropriate lang attribute, like <code>lang="ar"</code>, on the <code>&lt;html&gt;</code> element.
+			</p>
+			<p class="mb-2"><strong>Example:</strong></p>
+			<pre><code class="html">&lt;html dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;</code></pre>
+		  </li>
+		  <li>
+			<h4 class="mb-0">Step 2</h4>
+			<p>From there, you’ll need to replace an RTL version of Bootstrap CSS instead of default bootstrap css.</p>
+			<p class="mb-2"><strong>Example:</strong></p>
+			<pre><code class="html">&lt;!-- Bootstrap --&gt;
+&lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;vendor/bootstrap/css/bootstrap.rtl.min.css&quot; /&gt;</code></pre>
+		  </li>
+		  </ul>
+        </section>
+		
+		<hr class="divider">
+		
+        <!-- Header -->
+        <section id="headerMenu">
+          <h2>Header and Menu</h2>
+          <p>Variety of different style for Header & menu while creating your Pages. The list of various header types & its descriptions are provided below for your reference:</p>
+          
+        </section>
+		
+		<section id="classic_header_light">
+          <h3 class="mt-5">Light Header - (Classic)</h3>
+          <p>Header as Classic with Light. <span class="text-info">See below image and code for more inforamtion.</span></p>
+          <p><img class="img-fluid border" src="assets/images/classic-header-light.jpg" alt=""></p>
+          <p>Use the following header code sturcture for display a Header as Classic.</p>
+          <pre><code class="html">&lt;!-- Header
+  ============================ --&gt;
+  &lt;header id=&quot;header&quot; class=&quot;sticky-top-slide&quot;&gt; 
+    &lt;!-- Navbar --&gt;
+    &lt;nav class=&quot;primary-menu navbar navbar-expand-lg&quot;&gt;
+      &lt;div class=&quot;container-fluid position-relative g-lg-4&quot;&gt;
+        &lt;div class=&quot;col-auto col-lg-2&quot;&gt; 
+          &lt;!-- Logo --&gt; 
+          &lt;a class=&quot;logo&quot; href=&quot;index.html&quot; title=&quot;Simone&quot;&gt; &lt;img src=&quot;images/logo.png&quot; alt=&quot;Simone&quot;/&gt; &lt;/a&gt; 
+          &lt;!-- Logo End --&gt; 
+        &lt;/div&gt;
+        &lt;div class=&quot;col col-lg-8 navbar-accordion&quot;&gt;
+          &lt;button class=&quot;navbar-toggler ms-auto&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#header-nav&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/button&gt;
+          &lt;div id=&quot;header-nav&quot; class=&quot;collapse navbar-collapse justify-content-center&quot;&gt;
+            &lt;ul class=&quot;navbar-nav&quot;&gt;
+              &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll active&quot; href=&quot;#home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; 	href=&quot;#about&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#services&quot;&gt;What I Do&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#resume&quot;&gt;Resume&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#portfolio&quot;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#testimonial&quot;&gt;Client&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-auto col-lg-2 d-flex justify-content-end&quot;&gt;
+          &lt;ul class=&quot;social-icons&quot;&gt;
+          &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Twitter&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+		  &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Facebook&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-dribbble&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.dribbble.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Dribbble&quot;&gt;&lt;i class=&quot;fab fa-dribbble&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;!-- Navbar End --&gt; 
+  &lt;/header&gt;
+  &lt;!-- Header End --&gt; 
+</code></pre>
+        </section>
+		
+		<section id="classic_header">
+          <h3 class="mt-5">Transparent Header - (Classic)</h3>
+          <p>Header as Classic. <span class="text-info">See below image and code for more inforamtion.</span></p>
+          <p><img class="img-fluid border" src="assets/images/classic-header.jpg" alt=""></p>
+          
+		  <p>Add the <code>.navbar-dark</code> and <code>.bg-transparent</code> Class to the <code>&lt;nav&gt;</code> Tag to display a Transparent Header.</p>
+          <pre><code class="html">&lt;!-- Header
+  ============================ --&gt;
+  &lt;header id=&quot;header&quot; class=&quot;sticky-top-slide&quot;&gt; 
+    &lt;!-- Navbar --&gt;
+    &lt;nav class=&quot;primary-menu navbar navbar-expand-lg navbar-dark bg-transparent border-bottom-0&quot;&gt;
+      &lt;div class=&quot;container-fluid position-relative g-lg-4&quot;&gt;
+        &lt;div class=&quot;col-auto col-lg-2&quot;&gt; 
+          &lt;!-- Logo --&gt; 
+          &lt;a class=&quot;logo&quot; href=&quot;index.html&quot; title=&quot;Simone&quot;&gt; &lt;img src=&quot;images/logo-light.png&quot; alt=&quot;Simone&quot;/&gt; &lt;/a&gt; 
+          &lt;!-- Logo End --&gt; 
+        &lt;/div&gt;
+        &lt;div class=&quot;col col-lg-8 navbar-accordion&quot;&gt;
+          &lt;button class=&quot;navbar-toggler ms-auto&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#header-nav&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/button&gt;
+          &lt;div id=&quot;header-nav&quot; class=&quot;collapse navbar-collapse justify-content-center&quot;&gt;
+            &lt;ul class=&quot;navbar-nav&quot;&gt;
+              &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll active&quot; href=&quot;#home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; 	href=&quot;#about&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#services&quot;&gt;What I Do&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#resume&quot;&gt;Resume&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#portfolio&quot;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#testimonial&quot;&gt;Client&lt;/a&gt;&lt;/li&gt;
+            &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-auto col-lg-2 d-flex justify-content-end&quot;&gt;
+          &lt;ul class=&quot;social-icons social-icons-light&quot;&gt;
+          &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Twitter&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+		  &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Facebook&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-dribbble&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.dribbble.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Dribbble&quot;&gt;&lt;i class=&quot;fab fa-dribbble&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+    &lt;!-- Navbar End --&gt; 
+  &lt;/header&gt;
+  &lt;!-- Header End --&gt; 
+</code></pre>
+        </section>
+		
+		
+
+        <section id="left_sidebar">
+          <h3 class="mt-5">Sidebar Header (Left)</h3>
+          <p>Header as Left Sidebar. <span class="text-info">See below image and code for more inforamtion.</span></p>
+          <p><img class="img-fluid border" src="assets/images/header-left-sidebar.jpg" alt=""></p>
+          <p>First Add the <code>.side-header</code> Class to the <code>&lt;body&gt;</code> Tag.</p>
+          <pre><code class="html">&lt;body class=&quot;side-header&quot; data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;#header-nav&quot; data-bs-offset=&quot;1&quot;&gt;
+</code></pre>
+          <p>and then Second Use the following header code sturcture for display a Header as Left Sidebar.</p>
+          <pre><code class="html">&lt;!-- Header
+============================ --&gt;
+&lt;header id=&quot;header&quot; class=&quot;sticky-top&quot;&gt; 
+  &lt;!-- Navbar --&gt;
+  &lt;nav class=&quot;primary-menu navbar navbar-expand-lg border-bottom-0&quot;&gt;
+    &lt;div class=&quot;container-fluid position-relative h-100 flex-lg-column ps-3 px-lg-3 pt-lg-3 pb-lg-2&quot;&gt; 
+      
+      &lt;!-- Logo --&gt; 
+      &lt;a href=&quot;index.html&quot; class=&quot;mb-lg-auto mt-lg-4&quot;&gt; &lt;span class=&quot;bg-light-1 rounded-pill p-2 mb-lg-1 d-none d-lg-inline-block&quot;&gt; &lt;img class=&quot;img-fluid rounded-pill d-block&quot; src=&quot;images/profile.jpg&quot; title=&quot;I'm Simone&quot; alt=&quot;&quot;&gt; &lt;/span&gt;
+      &lt;h1 class=&quot;text-5 text-center mb-0 d-lg-block&quot;&gt;Simone Olivia&lt;/h1&gt;
+      &lt;/a&gt; 
+      &lt;!-- Logo End --&gt;
+      
+      &lt;div id=&quot;header-nav&quot; class=&quot;collapse navbar-collapse w-100 my-lg-auto&quot;&gt;
+        &lt;ul class=&quot;navbar-nav text-lg-center my-lg-auto py-lg-3&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll active&quot; href=&quot;#home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#about&quot;&gt;About Me&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#services&quot;&gt;What I Do&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#resume&quot;&gt;Resume&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#portfolio&quot;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#testimonial&quot;&gt;Testimonial&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;ul class=&quot;social-icons social-icons-sm mt-lg-auto ms-auto ms-lg-0 d-flex&quot;&gt;
+        &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;Facebook&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;Twitter&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;social-icons-dribbble&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;Dribbble&quot; data-bs-placement=&quot;top&quot; href=&quot;http://www.dribbble.com/&quot; target=&quot;_blank&quot;&gt;&lt;i class=&quot;fab fa-dribbble&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;social-icons-github&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;GitHub&quot; data-bs-placement=&quot;top&quot; href=&quot;http://www.google.com/&quot; target=&quot;_blank&quot; &gt;&lt;i class=&quot;fab fa-github&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#header-nav&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+  &lt;!-- Navbar End --&gt; 
+&lt;/header&gt;
+&lt;!-- Header End --&gt;</code></pre>
+        </section>
+        
+		<hr class="divider">
+		
+        <section id="right_sidebar">
+          <h3>Sidebar Header (Right)</h3>
+          <p>First use & setup above Left Sidebar Code.</p>
+          <p>also, Add the <code>.side-header-right</code> Class to the <code>&lt;body&gt;</code> Tag for display a Header as Right Sidebar.</p>
+          <pre><code class="html">&lt;body class=&quot;side-header side-header-right&quot; data-bs-spy=&quot;scroll&quot; data-bs-target=&quot;#header-nav&quot; data-bs-offset=&quot;1&quot;&gt;</code></pre>
+        </section>
+		
+		<hr class="divider">
+		
+		<section id="left_sidebar_dark">
+		  <h3>Sidebar Header Dark</h3>
+		<p>First use & setup above <strong>Left Sidebar</strong> or <strong>Right Sidebar</strong> Code.</p>
+          <p>and then Add the <code>.navbar-dark</code> and <code>.bg-dark</code> Class to the <code>&lt;nav&gt;</code> Tag for display a Header Sidebar Dark.</p>
+        <p><strong>For Example:</strong></p>
+		<pre><code class="html">&lt;!-- Header
+============================ --&gt;
+&lt;header id=&quot;header&quot; class=&quot;sticky-top&quot;&gt; 
+  &lt;!-- Navbar --&gt;
+  &lt;nav class=&quot;primary-menu navbar navbar-expand-lg navbar-dark bg-dark border-bottom-0&quot;&gt;
+    &lt;div class=&quot;container-fluid position-relative h-100 flex-lg-column ps-3 px-lg-3 pt-lg-3 pb-lg-2&quot;&gt; 
+      
+      &lt;!-- Logo --&gt; 
+      &lt;a href=&quot;index.html&quot; class=&quot;mb-lg-auto mt-lg-4&quot;&gt; &lt;span class=&quot;bg-dark-2 rounded-pill p-2 mb-lg-1 d-none d-lg-inline-block&quot;&gt; &lt;img class=&quot;img-fluid rounded-pill d-block&quot; src=&quot;images/profile.jpg&quot; title=&quot;I'm Simone&quot; alt=&quot;&quot;&gt; &lt;/span&gt;
+      &lt;h1 class=&quot;text-5 text-white text-center mb-0 d-lg-block&quot;&gt;Simone Olivia&lt;/h1&gt;
+      &lt;/a&gt; 
+      &lt;!-- Logo End --&gt;
+      
+      &lt;div id=&quot;header-nav&quot; class=&quot;collapse navbar-collapse w-100 my-lg-auto&quot;&gt;
+        &lt;ul class=&quot;navbar-nav text-lg-center my-lg-auto py-lg-3&quot;&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll active&quot; href=&quot;#home&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#about&quot;&gt;About Me&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#services&quot;&gt;What I Do&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#resume&quot;&gt;Resume&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#portfolio&quot;&gt;Portfolio&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#testimonial&quot;&gt;Testimonial&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;nav-item&quot;&gt;&lt;a class=&quot;nav-link smooth-scroll&quot; href=&quot;#contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+      &lt;ul class=&quot;social-icons social-icons-muted social-icons-sm mt-lg-auto ms-auto ms-lg-0 d-flex&quot;&gt;
+        &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;Facebook&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;Twitter&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;social-icons-dribbble&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;Dribbble&quot; data-bs-placement=&quot;top&quot; href=&quot;http://www.dribbble.com/&quot; target=&quot;_blank&quot;&gt;&lt;i class=&quot;fab fa-dribbble&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;li class=&quot;social-icons-github&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; title=&quot;GitHub&quot; data-bs-placement=&quot;top&quot; href=&quot;http://www.google.com/&quot; target=&quot;_blank&quot; &gt;&lt;i class=&quot;fab fa-github&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+      &lt;button class=&quot;navbar-toggler&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#header-nav&quot;&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/nav&gt;
+  &lt;!-- Navbar End --&gt; 
+&lt;/header&gt;
+&lt;!-- Header End --&gt;</code></pre>
+		</section>
+        
+		
+		<hr class="divider">
+
+        <!-- Footer -->
+        <section id="footer">
+          <h2>Footer</h2>
+          <p>The list of various footer types & its descriptions are provided below for your reference:</p>
+          <h4>Light Footer</h4>
+          <p>Footer with white background Color & Dark text.</p>
+          <pre><code class="html">&lt;!-- Footer
+============================================= --&gt;
+  &lt;footer id=&quot;footer&quot; class=&quot;section&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    	..........
+    &lt;/div&gt;
+  &lt;/footer&gt;
+&lt;!-- Footer end --&gt;</code></pre>
+          <h4>Dark Footer</h4>
+          <p>Footer with dark background color & Light text.</p>
+          <p>Add the <code>.footer-dark</code> and <code>.bg-dark</code> Class to the <code>&lt;footer&gt;</code> Tag to display a Dark footer.</p>
+          <pre><code class="html">&lt;!-- Footer
+============================================= --&gt;
+&lt;footer id=&quot;footer&quot; class=&quot;section footer-dark bg-dark&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    	..........
+    &lt;/div&gt;
+&lt;/footer&gt;
+&lt;!-- Footer end --&gt;</code></pre>
+        </section>
+        
+		<hr class="divider">
+		
+        <section id="portfolio">
+          <h2>Portfolio Setup</h2>
+          <p>We provides a very elegant way to showcase your work. Setting up Portfolio is simple. Please use the following codes:</p>
+          <h5>Setting up Portfolio Filter:</h5>
+          <pre><code class="html">&lt;!-- Filter Menu --&gt;
+&lt;ul class=&quot;portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-5&quot;&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a data-filter=&quot;*&quot; class=&quot;nav-link active&quot; href=&quot;&quot;&gt;All&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a data-filter=&quot;.design&quot; href=&quot;&quot; class=&quot;nav-link&quot;&gt;Design&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a data-filter=&quot;.brand&quot; href=&quot;&quot; class=&quot;nav-link&quot;&gt;Brand&lt;/a&gt;&lt;/li&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a data-filter=&quot;.photos&quot; href=&quot;&quot; class=&quot;nav-link&quot;&gt;Photos&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;!-- Filter Menu end --&gt;</code></pre>
+          <h5 class="mt-5">Setting up Portfolio Items:</h5>
+          <p>You can change portfolio columns by changing class of <a target="_blank" href="https://getbootstrap.com/docs/5.2/layout/grid/">Bootstrap grid column system</a> as per the columns you need. also, You can add data filter class name in portfolio item main column div as per the filter category above. Below is the portfolio section code for your reference:</p>
+		  <pre><code class="html">&lt;div class=&quot;portfolio popup-img-gallery&quot;&gt;
+  &lt;div class=&quot;row portfolio-filter g-4&quot;&gt;
+    &lt;!-- Item 1 --&gt;
+    &lt;div class=&quot;col-sm-6 col-lg-4 brand&quot;&gt;
+      &lt;div class=&quot;portfolio-box rounded&quot;&gt;
+        &lt;div class=&quot;portfolio-img rounded&quot;&gt; &lt;img class=&quot;img-fluid d-block&quot; src=&quot;images/projects/project-1.jpg&quot; alt=&quot;&quot;&gt;
+          &lt;div class=&quot;portfolio-overlay&quot;&gt; &lt;a class=&quot;popup-img stretched-link&quot; href=&quot;images/projects/project-1.jpg&quot;&gt;&lt;/a&gt;
+            &lt;div class=&quot;portfolio-overlay-details&quot;&gt;
+              &lt;h5 class=&quot;text-white font-weight-400&quot;&gt;Project Title&lt;/h5&gt;
+              &lt;span class=&quot;text-light&quot;&gt;Category&lt;/span&gt; &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Item 2 --&gt;
+    &lt;div class=&quot;col-sm-6 col-lg-4 design&quot;&gt;
+      &lt;div class=&quot;portfolio-box rounded&quot;&gt;
+        &lt;div class=&quot;portfolio-img rounded&quot;&gt; &lt;img class=&quot;img-fluid d-block&quot; src=&quot;images/projects/project-2.jpg&quot; alt=&quot;&quot;&gt;
+          &lt;div class=&quot;portfolio-overlay&quot;&gt; &lt;a class=&quot;popup-img stretched-link&quot; href=&quot;images/projects/project-2.jpg&quot;&gt;&lt;/a&gt;
+            &lt;div class=&quot;portfolio-overlay-details&quot;&gt;
+              &lt;h5 class=&quot;text-white font-weight-400&quot;&gt;Project Title&lt;/h5&gt;
+              &lt;span class=&quot;text-light&quot;&gt;Category&lt;/span&gt; &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          <h3 class="mt-5">Modal AJAX:</h3>
+          <p>You can load <strong>Portfolio Details</strong> in a Modal using AJAX Technique which makes the User Experience more Interactive.</p>
+          <h5>Setting up Portfolio Items with Modal AJAX:</h5>
+          <pre><code class="html">&lt;div class=&quot;portfolio popup-ajax-gallery&quot;&gt;
+  &lt;div class=&quot;row portfolio-filter g-4&quot;&gt;
+    &lt;!-- Item 1 --&gt;
+    &lt;div class=&quot;col-sm-6 col-lg-4 brand&quot;&gt;
+      &lt;div class=&quot;portfolio-box rounded&quot;&gt;
+        &lt;div class=&quot;portfolio-img rounded&quot;&gt; &lt;img class=&quot;img-fluid d-block&quot; src=&quot;images/projects/project-1.jpg&quot; alt=&quot;&quot;&gt;
+          &lt;div class=&quot;portfolio-overlay&quot;&gt; &lt;a class=&quot;popup-ajax stretched-link&quot; href=&quot;ajax/portfolio-ajax-project-1.html&quot;&gt;&lt;/a&gt;
+            &lt;div class=&quot;portfolio-overlay-details&quot;&gt;
+              &lt;h5 class=&quot;text-white font-weight-400&quot;&gt;Project Title&lt;/h5&gt;
+              &lt;span class=&quot;text-light&quot;&gt;Category&lt;/span&gt; &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- Item 2 --&gt;
+    &lt;div class=&quot;col-sm-6 col-lg-4 design&quot;&gt;
+      &lt;div class=&quot;portfolio-box rounded&quot;&gt;
+        &lt;div class=&quot;portfolio-img rounded&quot;&gt; &lt;img class=&quot;img-fluid d-block&quot; src=&quot;images/projects/project-2.jpg&quot; alt=&quot;&quot;&gt;
+          &lt;div class=&quot;portfolio-overlay&quot;&gt; &lt;a class=&quot;popup-ajax stretched-link&quot; href=&quot;ajax/portfolio-ajax-project-2.html&quot;&gt;&lt;/a&gt;
+            &lt;div class=&quot;portfolio-overlay-details&quot;&gt;
+              &lt;h5 class=&quot;text-white font-weight-400&quot;&gt;Project Title&lt;/h5&gt;
+              &lt;span class=&quot;text-light&quot;&gt;Category&lt;/span&gt; &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          <div class="alert alert-info">The codes for the Modal AJAX Item Details can be found in the file: <code>PACKAGE/HTML/ajax</code></div>
+        </section>
+        
+		<hr class="divider">
+		
+        <!-- Shortcodes -->
+        <section id="shortcodes">
+          <h2>Shortcodes</h2>
+          <p class="mb-5">Setting up components is very easy. Here is the Some of shortcodes describe. also, <strong>This Template</strong> is based on Bootstrap 5, so you can easily use Bootstrap's components:  <a class="ml-1" target="_blank" href="https://getbootstrap.com/docs/5.2/components/"><i class="fas fa-external-link-alt"></i> Bootstrap Documentation</a></p>
+		  
+		   <section id="hero_bg">
+            <h3>Hero Background</h3>
+			<p class="lead mb-5">The list of various Hero Background types & its descriptions are provided below for your reference:</p>
+			
+			<h4>Image Background</h4>
+			<p class="lead">You can add Image as Background in Hero Background.</p>
+			
+			<h5>Code Example</h5>
+			<pre><code class="html">&lt;div class=&quot;hero-wrap&quot;&gt;
+  &lt;div class=&quot;hero-mask opacity-8 bg-dark&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;hero-bg parallax&quot; style=&quot;background-image:url('./images/intro-bg.jpg');&quot;&gt;&lt;/div&gt;
+  &lt;div class=&quot;hero-content&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    	
+        ...
+        
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<h5>Settings</h5>
+
+<ul class="list-unstyled">
+	<li><span class="badge badge-danger text-3 mr-2">1</span>You can use Opacity Utility Classes as per your needs for change Mask background opacity. - <a class="smooth-scroll" href="#opacity">List of Opacity Utility Classes</a></li>
+	<li><span class="badge badge-danger text-3 mr-2">2</span>You can use Background Color Utility Classes as per your needs for change Mask background Color. ( <strong>For Example:</strong> <code>.bg-dark</code>, <code>.bg-primary</code>, <code>.bg-light</code> etc... ) </li>
+	<li><span class="badge badge-danger text-3 mr-2">3</span>You can add your image path here.</li>
+	<li><span class="badge badge-danger text-3 mr-2">4</span>You can add <code>.parallax</code> css class for your background image with parallax effect.</li>
+</ul>
+<p><img class="img-fluid border" src="assets/images/hero-bg.jpg" alt=""></p>
+		</section>
+		
+		
+				
+		<section id="youtube_bg" class="mt-5">
+            <h4>Youtube Video Background</h4>
+			<p class="lead mb-5">You can add Youtube Video as Background in Hero Background.</p>
+			
+			<h5>Code Example</h5>
+			<pre><code class="html">&lt;div class=&quot;hero-wrap&quot;&gt;
+  &lt;div class=&quot;hero-mask opacity-5 bg-dark&quot;&gt;&lt;/div&gt;
+  &lt;!-- Youtube Video Background code --&gt;
+  &lt;div class=&quot;player&quot; data-property=&quot;{videoURL:'https://youtu.be/fG_X-cx5Szg',containment:'.hero-wrap', showControls:false, addRaster: false, autoPlay:true, loop:true, mute:true, startAt:0, opacity:1}&quot;&gt;&lt;/div&gt;	
+  &lt;div class=&quot;hero-content&quot;&gt;
+    &lt;div class=&quot;container&quot;&gt;
+    	
+        ...
+        
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<p><span class="badge badge-danger text-uppercase mr-1">Note</span> You can see all the available options for <strong>jQuery.mb.YTPlayer</strong> plugin from here: <a target="_blank" href="https://github.com/pupunzi/jquery.mb.YTPlayer/wiki">jQuery.mb.YTPlayer<i class="fas fa-external-link-alt ml-1"></i></a></p>
+			
+		</section>
+		  
+		  <hr class="divider">
+		  
+		  <section id="owlcarousel">
+            <h3>Owl Carousel</h3>
+            <h4>Carousel:</h4>
+            <p>You can add an Owl Carousel on any Section using the Code below:</p>
+            <pre><code class="html">&lt;div class=&quot;owl-carousel owl-theme&quot; data-autoplay=&quot;true&quot; data-nav=&quot;true&quot; data-loop=&quot;true&quot; data-margin=&quot;30&quot; data-slideby=&quot;2&quot; data-stagepadding=&quot;5&quot; data-items-xs=&quot;2&quot; data-items-sm=&quot;3&quot; data-items-md=&quot;4&quot; data-items-lg=&quot;6&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Content.....&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            <div id="slider">
+              <h4>Slider:</h4>
+              <p>You can add Slider for Slideshow images using the Code below:</p>
+              <pre><code class="html">&lt;!-- Slideshow
+============================================= --&gt;
+&lt;div class=&quot;owl-carousel owl-theme single-slideshow&quot; data-autoplay=&quot;true&quot; data-loop=&quot;true&quot; data-autoheight=&quot;true&quot; data-nav=&quot;true&quot; data-items=&quot;1&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;....Image.....&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;....Image.....&lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- Slideshow end --&gt;</code></pre>
+            </div>
+            <h5>Settings:</h5>
+            <ul>
+              <li><code>data-items</code> - No. of Items to display in the Carousel. Eg. <strong>1</strong></li>
+              <li><code>data-items-lg</code> - No. of Items to display in the Carousel on Desktops/Laptops. Eg. <strong>5</strong></li>
+              <li><code>data-items-md</code> - No. of Items to display in the Carousel on Netbooks. Eg. <strong>5</strong></li>
+              <li><code>data-items-sm</code> - No. of Items to display in the Carousel on iPads/Tablets. Eg. <strong>4</strong></li>
+              <li><code>data-items-xs</code> - No. of Items to display in the Carousel on Mobile. Eg. <strong>3</strong></li>
+              <li><code>data-loop</code> - Enable/Disable Loop. Eg. <strong>true/false</strong></li>
+              <li><code>data-autoplay</code> - Enable/Disable autoplay. Eg. <strong>true/false</strong></li>
+              <li><code>data-autoplaytimeout</code> - Autoplay timer in milliseconds. Eg. <strong>5000</strong></li>
+              <li><code>data-autoplayhoverpause</code> - Enable/Disable autoplayHoverPause Eg. <strong>true/false</strong></li>
+              <li><code>data-speed</code> - Speed of the Carousel Animation in millisconds. Eg. <strong>700</strong></li>
+              <li><code>data-nav</code> - Enable/Disable Navigation Arrows. Eg. <strong>true/false</strong></li>
+              <li><code>data-dots</code> - Enable/Disable Pagination Dots. Eg. <strong>true/false</strong></li>
+              <li><code>data-margin</code> - Margin between Carousel Items in pixels. Eg. <strong>15</strong></li>
+              <li><code>data-stagepadding</code> Padding on the Edges of the Carousel Container in pixels. - Eg. <strong>20</strong></li>
+              <li><code>data-slideby</code> - No. of Items to Slide at once. Eg. <strong>2</strong></li>
+              <li><code>data-lazyload</code> - Enable/Disable Lazyload. Eg. <strong>true/false</strong></li>
+              <li><code>data-autoheight</code> - Enable/Disable autoHeight. Eg. <strong>true/false</strong></li>
+              <li><code>data-autowidth</code> - Enable/Disable autoWidth. Eg. <strong>true/false</strong></li>
+              <li><code>data-animateOut</code> - Enable/Disable animateOut. Eg. <strong>fadeOut/fadeIn</strong></li>
+              <li><code>data-animateIn</code> - Enable/Disable animateIn. Eg. <strong>fadeOut/fadeIn</strong></li>
+              <li><code>data-video</code> - Enable/Disable Video Carousel Items. Eg. <strong>true/false</strong></li>
+            </ul>
+            <h5>Javascript <small>(file path - <code>/js/theme.js</code>)</small></h5>
+            <pre><code>/*---------------------------------
+ Carousel (Owl Carousel)
+----------------------------------- */
+$(&quot;.owl-carousel&quot;).each(function (index) {
+  var a = $(this);
+  $(this).owlCarousel({
+      autoplay: a.data('autoplay'),
+      center: a.data('center'),
+      autoplayTimeout: a.data('autoplaytimeout'),
+      autoplayHoverPause: a.data('autoplayhoverpause'),
+      loop: a.data('loop'),
+      speed: a.data('speed'),
+      nav: a.data('nav'),
+      dots: a.data('dots'),
+      autoHeight: a.data('autoheight'),
+      autoWidth: a.data('autowidth'),
+      margin: a.data('margin'),
+      stagePadding: a.data('stagepadding'),
+      slideBy: a.data('slideby'),
+      lazyLoad: a.data('lazyload'),
+      navText:['&lt;i class=&quot;fa fa-chevron-left&quot;&gt;&lt;/i&gt;', '&lt;i class=&quot;fa fa-chevron-right&quot;&gt;&lt;/i&gt;'],
+      animateOut: a.data('animateout'),
+      animateIn: a.data('animatein'),
+      video: a.data('video'),
+      items: a.data('items'),
+      responsive:{
+      0:{items: a.data('items-xs'),},
+      576:{items: a.data('items-sm'),},
+      768:{items: a.data('items-md'),},
+      992:{items: a.data('items-lg'),}
+      }
+  });
+});</code></pre>
+            <p class="alert alert-info">You can find more Owl Carousel related Settings for Custom JS Initialization here - <a href="https://owlcarousel2.github.io/OwlCarousel2/docs/started-welcome.html">Owl Carousel Documentation</a>.</p>
+          </section>
+		  
+		  <hr class="divider">
+		  
+		  <section id="accordion_toggle">
+            <h3>Accordion</h3>
+			<p>You can extend the default collapse behavior to create an accordion. To properly achieve the accordion style, be sure to use <code>.accordion</code> as a wrapper.</p>
+			<p>See below image and code for more inforamtion.</p>
+			<p><a class="popup-img" href="assets/images/accordion.jpg"><img class="img-fluid border" src="assets/images/accordion.jpg" alt=""></a></p>
+			<pre><code class="html">&lt;div class=&quot;accordion&quot; id=&quot;accordionExample&quot;&gt;
+  &lt;div class=&quot;accordion-item&quot;&gt;
+    &lt;h2 class=&quot;accordion-header&quot; id=&quot;headingOne&quot;&gt;
+      &lt;button class=&quot;accordion-button&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#collapseOne&quot; aria-expanded=&quot;true&quot; aria-controls=&quot;collapseOne&quot;&gt; Creative One Page Html Template. &lt;/button&gt;
+    &lt;/h2&gt;
+    &lt;div id=&quot;collapseOne&quot; class=&quot;accordion-collapse collapse show&quot; aria-labelledby=&quot;headingOne&quot; data-bs-parent=&quot;#accordionExample&quot;&gt;
+      &lt;div class=&quot;accordion-body&quot;&gt;Lisque persius interesset his et, in quot quidam persequeris vim, ad mea essent possim iriure. Mutat tacimates id sit. Ridens mediocritatem ius an, eu nec magna imperdiet.&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;accordion-item&quot;&gt;
+    &lt;h2 class=&quot;accordion-header&quot; id=&quot;headingTwo&quot;&gt;
+      &lt;button class=&quot;accordion-button collapsed&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#collapseTwo&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;collapseTwo&quot;&gt; Personal Portfolio Html Template &lt;/button&gt;
+    &lt;/h2&gt;
+    &lt;div id=&quot;collapseTwo&quot; class=&quot;accordion-collapse collapse&quot; aria-labelledby=&quot;headingTwo&quot; data-bs-parent=&quot;#accordionExample&quot;&gt;
+      &lt;div class=&quot;accordion-body&quot;&gt;Mutat tacimates id sit. Ridens mediocritatem ius an, eu nec magna imperdiet. Lisque persius interesset his et, in quot quidam persequeris vim, ad mea essent possim iriure. Ad vegan excepteur butcher vice lomo.&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;accordion-item&quot;&gt;
+    &lt;h2 class=&quot;accordion-header&quot; id=&quot;headingThree&quot;&gt;
+      &lt;button class=&quot;accordion-button collapsed&quot; type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#collapseThree&quot; aria-expanded=&quot;false&quot; aria-controls=&quot;collapseThree&quot;&gt; Bootstrap 5 One Page Html Template &lt;/button&gt;
+    &lt;/h2&gt;
+    &lt;div id=&quot;collapseThree&quot; class=&quot;accordion-collapse collapse&quot; aria-labelledby=&quot;headingThree&quot; data-bs-parent=&quot;#accordionExample&quot;&gt;
+      &lt;div class=&quot;accordion-body&quot;&gt; Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            <h4>Options:</h4>
+            <div class="table-responsive">
+			<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Type Class</th>
+      <th>Features</th>
+      <th>Code Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>.accordion-flush</code></td>
+      <td>Alternate Flush Style for the accordions.</td>
+      <td><pre class="mb-0"><code>&lt;div class=&quot;accordion accordion-flush&quot; id=&quot;accordionDefault&quot;&gt;
+  .......
+&lt;/div&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.arrow-right</code></td>
+      <td>For set arrow in right side in accordions</td>
+      <td><pre class="mb-0"><code>&lt;div class=&quot;accordion arrow-right&quot; id=&quot;accordionDefault&quot;&gt;
+  .......
+&lt;/div&gt;</code></pre></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<p class="alert alert-info">For demo, You can please check this in <code>elements.html</code> page.</p>
+          </section>
+		  
+          
+		  <hr class="divider">
+		  
+		  <section id="tabs">
+            <h3>Tabs</h3>
+            <p class="text-4">Default <a target="_blank" href="https://getbootstrap.com/docs/5.2/components/navs/#javascript-behavior">Bootstrap Nav</a> component combined with this template for unique tabs.</p>
+			<p>See below image and code for more inforamtion.</p>
+			<p><a class="popup-img" href="assets/images/tabs.jpg"><img class="img-fluid border" src="assets/images/tabs.jpg" alt=""></a></p>
+			
+            <pre><code class="html">&lt;ul class=&quot;nav nav-tabs&quot; id=&quot;myTab&quot; role=&quot;tablist&quot;&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link active&quot; id=&quot;one-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#one&quot; role=&quot;tab&quot; aria-controls=&quot;one&quot; aria-selected=&quot;true&quot;&gt;Tab Title 1&lt;/a&gt; &lt;/li&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link&quot; id=&quot;two-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#two&quot; role=&quot;tab&quot; aria-controls=&quot;two&quot; aria-selected=&quot;false&quot;&gt;Tab Title 2&lt;/a&gt; &lt;/li&gt;
+  &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link&quot; id=&quot;three-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#three&quot; role=&quot;tab&quot; aria-controls=&quot;three&quot; aria-selected=&quot;false&quot;&gt;Tab Title 3&lt;/a&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;tab-content my-3&quot; id=&quot;myTabContent&quot;&gt;
+  &lt;div class=&quot;tab-pane fade show active&quot; id=&quot;one&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;one-tab&quot;&gt;
+    &lt;p&gt;Instant Online mobile recharge Iisque persius interesset his et, in quot quidam persequeris vim, ad mea essent possim iriure. Mutat tacimates id sit. Ridens mediocritatem ius an, eu nec magna imperdiet. Mediocrem qualisque in has. Enim utroque perfecto id mei, ad eam tritani labores facilisis, ullum sensibus no cum. Eius eleifend in quo. At mei alia iriure propriae.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;tab-pane fade&quot; id=&quot;two&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;two-tab&quot;&gt;
+    &lt;p&gt;Partiendo voluptatibus ex cum, sed erat fuisset ne, cum ex meis volumus mentitum. Alienum pertinacia maiestatis ne eum, verear persequeris et vim. Mea cu dicit voluptua efficiantur, nullam labitur veritus sit cu. Eum denique omittantur te, in justo epicurei his, eu mei aeque populo.&lt;/p&gt;
+    &lt;p&gt;Ius hinc decore erroribus eu, in case prima exerci pri. Id eum prima adipisci. Ius cu minim theophrastus, legendos pertinacia an nam.&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;tab-pane fade&quot; id=&quot;three&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;three-tab&quot;&gt;
+    &lt;p&gt;Cu pro facer sententiae, ne brute graece scripta duo. No placerat quaerendum nec, pri alia ceteros adipiscing ut. Quo in nobis nostrum intellegebat. Ius hinc decore erroribus eu, in case prima exerci pri. Id eum prima adipisci. Ius cu minim theophrastus, legendos pertinacia an nam.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+            
+			<h4>Options:</h4>
+            <div class="table-responsive">
+			<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Type Class</th>
+      <th>Features</th>
+      <th>Code Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Basic Navs</code></td>
+      <td>Basic Navs Style for the Tabs</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;nav&quot; id=&quot;myTab&quot; role=&quot;tablist&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.nav-separator</code></td>
+      <td>Basic Navs Style with Separator for the Tabs</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;nav nav-separator&quot; id=&quot;myTab&quot; role=&quot;tablist&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.nav-tabs</code></td>
+      <td>Tabs Navs Style for the Tabs. For example - above Preview Example.</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;nav nav-tabs&quot; id=&quot;myTab&quot; role=&quot;tablist&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.nav-pills</code></td>
+      <td>Pills Navs Style for the Tabs</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;nav nav-pills&quot; id=&quot;myTab&quot; role=&quot;tablist&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	
+  </tbody>
+</table>
+</div>
+<p class="alert alert-info">For demo, You can please check this in <code>elements.html</code> page.</p>
+<h3 class="mt-5">Vertical Tab</h3>
+            <p>You can add a Vertical Tabs using the Code below:</p>
+            <pre><code class="html">&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-md-3&quot;&gt;
+    &lt;ul class=&quot;nav nav-tabs flex-column&quot; id=&quot;myTabVertical&quot; role=&quot;tablist&quot;&gt;
+      &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link active&quot; id=&quot;first-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#firstTab&quot; role=&quot;tab&quot; aria-controls=&quot;firstTab&quot; aria-selected=&quot;true&quot;&gt;Vertical  Tab Title 1&lt;/a&gt; &lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link&quot; id=&quot;second-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#secondTab&quot; role=&quot;tab&quot; aria-controls=&quot;secondTab&quot; aria-selected=&quot;false&quot;&gt;Vertical  Tab Title 2&lt;/a&gt; &lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link&quot; id=&quot;third-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#thirdTab&quot; role=&quot;tab&quot; aria-controls=&quot;thirdTab&quot; aria-selected=&quot;false&quot;&gt;Vertical Tab Title 3&lt;/a&gt; &lt;/li&gt;
+      &lt;li class=&quot;nav-item&quot;&gt; &lt;a class=&quot;nav-link&quot; id=&quot;fourth-tab&quot; data-bs-toggle=&quot;tab&quot; href=&quot;#fourthTab&quot; role=&quot;tab&quot; aria-controls=&quot;fourthTab&quot; aria-selected=&quot;false&quot;&gt;Vertical Table Title 4&lt;/a&gt; &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-md-9&quot;&gt;
+    &lt;div class=&quot;tab-content my-3&quot; id=&quot;myTabContentVertical&quot;&gt;
+      &lt;div class=&quot;tab-pane fade show active&quot; id=&quot;firstTab&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;first-tab&quot;&gt;
+        &lt;p&gt;This is Tab Content 1&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;tab-pane fade&quot; id=&quot;secondTab&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;second-tab&quot;&gt;
+        &lt;p&gt;This is Tab Content 2&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;tab-pane fade&quot; id=&quot;thirdTab&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;third-tab&quot;&gt;
+        &lt;p&gt;This is Tab Content 3&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;tab-pane fade&quot; id=&quot;fourthTab&quot; role=&quot;tabpanel&quot; aria-labelledby=&quot;fourth-tab&quot;&gt;
+        &lt;p&gt;This is Tab Content 4&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p class="alert alert-info">For demo, You can please check this in <code>elements.html</code> page.</p>
+          </section>
+          
+		  <hr class="divider">
+		  
+          <section id="team">
+            <h3>Team</h3>
+            <p>Team members view with name, image and social links. <span class="text-info">See below code for more information</span>.</p>
+            <pre><code class="html">&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-sm-6 col-md-4&quot;&gt;
+    &lt;div class=&quot;team&quot;&gt;
+      &lt;div class=&quot;team-img rounded&quot;&gt; &lt;img class=&quot;img-fluid&quot; alt=&quot;&quot; src=&quot;images/team/leader.jpg&quot;&gt; &lt;/div&gt;
+      &lt;div class=&quot;team-details&quot;&gt;
+        &lt;h3 class=&quot;text-4&quot;&gt;Neil Patel&lt;/h3&gt;
+        &lt;p class=&quot;text-muted mb-1&quot;&gt;CEO &amp;amp; Founder&lt;/p&gt;
+        &lt;ul class=&quot;social-icons social-icons-sm d-inline-flex&quot;&gt;
+          &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Facebook&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Twitter&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-google&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.google.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Google&quot;&gt;&lt;i class=&quot;fab fa-google&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-sm-6 col-md-4&quot;&gt;
+    &lt;div class=&quot;team&quot;&gt;
+      &lt;div class=&quot;team-img rounded&quot;&gt; &lt;img class=&quot;img-fluid&quot; alt=&quot;&quot; src=&quot;images/team/leader-2.jpg&quot;&gt; &lt;/div&gt;
+      &lt;div class=&quot;team-details&quot;&gt;
+        &lt;h3 class=&quot;text-4&quot;&gt;James Maxwell&lt;/h3&gt;
+        &lt;p class=&quot;text-muted mb-1&quot;&gt;Co-Founder&lt;/p&gt;
+        &lt;ul class=&quot;social-icons social-icons-sm d-inline-flex&quot;&gt;
+          &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Facebook&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Twitter&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-google&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.google.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Google&quot;&gt;&lt;i class=&quot;fab fa-google&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-sm-6 col-md-4&quot;&gt;
+    &lt;div class=&quot;team&quot;&gt;
+      &lt;div class=&quot;team-img rounded&quot;&gt; &lt;img class=&quot;img-fluid&quot; alt=&quot;&quot; src=&quot;images/team/leader-3.jpg&quot;&gt; &lt;/div&gt;
+      &lt;div class=&quot;team-details&quot;&gt;
+        &lt;h3 class=&quot;text-4&quot;&gt;Ruby Clinton&lt;/h3&gt;
+        &lt;p class=&quot;text-muted mb-1&quot;&gt;Co-Founder&lt;/p&gt;
+        &lt;ul class=&quot;social-icons social-icons-sm d-inline-flex&quot;&gt;
+          &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Facebook&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Twitter&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li class=&quot;social-icons-google&quot;&gt;&lt;a data-toggle=&quot;tooltip&quot; href=&quot;http://www.google.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-original-title=&quot;Google&quot;&gt;&lt;i class=&quot;fab fa-google&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+          </section>
+          
+		  <hr class="divider">
+		  
+          <section id="social_icon">
+            <h3>Social Icon</h3>
+            <p>Social links with different styles. <span class="text-info">See below code for more information</span>.</p>
+            <pre><code class="html">&lt;div class=&quot;d-flex flex-column&quot;&gt;
+  &lt;ul class=&quot;social-icons&quot;&gt;
+    &lt;li class=&quot;social-icons-facebook&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.facebook.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Facebook&quot;&gt;&lt;i class=&quot;fab fa-facebook-f&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-twitter&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.twitter.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Twitter&quot;&gt;&lt;i class=&quot;fab fa-twitter&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-google&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.google.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Google&quot;&gt;&lt;i class=&quot;fab fa-google&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-linkedin&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.linkedin.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Linkedin&quot;&gt;&lt;i class=&quot;fab fa-linkedin-in&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-youtube&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.youtube.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Youtube&quot;&gt;&lt;i class=&quot;fab fa-youtube&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-instagram&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Instagram&quot;&gt;&lt;i class=&quot;fab fa-instagram&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-dribbble&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.dribbble.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Dribbble&quot;&gt;&lt;i class=&quot;fab fa-dribbble&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-behance&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.behance.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Behance&quot;&gt;&lt;i class=&quot;fab fa-behance&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-github&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.github.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;GitHub&quot;&gt;&lt;i class=&quot;fab fa-github&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-reddit&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;reddit&quot;&gt;&lt;i class=&quot;fab fa-reddit&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-vk&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;vk&quot;&gt;&lt;i class=&quot;fab fa-vk&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-rss&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;rss&quot;&gt;&lt;i class=&quot;fas fa-rss&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-skype&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;skype&quot;&gt;&lt;i class=&quot;fab fa-skype&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-xing&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;xing&quot;&gt;&lt;i class=&quot;fab fa-xing&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-tumblr&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;tumblr&quot;&gt;&lt;i class=&quot;fab fa-tumblr&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-email&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Email&quot;&gt;&lt;i class=&quot;fas fa-envelope&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-delicious&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Delicious&quot;&gt;&lt;i class=&quot;fab fa-delicious&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-stumbleupon&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Stumbleupon&quot;&gt;&lt;i class=&quot;fab fa-stumbleupon&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-digg&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;digg&quot;&gt;&lt;i class=&quot;fab fa-digg&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-blogger&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Blogger&quot;&gt;&lt;i class=&quot;fab fa-blogger-b&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-flickr&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;flickr&quot;&gt;&lt;i class=&quot;fab fa-flickr&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-vimeo&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;vimeo&quot;&gt;&lt;i class=&quot;fab fa-vimeo-v&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-yahoo&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;yahoo&quot;&gt;&lt;i class=&quot;fab fa-yahoo&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-googleplay&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;Google Play&quot;&gt;&lt;i class=&quot;fab fa-google-play&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;li class=&quot;social-icons-apple&quot;&gt;&lt;a data-bs-toggle=&quot;tooltip&quot; href=&quot;http://www.instagram.com/&quot; target=&quot;_blank&quot; title=&quot;&quot; data-bs-original-title=&quot;apple&quot;&gt;&lt;i class=&quot;fab fa-apple&quot;&gt;&lt;/i&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+            <h5>Alternate Styles:</h5>
+			<div class="table-responsive">
+			<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Type Class</th>
+      <th>Features</th>
+      <th>Code Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Default (Dark)</td>
+      <td>Default Social Icon with Dark Color</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;social-icons&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+    <tr>
+      <td><code>.social-icons-light</code></td>
+      <td>Social Icon with Light Color</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;social-icons social-icons-light&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.social-icons-muted</code></td>
+      <td>Social Icon with Muted Color</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;social-icons social-icons-muted&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.social-icons-colored</code></td>
+      <td>Social Icon with Colored</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;social-icons social-icons-colored&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+	<tr>
+      <td><code>.social-icons-sm</code></td>
+      <td>Social Icon with Small Icon Size</td>
+      <td>
+	  <pre class="mb-0"><code>&lt;ul class=&quot;social-icons social-icons-sm&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre>
+	  </td>
+    </tr>
+	<tr>
+      <td><code>.social-icons-lg</code></td>
+      <td>Social Icon with Large Icon Size</td>
+      <td><pre class="mb-0"><code>&lt;ul class=&quot;social-icons social-icons-lg&quot;&gt;
+  .......
+&lt;/ul&gt;</code></pre></td>
+    </tr>
+    
+  </tbody>
+</table>
+</div>
+			<div class="alert alert-info">For demo, You can please check this in <code>elements.html</code> page.</div>
+          </section>
+		  
+		  <hr class="divider">
+		  
+          <div id="helper_classes">
+            <h3>Helper Classes</h3>
+            <p class="mb-5">We have created some really useful helper classes for you. Here are a few of them. also, You can refer other default bootstrap helper classes here: <a class="ml-1" target="_blank" href="https://getbootstrap.com/docs/5.2/utilities/"><i class="fas fa-external-link-alt"></i> Bootstrap Documentation</a> </p>
+            <h5>Text Size:</h5>
+            <ul>
+              <li><code>.text-0</code> - Changes the Font size to 11px.</li>
+              <li><code>.text-1</code> - Changes the Font size to 12px.</li>
+              <li><code>.text-2</code> - Changes the Font size to 14px.</li>
+              <li><code>.text-3</code> - Changes the Font size to 16px.</li>
+              <li><code>.text-4</code> - Changes the Font size to 18px.</li>
+              <li><code>.text-5</code> - Changes the Font size to 21px.</li>
+              <li><code>.text-6</code> - Changes the Font size to 24px.</li>
+              <li><code>.text-7</code> - Changes the Font size to 28px.</li>
+              <li><code>.text-8</code> - Changes the Font size to 32px.</li>
+              <li><code>.text-9</code> - Changes the Font size to 36px.</li>
+              <li><code>.text-10</code> - Changes the Font size to 40px.</li>
+              <li><code>.text-11</code> - Changes the Font size to 44px.</li>
+              <li><code>.text-12</code> - Changes the Font size to 48px.</li>
+              <li><code>.text-13</code> - Changes the Font size to 52px.</li>
+              <li><code>.text-14</code> - Changes the Font size to 56px.</li>
+              <li><code>.text-15</code> - Changes the Font size to 60px.</li>
+              <li><code>.text-16</code> - Changes the Font size to 64px.</li>
+              <li><code>.text-17</code> - Changes the Font size to 72px.</li>
+              <li><code>.text-18</code> - Changes the Font size to 80px.</li>
+              <li><code>.text-19</code> - Changes the Font size to 84px.</li>
+              <li><code>.text-20</code> - Changes the Font size to 92px.</li>
+			  <li><code>.text-21</code> - Changes the Font size to 104px.</li>
+			  <li><code>.text-22</code> - Changes the Font size to 112px.</li>
+			  <li><code>.text-23</code> - Changes the Font size to 124px.</li>
+			  <li><code>.text-24</code> - Changes the Font size to 132px.</li>
+			  <li><code>.text-25</code> - Changes the Font size to 144px.</li>
+            </ul>
+            <h5>Font Weight:</h5>
+            <ul>
+              <li><code>.fw-100</code> - For font weight of 100.</li>
+              <li><code>.fw-200</code> - For font weight of 200.</li>
+              <li><code>.fw-300</code> - For font weight of 300.</li>
+              <li><code>.fw-400</code> - For font weight of 400.</li>
+              <li><code>.fw-500</code> - For font weight of 500.</li>
+              <li><code>.fw-600</code> - For font weight of 600.</li>
+              <li><code>.fw-700</code> - For font weight of 700.</li>
+              <li><code>.fw-800</code> - For font weight of 800.</li>
+              <li><code>.fw-900</code> - For font weight of 900.</li>
+            </ul>
+            <h5>Background Color:</h5>
+            <ul>
+              <li><code>.bg-transparent</code> - For background color of transparent</li>
+              <li><code>.bg-light</code> - For background color of light gray</li>
+              <li><code>.bg-light-1</code> - For background color of more light gray</li>
+              <li><code>.bg-light-2</code> - For background color of more light gray</li>
+              <li><code>.bg-light-3</code> - For background color of more light gray</li>
+              <li><code>.bg-light-4</code> - For background color of more light gray</li>
+              <li><code>.bg-dark</code> - For background color of dark</li>
+              <li><code>.bg-dark-1</code> - For background color of dark gray</li>
+              <li><code>.bg-dark-2</code> - For background color of more dark gray</li>
+              <li><code>.bg-dark-3</code> - For background color of more dark gray</li>
+              <li><code>.bg-dark-4</code> - For background color of more dark gray</li>
+            </ul>
+            <h5>Box Shadow</h5>
+            <ul>
+              <li><code>.shadow-none</code> - For No shadow to elements with box-shadow utilities.</li>
+              <li><code>.shadow-sm</code> - For Small shadow to elements with box-shadow utilities.</li>
+              <li><code>.shadow</code> - For Regular shadow to elements with box-shadow utilities.</li>
+              <li><code>.shadow-md</code> - For medium light shadows to elements with box-shadow utilities.</li>
+              <li><code>.shadow-lg</code> - For Larger shadows to elements with box-shadow utilities.</li>
+            </ul>
+            <h5 id="opacity">Opacity</h5>
+            <ul>
+              <li><code>.opacity-1</code> - For 10% opacity.</li>
+              <li><code>.opacity-2</code> - For 20% opacity.</li>
+              <li><code>.opacity-3</code> - For 30% opacity.</li>
+              <li><code>.opacity-4</code> - For 40% opacity.</li>
+              <li><code>.opacity-5</code> - For 50% opacity.</li>
+              <li><code>.opacity-6</code> - For 60% opacity.</li>
+              <li><code>.opacity-7</code> - For 70% opacity.</li>
+              <li><code>.opacity-8</code> - For 80% opacity.</li>
+              <li><code>.opacity-9</code> - For 90% opacity.</li>
+            </ul>
+            <h5>Border Radius</h5>
+            <ul>
+              <li><code>.rounded-top-0</code> - No Border Radius for top.</li>
+              <li><code>.rounded-bottom-0</code> - No Border Radius for bottom.</li>
+              <li><code>.rounded-start-0</code> - No Border Radius for left.</li>
+              <li><code>.rounded-end-0</code> - No Border Radius for right.</li>
+            </ul>
+            <h5>Borders, Sizing, Spacing (margin & padding) and also much more....</h5>
+            <div class="alert alert-info">You can refer for use other default bootstrap helper classes here - <a target="_blank" href="https://getbootstrap.com/docs/5.2/utilities/">https://getbootstrap.com/docs/5.2/utilities/</a></div>
+          </div>
+        </section>
+        
+		<hr class="divider">
+		
+        <section id="contact_form">
+          <h2>Contact Form</h2>
+          <p>Contact us form will not work unless you have your files running on a hosting server with PHP / JS. When you have your files ready on your hosting server, you need to edit the settings to make the email function work.</p>
+		  <p class="mb-4">Open the <code>php/mail.php</code> File to make the following changes:</p>
+		  
+		  
+		  <h4 class="mb-2">Receiving Form Responses</h4>
+		  <p>Add your Email Address to receive Email Responses by using the following code below:</p>
+		  <pre><code class="php">/*--------------------------------------------
+	// Receiver's Email
+---------------------------------------------*/
+
+$toEmail = &quot;your-email@website.com&quot;; // Replace Your Email Address
+</code></pre>
+
+
+<h4 class="mb-2">Sender/Company Email to send Emails</h4>
+		  <p>Add a Sender Email by using the following code below:</p>
+		  <pre class="mb-2"><code class="php">/*--------------------------------------------
+	// Sender's Email
+---------------------------------------------*/
+
+$fromEmail = &quot;no-reply@website.com&quot;;  // Replace Company's Email Address (preferably currently used Domain Name)
+$fromName = &quot;Company Name&quot;; // Replace Company Name
+</code></pre>
+<p><span class="badge badge-danger text-uppercase mr-2">Note</span>Some Web Hosting services enforce you to use the same Domain Name in your Email Address as your Hosting Account, to prevent SPAM. So make sure that <code>@website.com</code> above is same as your Domain’s Hosting Account.</p>
+
+
+<h4 class="mb-2 mt-5">Using SMTP (Optional)</h4>
+		  <p>Some Hosting Servers disable the use of PHP <strong>mail()</strong> Function to prevent SPAM. So you can use the SMTP Functionality to Send Emails. Simply add the following code after the <code>$mail = new PHPMailer(true);</code> Line of Code:</p>
+		  <pre class="mb-2"><code class="php">$mail-&gt;isSMTP();
+$mail-&gt;SMTPDebug = 0;
+$mail-&gt;Host = 'mail.yourdomain.com';
+$mail-&gt;SMTPAuth = true;
+$mail-&gt;Username = &quot;yourname@yourdomain.com&quot;;
+$mail-&gt;Password = &quot;yourpassword&quot;;
+$mail-&gt;SMTPSecure = 'tls';
+$mail-&gt;Port = 587;
+</code></pre>
+
+
+
+<hr class="divider">
+
+
+		  <h2 id="reCaptcha" class="mb-2 mt-5">Google reCaptcha</h2>
+		  <p class="lead">if you want to use <strong>Google reCaptcha</strong> for Contact Form Protection. then follow below details.</p>
+		  <p>To setup reCaptcha Form Protection, you will need to obtain a Set of <strong>Site/Secret</strong> Keys from the <a href="https://www.google.com/recaptcha/admin" target="_blank">Google reCaptcha Website</a>. Then follow the Steps below to Setup the Keys for your Form:</p>
+		  
+		  <h4 id="reCaptcha-v2" class="mb-2 mt-5">Google reCaptcha v2</h4>
+		  <ol>
+			<li>
+				<p>Add the following code to your Form and replace <code>YOUR-RECAPTCHA-SITE-KEY-HERE</code> with your reCaptcha site key:</p>
+				<pre class="mb-2"><code class="php">&lt;script src=&quot;https://www.google.com/recaptcha/api.js&quot; async defer&gt;&lt;/script&gt;
+&lt;div id=&quot;recaptcha-v2&quot; data-sitekey=&quot;YOUR-RECAPTCHA-SITE-KEY-HERE&quot; class=&quot;g-recaptcha&quot; &gt;&lt;/div&gt;
+</code></pre>
+
+<p class="text-info font-weight-500">Like the image below:</p>
+<p><img class="img-fluid border" src="assets/images/recaptcha-v2.jpg" alt=""></p>
+
+			</li>
+			<li>
+				<p>Find the following code in the <code>php/mail.php</code> File and add your Secret Key:</p>
+				<pre><code class="php">/* --------------------------------------------
+  // reCaptcha Secret
+  --------------------------------------------- */
+
+// Add this only if you want to use Google reCaptcha with your Contact Forms.
+$recaptcha_secret = 'YOUR_RECAPTCHA_SECRET_KEY'; // Your Google reCaptcha Secret
+</code></pre>
+			</li>
+		  </ol>
+		  
+		  <h4 id="reCaptcha-v3" class="mb-2 mt-5">Google reCaptcha v3</h4>
+		  <ol>
+			<li>
+				<p>Add the script of Google Recaptcha v3 on footer of document and replace <code>YOUR-RECAPTCHA-SITE-KEY-HERE</code> with your reCaptcha site key.</p>
+				<pre class="mb-2"><code class="php">&lt;script id=&quot;google-recaptcha-v3&quot; src=&quot;https://www.google.com/recaptcha/api.js?render=YOUR-RECAPTCHA-SITE-KEY-HERE&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p class="text-info font-weight-500">Like the image below:</p>
+<p><img class="img-fluid border" src="assets/images/recaptcha-v3.jpg" alt=""></p>
+
+			</li>
+			<li>
+				<p>Find the following code in the <code>php/mail.php</code> File and add your Secret Key:</p>
+				<pre class=""><code class="php">/* --------------------------------------------
+  // reCaptcha Secret
+  --------------------------------------------- */
+
+// Add this only if you want to use Google reCaptcha with your Contact Forms.
+$recaptcha_secret = 'YOUR_RECAPTCHA_SECRET_KEY'; // Your Google reCaptcha Secret
+</code></pre>
+			</li>
+		  </ol>
+
+        </section>
+        
+		<hr class="divider">
+        
+        <!-- Source & Credits -->
+        <section id="source_credits">
+          <h2>Source & Credits</h2>
+          <h5>Fonts:</h5>
+          <ul>
+            <li>Google Fonts - <a target="_blank" href="https://fonts.google.com/">https://fonts.google.com/</a></li>
+            <li>Icons Font-face - <a target="_blank" href="https://fontawesome.com/">https://fontawesome.com/</a></li>
+          </ul>
+          <h5>Scripts:</h5>
+          <ul>
+            <li>jQuery - <a target="_blank" href="http://www.jquery.com/">http://www.jquery.com/</a></li>
+            <li>Bootstrap 5 - <a target="_blank" href="http://getbootstrap.com/">http://getbootstrap.com/</a></li>
+            <li>Isotope Filtering- <a target="_blank" href="https://isotope.metafizzy.co">https://isotope.metafizzy.co</a></li>
+            <li>jQuery.appear - <a target="_blank" href="https://github.com/bas2k/jquery.appear/">https://github.com/bas2k/jquery.appear/</a></li>
+            <li>jQuery.countTo - <a target="_blank" href="https://github.com/mhuggins/jquery-countTo">https://github.com/mhuggins/jquery-countTo</a></li>
+            <li>jQuery easing - <a target="_blank" href="http://gsgd.co.uk/sandbox/jquery/easing/">http://gsgd.co.uk/sandbox/jquery/easing/</a></li>
+            <li>Owl Carousel - <a target="_blank" href="https://owlcarousel2.github.io/OwlCarousel2/">https://owlcarousel2.github.io/OwlCarousel2/</a></li>
+            <li>Magnific Popup - <a target="_blank" href="http://dimsemenov.com/plugins/magnific-popup/">http://dimsemenov.com/plugins/magnific-popup/</a></li>
+            <li>Parallaxie - <a target="_blank" href="http://static.theultrasoft.com/parallaxie/demo/">http://static.theultrasoft.com/parallaxie/demo/</a></li>
+            <li>Typed.js - <a target="_blank" href="https://github.com/mattboldt/typed.js">https://github.com/mattboldt/typed.js</a></li>
+            <li>YouTube Player - <a target="_blank" href="https://github.com/pupunzi/jquery.mb.YTPlayer">https://github.com/pupunzi/jquery.mb.YTPlayer</a></li>
+          </ul>
+		  <h5>PHP:</h5>
+		  <ul>
+            <li>PHP Mailer - <a target="_blank" href="https://github.com/PHPMailer/PHPMailer/">https://github.com/PHPMailer/PHPMailer/</a></li>
+          </ul>
+        </section>
+        
+		<hr class="divider">
+		
+		<!-- Support -->
+        <section id="theme_support">
+          <h2>Support</h2>
+          <p>If this documentation doesn't answer your questions, So, Please send us Email via <a class="btn btn-primary" target="_blank" href="https://themeforest.net/item/simone-personal-portfolio-template/28476751/support">Item Support Page</a></p>
+		  <p> We are located in GMT +5:30 time zone and we answer all questions within 12-24 hours in weekdays. In some rare cases the waiting time can be to 48 hours. (except holiday seasons which might take longer).</p>
+          <div class="alert alert-warning mb-4"><span class="badge badge-danger text-uppercase">Note:</span> While we aim to provide the best support possible, please keep in mind that it only extends to verified buyers and only to issues related to our template like bugs and errors. Custom modifications or third party module implementations are not included.</div>
+          
+		  
+		  <h4>Don’t forget to Rate this template
+			<i class="fas fa-star text-warning"></i> <i class="fas fa-star text-warning"></i> <i class="fas fa-star text-warning"></i> <i class="fas fa-star text-warning"></i> <i class="fas fa-star text-warning"></i>
+		  </h4>
+		  <div class="alert alert-success">
+            
+            Please Add your Review (Opinion) for Our template. It would be a great support for us.<br>
+            Go to your <strong>Themeforest Profile</strong> > <strong>Downloads Tab</strong> > & then You can Rate & Review for our template.<br>
+			Thank You.
+            
+          </div>
+            
+        </section>
+		
+		<hr class="divider">
+		
+        <!-- Changelog -->
+        <section id="changelog">
+          <h2>Changelog</h2>
+          <p class="alert alert-info"> For Future Updates Follow Us <a target="_blank" href="http://themeforest.net/user/harnishdesign">@themeforest</a> / <a target="_blank" href="http://facebook.com/harnishdesign">@facebook</a> / <a target="_blank" href="http://twitter.com/harnishdesign">@twitter</a> / <a target="_blank" href="https://dribbble.com/harnishdesign">@Dribbble</a></p>
+          <p class="alert alert-warning mb-5">The best way is to use a compare tool for update template, like this one: <a target="_blank" href="http://kdiff3.sourceforge.net/">http://kdiff3.sourceforge.net/</a> – and use it to compare the folders (your current website and the new version). <strong>Updating HTML templates requires manual work.</strong></p>
+          <h3>v2.3</h3>
+		  <ul class="changelog">
+			<li><span class="badge badge-danger">Fixed</span> Google reCaptcha v2 issue for Contact Form.</li>
+          </ul>
+		  <h3>v2.2</h3>
+		  <ul class="changelog">
+            <li><span class="badge badge-info">Updated</span> Bootstrap to Latest Version v5.2</li>
+			<li><span class="badge badge-info">Updated</span> Minor css issues and improvement.</li>
+          </ul>
+		  <h3>v2.1</h3>
+		  <ul class="changelog">
+            <li><span class="badge badge-info">Updated</span> Bootstrap to Latest Version (v5.1.1)</li>
+			<li><span class="badge badge-info">Updated</span> PHP Mailer to Latest Version (v6.5.1)</li>
+			<li><span class="badge badge-danger">Fixed</span> highlight wrong navigation item when a page is reloaded</li>
+          </ul>
+		  <h3>v2.0</h3>
+		  <ul class="changelog">
+            <li><span class="badge badge-info">Updated</span> Bootstrap to Latest Version (v5.0.2)</li>
+			<li><span class="badge badge-success">Added</span> RTL Support</li>
+            <li><span class="badge badge-info">Updated</span> Improvement in Documentation</li>
+          </ul>
+		  <h3>v1.2</h3>
+		  <ul class="changelog">
+            <li><span class="badge badge-info">Updated</span> Bootstrap latest version 4.6.0</li>
+            <li><span class="badge badge-info">Updated</span> jQuery latest version 3.6.0</li>
+			<li><span class="badge badge-info">Updated</span> Font Awesome latest version 5.15.3</li>
+            <li><span class="badge badge-danger">Fixed</span> Portfolio images loaded issue in mobile</li>
+          </ul>
+		  <h3>v1.1</h3>
+          <ul class="changelog">
+            <li><span class="badge badge-success">Added</span> Add Classic Header Demos</li>
+            <li><span class="badge badge-danger">Fixed</span> Fix minor issues and improvement.</li>
+            <li><span class="badge badge-info">Updated</span> Improvement in Documentation</li>
+          </ul>
+		  
+		  <h3>v1.0</h3>
+          <p>Initial Release</p>
+        </section>
+		
+		
+		<hr class="divider">
+		
+		<!-- More Templates
+		============================ -->
+        <section id="our_templates">
+          <h2>Other Templates</h2>
+          <p class="lead">Please Checkout Our Below Other Premium Templates</p>
+		  
+		  <div class="row">
+		  <div class="col-4 my-3 text-center">
+			  <a target="_blank" href="https://themeforest.net/item/x/37917243?ref=HarnishDesign"><img class="img-fluid" src="assets/images/templates/metovo.jpg" alt="">
+			<h6 class="pt-2">Metovo - NFT Marketplace HTML Template</h6>
+			</a>
+		  </div>
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/32172026?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/mxapp.jpg" alt="">
+			<h6 class="pt-2">MXapp - App Landing Page</h6>
+			</a>
+		  </div>
+		  
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/31583297?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/callum.jpg" alt="">
+			<h6 class="pt-2">Callum - Personal Portfolio Template</h6>
+			</a>
+		  </div>
+		  
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/26454458?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/kenil.jpg" alt="">
+			<h6 class="pt-2">Kenil - Responsive Bootstrap 5 One Page Portfolio Template</h6>
+			</a>
+		  </div>
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/26313677?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/doon.jpg" alt="">
+			<h6 class="pt-2">Doon - One Page Parallax HTML Template</h6>
+			</a>
+		  </div>
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/31097749?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/zoon.jpg" alt="">
+			<h6 class="pt-2">Zoon - Coming Soon Template</h6>
+			</a>
+		  </div>
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/27172933?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/domainx.jpg" alt="">
+			<h6 class="pt-2">DomainX- Domain for Sale HTML Template</h6>
+			</a>
+		  </div>
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/28848609?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/oxyy.jpg" alt="">
+			<h6 class="pt-2">Oxyy - Login and Register Form HTML Templates</h6>
+			</a>
+		  </div>
+		  
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/27034971?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/koice.jpg" alt="">
+			<h6 class="pt-2">Koice - Invoice HTML Template</h6>
+			</a>
+		  </div>
+		  
+		  
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/22375065?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/quickai.jpg" alt="">
+			<h6 class="pt-2">Quickai - Recharge & Bill Payment, Booking HTML5 Template</h6>
+			</a>
+		  </div>
+		  <div class="col-4 my-3 text-center">
+			<a target="_blank" href="https://themeforest.net/item/x/24017808?ref=HarnishDesign"><img class="img-fluid border" src="assets/images/templates/payyed.jpg" alt="">
+			<h6 class="pt-2">Payyed - Money Transfer and Online Payments HTML Template</h6>
+			</a>
+		  </div>
+		  </div>
+		  
+		  <p class="text-center"><a class="btn btn-lg btn-primary my-4" target="_blank" href="https://themeforest.net/user/harnishdesign/portfolio?ref=HarnishDesign">Our Portfolio</a></p>
+          
+        </section>
+		
+		
+      </div>
+    </div>
+	
+  </div>
+  <!-- Content end --> 
+  
+  <!-- Footer
+  ============================================= -->
+  <footer class="footer section bg-dark footer-text-light">
+    <div class="container">
+      <ul class="social-icons social-icons-lg social-icons-muted justify-content-center mb-3">
+        <li class="social-icons-facebook"><a data-toggle="tooltip" href="http://www.facebook.com/harnishdesign/" target="_blank" title="" data-original-title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+        <li class="social-icons-twitter"><a data-toggle="tooltip" href="https://twitter.com/harnishdesign/" target="_blank" title="" data-original-title="Twitter"><i class="fab fa-twitter"></i></a></li>
+		<li class="social-icons-instagram"><a data-toggle="tooltip" href="https://instagram.com/harnishdesign/" target="_blank" title="" data-original-title="Instagram"><i class="fab fa-instagram"></i></a></li>
+		<li class="social-icons-dribbble"><a data-toggle="tooltip" href="http://www.dribbble.com/harnishdesign/" target="_blank" title="" data-original-title="Dribbble"><i class="fab fa-dribbble"></i></a></li>
+      </ul>
+      <p class="text-muted text-center">Copyright &copy; 2021 <a href="http://www.harnishdesign.net/">HarnishDesign</a>. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <!-- Footer end -->
+  
+</div>
+<!-- Document Wrapper end --> 
+
+<!-- Back To Top
+============================================= --> 
+<a id="back-to-top" data-toggle="tooltip" title="Back to Top" href="javascript:void(0)"><i class="fa fa-chevron-up"></i></a> 
+
+<!-- JavaScript --> 
+
+<script src="assets/vendor/jquery/jquery.min.js"></script> 
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
+<script src="assets/vendor/highlight.js/highlight.min.js"></script> 
+<!-- Easing --> 
+<script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script> 
+<!-- Magnific Popup --> 
+<script src="assets/vendor/magnific-popup/jquery.magnific-popup.min.js"></script> 
+<!-- Highlight JS --> 
+<!-- Custom Script --> 
+<script src="assets/js/theme.js"></script>
+</body>
+</html>
