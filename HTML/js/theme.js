@@ -274,6 +274,292 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 })
 
 /*------------------------
+   Memory Map
+-------------------------- */
+$(function () {
+	var $mapContainer = $('#memory-map');
+	if (!$mapContainer.length) {
+		return;
+	}
+
+	if (typeof window.L === 'undefined') {
+		$mapContainer.addClass('bg-light d-flex align-items-center justify-content-center text-muted text-center');
+		$mapContainer.html('<span>地图组件未能加载，请检查网络连接。</span>');
+		return;
+	}
+
+	var defaultCenter = [31.2304, 121.4737];
+	var defaultZoom = 4;
+	var map = L.map($mapContainer[0], {
+		center: defaultCenter,
+		zoom: defaultZoom,
+		scrollWheelZoom: true
+	});
+
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '© OpenStreetMap contributors'
+	}).addTo(map);
+
+	var marker = null;
+	var $form = $('#memory-form');
+	var $locationInput = $('#memory-location');
+	var $latInput = $('#memory-lat');
+	var $lngInput = $('#memory-lng');
+
+	var parseCoordinateInput = function (value) {
+		var cleaned = value.replace(/\s+/g, '');
+		var parts = cleaned.split(',');
+		if (parts.length !== 2) {
+			return null;
+		}
+		var lat = parseFloat(parts[0]);
+		var lng = parseFloat(parts[1]);
+		if (!isFinite(lat) || !isFinite(lng)) {
+			return null;
+		}
+		if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+			return null;
+		}
+		return {lat: lat, lng: lng};
+	};
+
+	var formatCoordLabel = function (lat, lng) {
+		return lat.toFixed(5) + ', ' + lng.toFixed(5);
+	};
+
+	var setMarker = function (lat, lng) {
+		var latLng = [lat, lng];
+		if (!marker) {
+			marker = L.marker(latLng, {draggable: false}).addTo(map);
+		} else {
+			marker.setLatLng(latLng);
+		}
+		$latInput.val(lat.toFixed(6));
+		$lngInput.val(lng.toFixed(6));
+
+		var currentValue = $.trim($locationInput.val());
+		if (!currentValue || parseCoordinateInput(currentValue)) {
+			$locationInput.val(formatCoordLabel(lat, lng));
+		}
+	};
+
+	var clearMarker = function () {
+		if (marker) {
+			map.removeLayer(marker);
+			marker = null;
+		}
+		$latInput.val('');
+		$lngInput.val('');
+	};
+
+	var focusOnLocation = function (lat, lng, zoom) {
+		var targetZoom = zoom || Math.max(map.getZoom(), 12);
+		map.setView([lat, lng], targetZoom);
+		setMarker(lat, lng);
+	};
+
+	map.on('click', function (event) {
+		var lat = event.latlng.lat;
+		var lng = event.latlng.lng;
+		setMarker(lat, lng);
+	});
+
+	$locationInput.on('change', function () {
+		var value = $.trim($locationInput.val());
+		if (!value) {
+			clearMarker();
+			return;
+		}
+		var coords = parseCoordinateInput(value);
+		if (coords) {
+			focusOnLocation(coords.lat, coords.lng);
+		}
+	});
+
+	if ($latInput.val() && $lngInput.val()) {
+		var initialLat = parseFloat($latInput.val());
+		var initialLng = parseFloat($lngInput.val());
+		if (isFinite(initialLat) && isFinite(initialLng)) {
+			focusOnLocation(initialLat, initialLng, defaultZoom);
+		}
+	}
+
+	if ($form.length) {
+		$form.on('reset', function () {
+			setTimeout(function () {
+				clearMarker();
+				$locationInput.val('');
+				map.setView(defaultCenter, defaultZoom);
+			}, 0);
+		});
+	}
+});
+
+/*------------------------
+   Memory Form Storage
+-------------------------- */
+$(function () {
+	var $form = $('#memory-form');
+	if (!$form.length) {
+		return;
+	}
+
+	var STORAGE_KEY = 'memoryEntries';
+	var $list = $('#memory-list');
+	var $empty = $('#memory-empty');
+	var $clearButton = $('#clear-memories');
+	var $titleInput = $form.find('[name="memory-title"]');
+	var $dateInput = $form.find('[name="memory-date"]');
+	var $locationInput = $('#memory-location');
+	var $latInput = $('#memory-lat');
+	var $lngInput = $('#memory-lng');
+	var $textInput = $form.find('[name="memory-text"]');
+
+	var storageAvailable = (function () {
+		try {
+			var testKey = '__memory_test__';
+			window.localStorage.setItem(testKey, '1');
+			window.localStorage.removeItem(testKey);
+			return true;
+		} catch (error) {
+			return false;
+		}
+	})();
+
+	var readMemories = function () {
+		if (!storageAvailable) {
+			return [];
+		}
+		var raw = window.localStorage.getItem(STORAGE_KEY);
+		if (!raw) {
+			return [];
+		}
+		try {
+			var parsed = JSON.parse(raw);
+			return Array.isArray(parsed) ? parsed : [];
+		} catch (error) {
+			return [];
+		}
+	};
+
+	var saveMemories = function (entries) {
+		if (!storageAvailable) {
+			return;
+		}
+		window.localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+	};
+
+	var renderMemories = function (entries) {
+		$list.empty();
+		if (!entries.length) {
+			$empty.removeClass('d-none');
+			return;
+		}
+		$empty.addClass('d-none');
+
+		entries.forEach(function (entry) {
+			var $col = $('<div/>', {'class': 'col-12 col-lg-6'});
+			var $card = $('<div/>', {'class': 'card h-100 shadow-sm border-0'});
+			var $body = $('<div/>', {'class': 'card-body d-flex flex-column'});
+
+			if (entry.title) {
+				$body.append($('<h4/>', {'class': 'card-title text-primary mb-3'}).text(entry.title));
+			}
+
+			var $metaList = $('<ul/>', {'class': 'list-unstyled small text-muted mb-3'});
+			var dateText = entry.date ? entry.date : '日期未填写';
+			$metaList.append($('<li/>').text('日期：' + dateText));
+
+			var coordsAvailable = entry.lat && entry.lng;
+			var locationContent = entry.location ? entry.location : (coordsAvailable ? entry.lat + ', ' + entry.lng : '未标记地点');
+			var $locationItem = $('<li/>');
+			if (coordsAvailable) {
+				var mapsLink = 'https://www.openstreetmap.org/?mlat=' + encodeURIComponent(entry.lat) + '&mlon=' + encodeURIComponent(entry.lng) + '&zoom=14';
+				var $mapAnchor = $('<a/>', {
+					'href': mapsLink,
+					'target': '_blank',
+					'rel': 'noopener noreferrer',
+					'text': locationContent
+				});
+				$locationItem.append('地点：').append($mapAnchor);
+			} else {
+				$locationItem.text('地点：' + locationContent);
+			}
+			$metaList.append($locationItem);
+			$body.append($metaList);
+
+			if (entry.text) {
+				$body.append($('<p/>', {'class': 'card-text flex-grow-1'}).text(entry.text));
+			}
+
+			if (entry.createdAt) {
+				var createdAtText = new Date(entry.createdAt).toLocaleString();
+				$body.append($('<p/>', {'class': 'text-end text-muted small mb-0'}).text('记录于 ' + createdAtText));
+			}
+
+			$card.append($body);
+			$col.append($card);
+			$list.append($col);
+		});
+	};
+
+	var entries = readMemories();
+	renderMemories(entries);
+
+	if (!storageAvailable) {
+		$empty.removeClass('alert-light').addClass('alert-warning').text('当前浏览器禁止使用本地存储，无法保存新的回忆。');
+		$clearButton.prop('disabled', true).addClass('disabled');
+		return;
+	}
+
+	$form.on('submit', function (event) {
+		event.preventDefault();
+
+		var title = $.trim($titleInput.val());
+		var date = $dateInput.val();
+		var location = $.trim($locationInput.val());
+		var lat = $.trim($latInput.val());
+		var lng = $.trim($lngInput.val());
+		var text = $.trim($textInput.val());
+
+		if (!title || !date || !text) {
+			return;
+		}
+
+		var entry = {
+			id: Date.now(),
+			title: title,
+			date: date,
+			location: location,
+			lat: lat || '',
+			lng: lng || '',
+			text: text,
+			createdAt: new Date().toISOString()
+		};
+
+		entries = readMemories();
+		entries.unshift(entry);
+		saveMemories(entries);
+		renderMemories(entries);
+
+		$form[0].reset();
+	});
+
+	$clearButton.on('click', function () {
+		if (!entries.length) {
+			return;
+		}
+		var confirmClear = window.confirm('确定要清空本地保存的所有回忆吗？此操作无法撤销。');
+		if (!confirmClear) {
+			return;
+		}
+		window.localStorage.removeItem(STORAGE_KEY);
+		entries = [];
+		renderMemories(entries);
+	});
+});
+
+/*------------------------
    Wish List Modal
 -------------------------- */
 $(function () {

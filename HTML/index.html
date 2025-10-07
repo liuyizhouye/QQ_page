@@ -16,6 +16,8 @@
 ============================== -->
 <!-- Bootstrap -->
 <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css" />
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <!-- Font Awesome Icon -->
 <link rel="stylesheet" type="text/css" href="vendor/font-awesome/css/all.min.css" />
 <!-- Owl Carousel -->
@@ -551,7 +553,17 @@
                 <div class="col-xl-6">
                     <input name="memory-date" type="date" class="form-control" required aria-label="日期">
                 </div>
-				<div class="col">
+                <div class="col-xl-6">
+                    <input id="memory-location" name="memory-location" type="text" class="form-control" placeholder="搜索地点或点击地图选择" autocomplete="off" aria-label="地点">
+                    <input type="hidden" name="memory-lat" id="memory-lat">
+                    <input type="hidden" name="memory-lng" id="memory-lng">
+                    <div class="form-text">可输入地点名称或经纬度，也可以拖动并点击地图标记位置。</div>
+                </div>
+                <div class="col-12">
+                    <div id="memory-map" class="memory-map border rounded" style="height: 280px;"></div>
+                    <div class="form-text mt-2">地图数据来自 OpenStreetMap，无需额外 API。</div>
+                </div>
+				<div class="col-12">
 					<textarea name="memory-text" class="form-control" rows="5" required placeholder="把当时的细节写下来：见到的风景、想说的话、未来的心愿..."></textarea>
 				</div>
               </div>
@@ -560,6 +572,17 @@
 				<button id="save-memory" class="btn btn-primary rounded-pill d-inline-flex" type="submit">保存到我们的故事</button>
               </p>
             </form>
+            <div class="mt-5">
+              <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
+                <div>
+                  <h3 class="mb-1 text-5 text-uppercase text-center text-md-start">我们的记忆墙</h3>
+                  <p class="text-muted mb-0 text-center text-md-start">所有记录仅保存在本地设备的浏览器中，刷新页面也会自动加载。</p>
+                </div>
+                <button id="clear-memories" type="button" class="btn btn-outline-danger rounded-pill btn-sm mt-3 mt-md-0">清空本地记录</button>
+              </div>
+              <div id="memory-empty" class="alert alert-light border text-muted" role="status">还没有新的记录，写下第一段回忆吧！</div>
+              <div id="memory-list" class="row g-4"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -667,6 +690,8 @@
 <script src="vendor/isotope/isotope.pkgd.min.js"></script> 
 <!-- Magnific Popup --> 
 <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script> 
+<!-- Leaflet --> 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <!-- Custom Script --> 
 <script src="js/theme.js"></script>
 </body>
