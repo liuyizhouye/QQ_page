@@ -218,6 +218,33 @@
     </section>
     <!-- Portfolio end --> 
     
+    <div id="moment-viewer" class="moment-viewer d-none" role="dialog" aria-modal="true" aria-labelledby="moment-viewer-title">
+      <div class="moment-viewer-dialog">
+        <button type="button" class="moment-viewer-close btn btn-light btn-sm rounded-circle shadow-sm" id="moment-viewer-close" aria-label="关闭">
+          <i class="fas fa-times text-muted"></i>
+        </button>
+        <div class="moment-viewer-scroller">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-7">
+              <div class="moment-viewer-image">
+                <img id="moment-viewer-image" src="" alt="" class="img-fluid" />
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div id="moment-viewer-subtitle" class="text-muted mb-2"></div>
+              <h3 id="moment-viewer-title" class="text-5 fw-600 mb-3"></h3>
+              <div id="moment-viewer-tags" class="moment-viewer-tags d-flex flex-wrap gap-2 mb-4"></div>
+              <div class="moment-viewer-actions d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-secondary" id="moment-viewer-prev"><i class="fas fa-chevron-left me-1"></i>上一张</button>
+                <button type="button" class="btn btn-outline-secondary" id="moment-viewer-next">下一张<i class="fas fa-chevron-right ms-1"></i></button>
+                <a id="moment-viewer-link" class="btn btn-primary rounded-pill" target="_blank" rel="noopener">打开详情</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Resume
     ============================================= -->
     <section id="favorites" class="section">
