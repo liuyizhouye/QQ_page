@@ -207,8 +207,13 @@
         </div>
         <!-- Heading end--> 
         
-        <div id="moments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的瞬间。</div>
-        <div id="moments-list" class="row g-4"></div>
+        <div id="moments-menu-wrapper" class="mb-5 d-none">
+          <ul id="moments-menu" class="portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-0"></ul>
+        </div>
+        <div class="portfolio popup-ajax-gallery popup-img-gallery">
+          <div id="moments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的瞬间。</div>
+          <div id="moments-list" class="row portfolio-filter g-4"></div>
+        </div>
       </div>
     </section>
     <!-- Portfolio end --> 
@@ -315,7 +320,8 @@
                       <form id="form-moments" class="row g-3 story-form" novalidate>
                         <div class="col-md-6"><input type="text" class="form-control" name="moment-title" placeholder="标题（例如 海边日落）" required></div>
                         <div class="col-md-6"><input type="text" class="form-control" name="moment-subtitle" placeholder="副标题 / 分类标签" required></div>
-                        <div class="col-md-8"><input type="text" class="form-control" name="moment-image" placeholder="图片路径或链接（例如 images/projects/project-1.jpg）" required></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="moment-image" placeholder="图片路径或链接（例如 images/projects/project-1.jpg）" required></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="moment-link" placeholder="点击后打开的链接（可选，例如 ajax/portfolio-ajax-project-1.html）"></div>
                         <div class="col-md-4"><input type="text" class="form-control" name="moment-tag" placeholder="展示标签（如 旅行日记）" required></div>
                         <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button></div>
                       </form>

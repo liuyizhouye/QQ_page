@@ -288,13 +288,13 @@ $(function () {
 			{ id: 'ms-20230901', date: '2023.09.01', title: '新家入住', icon: 'fas fa-home', description: '我们亲手布置每个角落，把生活的碎片变成名为“家”的答案。' }
 		],
 		moments: [
-			{ id: 'mo-1', title: '大理清晨的粉色天空', subtitle: '旅行日记', image: 'images/projects/project-1.jpg', tag: '旅行日记' },
-			{ id: 'mo-2', title: '第一次跨年烟花', subtitle: '纪念日', image: 'images/projects/project-2.jpg', tag: '纪念日' },
-			{ id: 'mo-3', title: '雨天同款雨衣', subtitle: '日常碎片', image: 'images/projects/project-3.jpg', tag: '日常碎片' },
-			{ id: 'mo-4', title: '周年纪念的海边', subtitle: '旅行 + 纪念', image: 'images/projects/project-4.jpg', tag: '旅行 + 纪念' },
-			{ id: 'mo-5', title: '家里的周日下午', subtitle: '慵懒时光', image: 'images/projects/project-5.jpg', tag: '慵懒时光' },
-			{ id: 'mo-6', title: '生日餐桌', subtitle: '专属于你的颜色', image: 'images/projects/project-6.jpg', tag: '专属于你的颜色' },
-			{ id: 'mo-7', title: '无人岛上的日落', subtitle: '旅行日记', image: 'images/projects/project-7.jpg', tag: '旅行日记' }
+			{ id: 'mo-1', title: '大理清晨的粉色天空', subtitle: '旅行日记', image: 'images/projects/project-1.jpg', link: 'ajax/portfolio-ajax-project-1.html', tag: '旅行' },
+			{ id: 'mo-2', title: '第一次跨年烟花', subtitle: '纪念日', image: 'images/projects/project-2.jpg', link: 'ajax/portfolio-ajax-project-2.html', tag: '纪念日' },
+			{ id: 'mo-3', title: '雨天同款雨衣', subtitle: '日常碎片', image: 'images/projects/project-3.jpg', link: 'ajax/portfolio-ajax-project-3.html', tag: '日常' },
+			{ id: 'mo-4', title: '周年纪念的海边', subtitle: '旅行 + 纪念', image: 'images/projects/project-4.jpg', link: 'ajax/portfolio-ajax-project-4.html', tag: '旅行,纪念日' },
+			{ id: 'mo-5', title: '家里的周日下午', subtitle: '慵懒时光', image: 'images/projects/project-5.jpg', link: 'ajax/portfolio-ajax-project-5.html', tag: '日常' },
+			{ id: 'mo-6', title: '生日餐桌', subtitle: '专属于你的颜色', image: 'images/projects/project-6.jpg', link: 'ajax/portfolio-ajax-project-6.html', tag: '纪念日' },
+			{ id: 'mo-7', title: '无人岛上的日落', subtitle: '旅行日记', image: 'images/projects/project-7.jpg', link: 'ajax/portfolio-ajax-project-7.html', tag: '旅行' }
 		],
 		favorites: [
 			{ id: 'fa-1', badge: '每周仪式', title: '周五百花计划', highlight: '一束花 + 一张手写小卡', description: '把日常写进花香里，提醒自己永远对彼此表达爱意。' },
@@ -314,6 +314,9 @@ $(function () {
 	};
 
 	var storyData = loadData();
+	var momentsIsotope = null;
+	var currentMomentsFilter = '*';
+
 	renderAllSections();
 	bindForms();
 	bindDeletion();
@@ -438,28 +441,63 @@ $(function () {
 	}
 
 	function renderMoments() {
+		destroyMomentsIsotope();
 		var $mainList = $('#moments-list');
 		var $mainEmpty = $('#moments-empty');
+		var $menu = $('#moments-menu');
+		var $menuWrapper = $('#moments-menu-wrapper');
 		var $managerList = $('#manager-moments-list');
 		var $managerEmpty = $('#manager-moments-empty');
 		$mainList.empty();
+		$menu.empty();
 		$managerList.empty();
 		if (!storyData.moments.length) {
 			$mainEmpty.removeClass('d-none');
 			$managerEmpty.removeClass('d-none');
+			$menuWrapper.addClass('d-none');
+			currentMomentsFilter = '*';
 			return;
 		}
 		$mainEmpty.addClass('d-none');
 		$managerEmpty.addClass('d-none');
+		$menuWrapper.removeClass('d-none');
+		var categorySet = new Set();
 		storyData.moments.forEach(function (entry) {
-			var $col = $('<div/>', { 'class': 'col-sm-6 col-lg-4' });
-			var $box = $('<div/>', { 'class': 'portfolio-box rounded h-100 overflow-hidden shadow-sm' });
+			var categories = getMomentCategories(entry);
+			if (!categories.length) {
+				categories = ['未分类'];
+			}
+			categories.forEach(function (cat) { categorySet.add(cat); });
+			var categoryClasses = categories.map(function (cat) {
+				var slug = slugifyCategory(cat);
+				return slug ? 'cat-' + slug : '';
+			}).filter(Boolean);
+			var colClasses = ['col-sm-6', 'col-lg-4', 'moment-item'].concat(categoryClasses).join(' ').trim();
+			var $col = $('<div/>', { 'class': colClasses });
+			var $box = $('<div/>', { 'class': 'portfolio-box rounded' });
 			var $imgWrap = $('<div/>', { 'class': 'portfolio-img rounded position-relative' });
-			$imgWrap.append($('<img/>', { 'class': 'img-fluid d-block w-100', 'src': entry.image || 'images/projects/project-1.jpg', 'alt': entry.title }));
+			$imgWrap.append($('<img/>', { 'class': 'img-fluid d-block', 'src': entry.image || 'images/projects/project-1.jpg', 'alt': entry.title || 'moment image' }));
 			var $overlay = $('<div/>', { 'class': 'portfolio-overlay' });
-			var $details = $('<div/>', { 'class': 'portfolio-overlay-details d-flex flex-column justify-content-center align-items-center text-center p-4' });
-			$details.append($('<h5/>', { 'class': 'text-white fw-500 mb-1' }).text(entry.title));
-			$details.append($('<span/>', { 'class': 'text-light small' }).text(entry.tag || entry.subtitle));
+			var overlayLink = entry.link || entry.image || '';
+			var linkClasses = 'stretched-link';
+			var isAjaxLink = overlayLink && /\.html?$/i.test(overlayLink);
+			var isImageLink = overlayLink && /\.(png|jpe?g|gif|webp|avif)$/i.test(overlayLink);
+			if (!overlayLink) {
+				overlayLink = 'javascript:void(0)';
+			}
+			if (isAjaxLink) {
+				linkClasses += ' popup-ajax';
+			} else if (isImageLink) {
+				linkClasses += ' popup-img';
+			}
+			var $anchor = $('<a/>', { 'href': overlayLink, 'class': linkClasses.trim() });
+			if (!isAjaxLink && !isImageLink && /^https?:/i.test(overlayLink)) {
+				$anchor.attr({ 'target': '_blank', 'rel': 'noopener noreferrer' });
+			}
+			$overlay.append($anchor);
+			var $details = $('<div/>', { 'class': 'portfolio-overlay-details' });
+			$details.append($('<h5/>', { 'class': 'text-white fw-400' }).text(entry.title));
+			$details.append($('<span/>', { 'class': 'text-light' }).text(entry.subtitle || categories.join(' · ')));
 			$overlay.append($details);
 			$imgWrap.append($overlay);
 			$box.append($imgWrap);
@@ -469,13 +507,44 @@ $(function () {
 			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
 			var $body = $('<div/>', { 'class': 'flex-grow-1' });
 			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title));
-			$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text((entry.subtitle || '') + ' · ' + (entry.image || '无图')));
+			var metaText = [];
+			if (entry.subtitle) {
+				metaText.push(entry.subtitle);
+			}
+			if (categories.length) {
+				metaText.push(categories.join(' / '));
+			}
+			if (entry.image) {
+				metaText.push(entry.image);
+			}
+			if (metaText.length) {
+				$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(metaText.join(' · ')));
+			}
 			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
-			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(entry.tag || entry.subtitle));
+			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(categories.join(' / ')));
+			if (entry.link) {
+				var viewAttrs = {
+					'href': entry.link,
+					'class': 'btn btn-sm btn-outline-secondary',
+					'text': '查看'
+				};
+				if (/\.html?$/i.test(entry.link)) {
+					viewAttrs.target = '_self';
+				} else {
+					viewAttrs.target = '_blank';
+					if (/^https?:\/\//i.test(entry.link)) {
+						viewAttrs.rel = 'noopener noreferrer';
+					}
+				}
+				$actions.append($('<a/>', viewAttrs));
+			}
 			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'moments', 'data-id': entry.id }).text('删除'));
 			$item.append($body, $actions);
 			$managerList.append($item);
 		});
+		var categoriesArray = Array.from(categorySet);
+		buildMomentsMenu(categoriesArray);
+		initMomentsIsotope();
 	}
 
 	function renderFavorites() {
@@ -603,9 +672,10 @@ $(function () {
 			var title = $.trim($(this).find('[name="moment-title"]').val());
 			var subtitle = $.trim($(this).find('[name="moment-subtitle"]').val());
 			var image = $.trim($(this).find('[name="moment-image"]').val());
+			var link = $.trim($(this).find('[name="moment-link"]').val());
 			var tag = $.trim($(this).find('[name="moment-tag"]').val());
 			if (!title || !subtitle || !image || !tag) { return; }
-			storyData.moments.unshift({ id: generateId('mo'), title: title, subtitle: subtitle, image: image, tag: tag });
+			storyData.moments.unshift({ id: generateId('mo'), title: title, subtitle: subtitle, image: image, link: link, tag: tag });
 			saveData();
 			renderAllSections();
 			this.reset();
@@ -771,6 +841,114 @@ $(function () {
 				memoryMarker = null;
 			}
 		}
+	}
+
+	function buildMomentsMenu(categories) {
+		var $menu = $('#moments-menu');
+		var $wrapper = $('#moments-menu-wrapper');
+		$menu.empty();
+		if (!categories.length) {
+			$wrapper.addClass('d-none');
+			currentMomentsFilter = '*';
+			return;
+		}
+		$wrapper.removeClass('d-none');
+		var options = categories.slice().sort(function (a, b) {
+			return a.localeCompare(b, 'zh-CN');
+		}).map(function (label) {
+			var slug = slugifyCategory(label);
+			return {
+				label: label,
+				filter: slug ? '.cat-' + slug : '*'
+			};
+		}).filter(function (option) { return option.filter !== '*'; });
+		options.unshift({ label: '全部', filter: '*' });
+		if (!options.some(function (option) { return option.filter === currentMomentsFilter; })) {
+			currentMomentsFilter = '*';
+		}
+		options.forEach(function (option) {
+			var $li = $('<li/>', { 'class': 'nav-item' });
+			var $link = $('<a/>', {
+				'class': 'nav-link' + (option.filter === currentMomentsFilter ? ' active' : ''),
+				'href': '#',
+				'data-filter': option.filter,
+				'text': option.label
+			});
+			$li.append($link);
+			$menu.append($li);
+		});
+		applyMomentVisibilityFallback(currentMomentsFilter);
+		$menu.off('click.storyMoments').on('click.storyMoments', 'a', function (event) {
+			event.preventDefault();
+			var filter = $(this).data('filter') || '*';
+			currentMomentsFilter = filter;
+			$menu.find('.nav-link').removeClass('active');
+			$(this).addClass('active');
+			if (momentsIsotope) {
+				momentsIsotope.isotope({ filter: filter });
+			} else {
+				applyMomentVisibilityFallback(filter);
+			}
+		});
+	}
+
+	function initMomentsIsotope() {
+		var $grid = $('#moments-list');
+		if (!$grid.length || !$grid.children().length || typeof $grid.imagesLoaded !== 'function' || typeof $grid.isotope !== 'function') {
+			applyMomentVisibilityFallback(currentMomentsFilter);
+			return;
+		}
+		$grid.children().removeClass('d-none');
+		$grid.imagesLoaded(function () {
+			if (momentsIsotope) {
+				momentsIsotope.isotope('destroy');
+				momentsIsotope = null;
+			}
+			momentsIsotope = $grid.isotope({
+				itemSelector: '.moment-item',
+				layoutMode: 'masonry',
+				filter: currentMomentsFilter
+			});
+		});
+	}
+
+	function destroyMomentsIsotope() {
+		if (momentsIsotope) {
+			momentsIsotope.isotope('destroy');
+			momentsIsotope = null;
+		}
+		$('#moments-list .moment-item').removeClass('d-none');
+	}
+
+	function applyMomentVisibilityFallback(filter) {
+		if (momentsIsotope) {
+			return;
+		}
+		var $items = $('#moments-list .moment-item');
+		if (!filter || filter === '*') {
+			$items.removeClass('d-none');
+			return;
+		}
+		$items.each(function () {
+			var $item = $(this);
+			if ($item.is(filter)) {
+				$item.removeClass('d-none');
+			} else {
+				$item.addClass('d-none');
+			}
+		});
+	}
+
+	function getMomentCategories(entry) {
+		var source = entry.tag || entry.subtitle || '';
+		return source.split(/[,+/|]+/).map(function (item) {
+			return item.trim();
+		}).filter(Boolean);
+	}
+
+	function slugifyCategory(name) {
+		if (!name) { return ''; }
+		return name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\u4e00-\u9fa5-]/g, '');
 	}
 });
 
