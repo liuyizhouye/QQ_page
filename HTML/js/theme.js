@@ -274,6 +274,89 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 })
 
 /*------------------------
+   Wish List Modal
+-------------------------- */
+$(function () {
+	var $wishForm = $('#wishForm');
+	if (!$wishForm.length) {
+		return;
+	}
+
+	var $wishModal = $('#wishModal');
+	var $wishColumns = [$('#wishColumnLeft'), $('#wishColumnRight')];
+	var $wishDescription = $('#wishDescription');
+	var $wishProgress = $('#wishProgress');
+	var $wishError = $('#wishError');
+
+	var showError = function (message) {
+		$wishError.text(message).removeClass('d-none');
+	};
+
+	var clearError = function () {
+		$wishError.addClass('d-none').text('');
+	};
+
+	$wishForm.on('submit', function (event) {
+		event.preventDefault();
+
+		var description = $.trim($wishDescription.val());
+		var progressInput = $.trim($wishProgress.val());
+		var progress = parseInt(progressInput, 10);
+
+		if (!description) {
+			showError('请填写愿望内容。');
+			$wishDescription.trigger('focus');
+			return;
+		}
+
+		if (progressInput === '' || !isFinite(progress) || progress < 0 || progress > 100) {
+			showError('完成度需要是 0 到 100 之间的数字。');
+			$wishProgress.trigger('focus');
+			return;
+		}
+
+		var $label = $('<p/>', {
+			'class': 'text-dark fw-500 text-start mb-2'
+		});
+		$label.text(description);
+		$label.append($('<span/>', {
+			'class': 'float-end',
+			'text': progress + '%'
+		}));
+
+		var $progressContainer = $('<div/>', {
+			'class': 'progress progress-sm mb-4'
+		});
+		var $progressBar = $('<div/>', {
+			'class': 'progress-bar',
+			'role': 'progressbar',
+			'aria-valuemin': 0,
+			'aria-valuemax': 100
+		}).css('width', progress + '%').attr('aria-valuenow', progress);
+
+		$progressContainer.append($progressBar);
+
+		var leftCount = $wishColumns[0].find('.progress').length;
+		var rightCount = $wishColumns[1].find('.progress').length;
+		var $targetColumn = leftCount <= rightCount ? $wishColumns[0] : $wishColumns[1];
+
+		$targetColumn.append($label, $progressContainer);
+
+		clearError();
+		$wishForm[0].reset();
+
+		var modalElement = $wishModal[0];
+		var modalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
+		modalInstance.hide();
+	});
+
+	$wishModal.on('hidden.bs.modal', function () {
+		clearError();
+		$wishForm[0].reset();
+	});
+});
+
+/*------------------------
    Scroll to top
 -------------------------- */
 $(function () {
