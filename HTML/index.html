@@ -68,7 +68,7 @@
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#moments">Moments</a></li>
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#favorites">Favorites</a></li>
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#letters">Love Notes</a></li>
-            <li class="nav-item"><a class="nav-link smooth-scroll" href="#memory">Memory Capsule</a></li>
+            <li class="nav-item"><a class="nav-link smooth-scroll" href="#memory">Story Manager</a></li>
           </ul>
         </div>
         <ul class="social-icons social-icons-muted social-icons-sm mt-lg-auto ms-auto ms-lg-0 d-flex">
@@ -188,50 +188,8 @@
         
         <div class="row">
           <div class="col-lg-11 mx-auto">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="featured-box style-3 mb-5">
-                  <div class="featured-box-icon text-primary bg-white shadow-sm rounded"> <i class="fas fa-moon"></i> </div>
-                  <h3>2019.06.18 首次遇见</h3>
-                  <p class="mb-0">图书馆的夜灯下，我们因为一本借错的书开始了长长的聊天。</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="featured-box style-3 mb-5">
-                  <div class="featured-box-icon text-primary bg-white shadow-sm rounded"> <i class="fas fa-mug-hot"></i></div>
-                  <h3>2019.07.05 第一杯热可可</h3>
-                  <p class="mb-0">窗外雷雨，我们在星河咖啡谈论梦想，从此每场暴雨都变得浪漫。</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="featured-box style-3 mb-5">
-                  <div class="featured-box-icon text-primary bg-white shadow-sm rounded"> <i class="fas fa-heart"></i> </div>
-                  <h3>2020.02.14 确定关系</h3>
-                  <p class="mb-0">情人节的晚安电话里，我们终于说出口：要好好地在一起。</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="featured-box style-3 mb-5">
-                  <div class="featured-box-icon text-primary bg-white shadow-sm rounded"> <i class="fas fa-route"></i> </div>
-                  <h3>2020.12.25 第一趟旅行</h3>
-                  <p class="mb-0">在大理的清晨醒来，我们一起看见天空最柔软的粉色。</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="featured-box style-3 mb-5 mb-md-0">
-                  <div class="featured-box-icon text-primary bg-white shadow-sm rounded"> <i class="fas fa-cat"></i> </div>
-                  <h3>2022.04.03 家里迎来Nabi</h3>
-                  <p class="mb-0">第一只小猫入住，家里多了肉垫踩踏，也学会一起守护新的生命。</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="featured-box style-3 mb-0">
-                  <div class="featured-box-icon text-primary bg-white shadow-sm rounded"> <i class="fas fa-home"></i> </div>
-                  <h3>2023.09.01 新家入住</h3>
-                  <p class="mb-0">我们亲手布置每个角落，把生活的碎片变成名为“家”的答案。</p>
-                </div>
-              </div>
-            </div>
+            <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
+            <div id="milestones-list" class="row"></div>
           </div>
         </div>
       </div>
@@ -249,95 +207,8 @@
         </div>
         <!-- Heading end--> 
         
-        <!-- Filter Menu -->
-        <ul class="portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-5">
-          <li class="nav-item"> <a data-filter="*" class="nav-link active" href="">全部</a></li>
-          <li class="nav-item"> <a data-filter=".trips" href="" class="nav-link">旅行</a></li>
-          <li class="nav-item"> <a data-filter=".daily" href="" class="nav-link">日常</a></li>
-          <li class="nav-item"> <a data-filter=".celebrations" href="" class="nav-link">纪念日</a></li>
-        </ul>
-        <!-- Filter Menu end -->
-        <div class="portfolio popup-ajax-gallery">
-          <div class="row portfolio-filter g-4">
-            <div class="col-sm-6 col-lg-4 trips">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-1.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-1.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">大理清晨的粉色天空</h5>
-                      <span class="text-light">旅行日记</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 celebrations">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-2.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-2.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">第一次跨年烟花</h5>
-                      <span class="text-light">纪念日</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 daily">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-3.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-3.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">雨天同款雨衣</h5>
-                      <span class="text-light">日常碎片</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 trips celebrations">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-4.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-4.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">周年纪念的海边</h5>
-                      <span class="text-light">旅行 + 纪念</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 daily">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-5.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-5.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">家里的周日下午</h5>
-                      <span class="text-light">慵懒时光</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 celebrations">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-6.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-6.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">生日餐桌</h5>
-                      <span class="text-light">专属于你的颜色</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4 trips">
-              <div class="portfolio-box rounded">
-                <div class="portfolio-img rounded"> <img class="img-fluid d-block" src="images/projects/project-7.jpg" alt="">
-                  <div class="portfolio-overlay"> <a class="popup-ajax stretched-link" href="ajax/portfolio-ajax-project-7.html"></a>
-                    <div class="portfolio-overlay-details">
-                      <h5 class="text-white fw-400">无人岛上的日落</h5>
-                      <span class="text-light">旅行日记</span> </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="moments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的瞬间。</div>
+        <div id="moments-list" class="row g-4"></div>
       </div>
     </section>
     <!-- Portfolio end --> 
@@ -353,120 +224,11 @@
         </div>
         <!-- Heading end-->
         
-        <div class="row gx-5"> 
-          <div class="col-md-6">
-            <h2 class="text-6 fw-600 mb-4">我们的心头好</h2>
-            <div class="bg-white border rounded p-4 mb-4">
-              <p class="badge bg-primary text-2 fw-400">每周仪式</p>
-              <h3 class="text-5">周五百花计划</h3>
-              <p class="text-danger">一束花 + 一张手写小卡</p>
-              <p class="mb-0">把日常写进花香里，提醒自己永远对彼此表达爱意。</p>
-            </div>
-            <div class="bg-white border rounded p-4 mb-4">
-              <p class="badge bg-primary text-2 fw-400">治愈食物</p>
-              <h3 class="text-5">深夜芝士焗饭</h3>
-              <p class="text-danger">限量一份，边追剧边分享</p>
-              <p class="mb-0">无论多忙，闻到焗饭香味就知道对方在等自己回家。</p>
-            </div>
-            <div class="bg-white border rounded p-4 mb-4">
-              <p class="badge bg-primary text-2 fw-400">影单收藏</p>
-              <h3 class="text-5">Before Sunrise</h3>
-              <p class="text-danger">雨天必看</p>
-              <p class="mb-0">我们喜欢在人生十字路口重温这部电影，提醒彼此珍惜选择。</p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <h2 class="text-6 fw-600 mb-4">相处的温度</h2>
-            <div class="bg-white border rounded p-4 mb-4">
-              <p class="badge bg-primary text-2 fw-400">城市漫步</p>
-              <h3 class="text-5">成都、青岛、厦门</h3>
-              <p class="text-danger">记录感动的街角</p>
-              <p class="mb-0">每到一个城市都会寻找最喜欢的咖啡店，再次造访时拍下同一张照片。</p>
-            </div>
-            <div class="bg-white border rounded p-4 mb-4">
-              <p class="badge bg-primary text-2 fw-400">习惯养成</p>
-              <h3 class="text-5">每日一句谢谢你</h3>
-              <p class="text-danger">睡前互道</p>
-              <p class="mb-0">再小的善意都值得被记住，把感激当成爱情的底色。</p>
-            </div>
-            <div class="bg-white border rounded p-4 mb-4">
-              <p class="badge bg-primary text-2 fw-400">年度清单</p>
-              <h3 class="text-5">手帐 + 拍立得</h3>
-              <p class="text-danger">每年12月整理</p>
-              <p class="mb-0">挑选最喜欢的照片贴进手帐，为这一年画上温柔的句号。</p>
-            </div>
-          </div>
-        </div>
-        <h2 class="text-6 fw-600 mt-4 mb-4">我们的愿望清单</h2>
-        <div class="row gx-5">
-          <div class="col-md-6" id="wishColumnLeft">
-            <p class="text-dark fw-500 text-start mb-2">一起去北海道看雪 <span class="float-end">40%</span></p>
-            <div class="progress progress-sm mb-4">
-              <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <p class="text-dark fw-500 text-start mb-2">拍一支纪念短片 <span class="float-end">55%</span></p>
-            <div class="progress progress-sm mb-4">
-              <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <p class="text-dark fw-500 text-start mb-2">学会做对方最爱的菜 <span class="float-end">70%</span></p>
-            <div class="progress progress-sm mb-4">
-              <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-          <div class="col-md-6" id="wishColumnRight">
-            <p class="text-dark fw-500 text-start mb-2">完成20本“共读书单” <span class="float-end">35%</span></p>
-            <div class="progress progress-sm mb-4">
-              <div class="progress-bar" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <p class="text-dark fw-500 text-start mb-2">重访第一次约会的城市 <span class="float-end">80%</span></p>
-            <div class="progress progress-sm mb-4">
-              <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <p class="text-dark fw-500 text-start mb-2">制作一年一度的照片书 <span class="float-end">60%</span></p>
-            <div class="progress progress-sm mb-4">
-              <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-          </div>
-        </div>
-        <div class="text-center mt-5"><a href="#" class="btn btn-outline-secondary rounded-pill shadow-none" data-bs-toggle="modal" data-bs-target="#wishModal">添加新的愿望 <span class="ms-1"><i class="fas fa-pen"></i></span></a></div>
+        <div id="favorites-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的偏爱项目。</div>
+        <div id="favorites-list" class="row g-4"></div>
       </div>
     </section>
     <!-- Resume end --> 
-    
-    <!-- Add Wish Modal -->
-    <div class="modal fade" id="wishModal" tabindex="-1" aria-labelledby="wishModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="wishModalLabel">添加新的愿望</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <form id="wishForm" novalidate>
-              <div class="mb-3">
-                <label for="wishDescription" class="form-label">愿望内容</label>
-                <input type="text" class="form-control" id="wishDescription" name="wishDescription" required placeholder="想写下的小目标或旅行计划">
-              </div>
-              <div class="mb-3">
-                <label for="wishProgress" class="form-label">完成度</label>
-                <div class="input-group">
-                  <input type="number" class="form-control" id="wishProgress" name="wishProgress" min="0" max="100" step="1" required placeholder="填写 0 - 100 之间的数字">
-                  <span class="input-group-text">%</span>
-                </div>
-                <div class="form-text">数字会显示在进度条右侧，也会决定进度条长度。</div>
-              </div>
-              <div class="alert alert-danger d-none" id="wishError" role="alert"></div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">取消</button>
-            <button type="submit" form="wishForm" class="btn btn-primary">保存愿望</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Add Wish Modal End -->
-    
     <!-- Love Letters
     ============================================= -->
     <section id="letters" class="section">
@@ -477,41 +239,8 @@
           <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">写给彼此的话<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
         </div>
         <!-- Heading end--> 
-        
-        <div class="owl-carousel owl-theme" data-loop="true" data-nav="false" data-autoplay="false" data-margin="25" data-stagepadding="0" data-slideby="1" data-items-xs="1" data-items-sm="1" data-items-md="1" data-items-lg="2">
-          <div class="item">
-            <div class="bg-light rounded p-5">
-              <div class="d-flex align-items-center mt-auto mb-4"> <img class="img-fluid rounded-circle border d-inline-block w-auto" src="images/testimonial/client-sm-3.jpg" alt="兜兜">
-                <p class="ms-3 mb-0"><strong class="d-block text-dark fw-600">来自兜兜</strong> <span class="text-muted fw-500">写于2023.05.20</span></p>
-              </div>
-              <p class="text-dark fw-500 mb-4">“谢谢你把普通的日子过成节日。愿以后每一次出发，都能牵着你的手一起回家。”</p>
-              <span class="text-2"> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> </span> </div>
-          </div>
-          <div class="item">
-            <div class="bg-light rounded p-5">
-              <div class="d-flex align-items-center mt-auto mb-4"> <img class="img-fluid rounded-circle border d-inline-block w-auto" src="images/testimonial/client-sm-1.jpg" alt="汉堡">
-                <p class="ms-3 mb-0"><strong class="d-block text-dark fw-600">来自汉堡</strong> <span class="text-muted fw-500">写于2023.08.01</span></p>
-              </div>
-              <p class="text-dark fw-500 mb-4">“看你认真做饭的样子是我最喜欢的风景。愿我们始终温柔、勇敢，也一起成为更好的大人。”</p>
-              <span class="text-2"> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> </span> </div>
-          </div>
-          <div class="item">
-            <div class="bg-light rounded p-5">
-              <div class="d-flex align-items-center mt-auto mb-4"> <img class="img-fluid rounded-circle border d-inline-block w-auto" src="images/testimonial/client-sm-2.jpg" alt="Future us">
-                <p class="ms-3 mb-0"><strong class="d-block text-dark fw-600">来自未来的我们</strong> <span class="text-muted fw-500">写于2025.01.01</span></p>
-              </div>
-              <p class="text-dark fw-500 mb-4">“不管那时我们在哪里，请继续保持好奇，继续拥抱，继续记录彼此依靠的样子。”</p>
-              <span class="text-2"> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> </span> </div>
-          </div>
-          <div class="item">
-            <div class="bg-light rounded p-5">
-              <div class="d-flex align-items-center mt-auto mb-4"> <img class="img-fluid rounded-circle border d-inline-block w-auto" src="images/testimonial/client-sm-4.jpg" alt="Friends">
-                <p class="ms-3 mb-0"><strong class="d-block text-dark fw-600">来自朋友们</strong> <span class="text-muted fw-500">我们爱你们</span></p>
-              </div>
-              <p class="text-dark fw-500 mb-4">“谢谢你们让我们看到爱情最温柔的样子。请继续彼此陪伴，记得多拍照片给我们看。”</p>
-              <span class="text-2"> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> <i class="fas fa-heart text-primary"></i> </span> </div>
-          </div>
-        </div>
+        <div id="love-notes-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的留言。</div>
+        <div id="love-notes-list" class="row g-4"></div>
       </div>
     </section>
     <!-- Love Letters end --> 
@@ -522,67 +251,133 @@
       <div class="container px-lg-5">
         <!-- Heading -->
         <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Memory Capsule</h2>
-          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">写下新的回忆<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
+          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Story Manager</h2>
+          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">记录与更新故事<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
         </div>
         <!-- Heading end-->
         <div class="row gy-5">
           <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
             <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
-            <p class="text-3 mb-4">随时记录我们的小冒险、小感动和小争吵。写下时间、地点、心情，让未来的我们能重温这一刻。</p>
-            <h2 class="mb-3 text-5 text-uppercase">灵感清单</h2>
-            <ul class="list-unstyled text-3 lh-lg">
-              <li><i class="fas fa-check text-primary me-2"></i>旅行途中发生的好笑故事</li>
-              <li><i class="fas fa-check text-primary me-2"></i>一句打动你的话</li>
-              <li><i class="fas fa-check text-primary me-2"></i>想一起完成的事情</li>
+            <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单、情书与记忆统一管理。每次更新都会保存在浏览器本地。</p>
+            <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
+            <ul class="list-unstyled text-3 lh-lg mb-4">
+              <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
+              <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
+              <li><i class="fas fa-star text-primary me-2"></i>偏爱 <span class="badge bg-light text-muted" id="story-count-favorites">0</span></li>
+              <li><i class="fas fa-envelope text-primary me-2"></i>情书 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
+              <li><i class="fas fa-memory text-primary me-2"></i>记忆 <span class="badge bg-light text-muted" id="story-count-memories">0</span></li>
             </ul>
-            <h2 class="mb-3 text-5 text-uppercase">共享播放列表</h2>
-            <ul class="social-icons justify-content-center justify-content-md-start">
-              <li class="social-icons-heart"><a data-bs-toggle="tooltip" href="https://music.163.com/" target="_blank" title="网易云歌单"><i class="fas fa-music"></i></a></li>
-              <li class="social-icons-instagram"><a data-bs-toggle="tooltip" href="https://www.instagram.com/" target="_blank" title="相册"><i class="fab fa-instagram"></i></a></li>
-              <li class="social-icons-youtube"><a data-bs-toggle="tooltip" href="https://www.youtube.com/" target="_blank" title="记录短片"><i class="fab fa-youtube"></i></a></li>
-            </ul>
+            <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
           </div>
           <div class="col-md-8 col-xl-9 order-0 order-md-1">
-            <h2 class="mb-3 text-5 text-uppercase text-center text-md-start">写入记忆胶囊</h2>
-			<form id="memory-form" action="#" method="post">
-              
-			  <div class="row g-4">
-                <div class="col-xl-6">
-                    <input name="memory-title" type="text" class="form-control" required placeholder="回忆标题或心情">
-                </div>
-                <div class="col-xl-6">
-                    <input name="memory-date" type="date" class="form-control" required aria-label="日期">
-                </div>
-                <div class="col-xl-6">
-                    <input id="memory-location" name="memory-location" type="text" class="form-control" placeholder="搜索地点或点击地图选择" autocomplete="off" aria-label="地点">
-                    <input type="hidden" name="memory-lat" id="memory-lat">
-                    <input type="hidden" name="memory-lng" id="memory-lng">
-                    <div class="form-text">可输入地点名称或经纬度，也可以拖动并点击地图标记位置。</div>
-                </div>
-                <div class="col-12">
-                    <div id="memory-map" class="memory-map border rounded" style="height: 280px;"></div>
-                    <div class="form-text mt-2">地图数据来自 OpenStreetMap，无需额外 API。</div>
-                </div>
-				<div class="col-12">
-					<textarea name="memory-text" class="form-control" rows="5" required placeholder="把当时的细节写下来：见到的风景、想说的话、未来的心愿..."></textarea>
-				</div>
+            <div class="card shadow border-0">
+              <div class="card-header bg-white border-0 pb-0">
+                <ul class="nav nav-pills story-tabs flex-wrap" id="storyTabs" role="tablist">
+                  <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-favorites" data-bs-toggle="pill" data-bs-target="#story-pane-favorites" type="button" role="tab" aria-controls="story-pane-favorites" aria-selected="false">偏爱</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">情书</button></li>
+                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-memories" data-bs-toggle="pill" data-bs-target="#story-pane-memories" type="button" role="tab" aria-controls="story-pane-memories" aria-selected="false">记忆</button></li>
+                </ul>
               </div>
-			  
-              <p class="text-center mt-4 mb-0">
-				<button id="save-memory" class="btn btn-primary rounded-pill d-inline-flex" type="submit">保存到我们的故事</button>
-              </p>
-            </form>
-            <div class="mt-5">
-              <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
-                <div>
-                  <h3 class="mb-1 text-5 text-uppercase text-center text-md-start">我们的记忆墙</h3>
-                  <p class="text-muted mb-0 text-center text-md-start">所有记录仅保存在本地设备的浏览器中，刷新页面也会自动加载。</p>
+              <div class="card-body">
+                <div class="tab-content" id="storyTabContent">
+                  <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
+                    <div class="story-manager-section">
+                      <div id="manager-milestones-empty" class="alert alert-light border text-muted" role="status">还没有里程碑，填写下方表单添加一条吧。</div>
+                      <div id="manager-milestones-list" class="list-group list-group-flush mb-4"></div>
+                      <h3 class="text-5 fw-600 mb-3">新增里程碑</h3>
+                      <form id="form-milestones" class="row g-3 story-form" novalidate>
+                        <div class="col-md-6"><input type="text" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024.02.14）" required></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="milestone-title" placeholder="标题（例如 首次遇见）" required></div>
+                        <div class="col-md-6">
+                          <select class="form-select" name="milestone-icon" required>
+                            <option value="" selected disabled>选择一个图标</option>
+                            <option value="fas fa-moon">月亮</option>
+                            <option value="fas fa-mug-hot">热可可</option>
+                            <option value="fas fa-heart">爱心</option>
+                            <option value="fas fa-route">旅程</option>
+                            <option value="fas fa-cat">小猫</option>
+                            <option value="fas fa-home">新家</option>
+                            <option value="fas fa-star">星星</option>
+                          </select>
+                        </div>
+                        <div class="col-12"><textarea class="form-control" rows="3" name="milestone-description" placeholder="记录这一刻发生了什么" required></textarea></div>
+                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存里程碑</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
+                    <div class="story-manager-section">
+                      <div id="manager-moments-empty" class="alert alert-light border text-muted" role="status">还没有瞬间，填写下方表单添加一条吧。</div>
+                      <div id="manager-moments-list" class="list-group list-group-flush mb-4"></div>
+                      <h3 class="text-5 fw-600 mb-3">新增瞬间</h3>
+                      <form id="form-moments" class="row g-3 story-form" novalidate>
+                        <div class="col-md-6"><input type="text" class="form-control" name="moment-title" placeholder="标题（例如 海边日落）" required></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="moment-subtitle" placeholder="副标题 / 分类标签" required></div>
+                        <div class="col-md-8"><input type="text" class="form-control" name="moment-image" placeholder="图片路径或链接（例如 images/projects/project-1.jpg）" required></div>
+                        <div class="col-md-4"><input type="text" class="form-control" name="moment-tag" placeholder="展示标签（如 旅行日记）" required></div>
+                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="story-pane-favorites" role="tabpanel" aria-labelledby="tab-link-favorites">
+                    <div class="story-manager-section">
+                      <div id="manager-favorites-empty" class="alert alert-light border text-muted" role="status">还没有偏爱项目，填写下方表单添加一条吧。</div>
+                      <div id="manager-favorites-list" class="list-group list-group-flush mb-4"></div>
+                      <h3 class="text-5 fw-600 mb-3">新增偏爱项目</h3>
+                      <form id="form-favorites" class="row g-3 story-form" novalidate>
+                        <div class="col-md-4"><input type="text" class="form-control" name="favorite-badge" placeholder="标签（例如 每周仪式）" required></div>
+                        <div class="col-md-8"><input type="text" class="form-control" name="favorite-title" placeholder="标题（例如 周五百花计划）" required></div>
+                        <div class="col-12"><input type="text" class="form-control" name="favorite-highlight" placeholder="一句话亮点（例如 一束花 + 一张手写小卡）" required></div>
+                        <div class="col-12"><textarea class="form-control" rows="3" name="favorite-description" placeholder="描述这份偏爱的意义" required></textarea></div>
+                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存偏爱</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
+                    <div class="story-manager-section">
+                      <div id="manager-loveNotes-empty" class="alert alert-light border text-muted" role="status">还没有留言，填写下方表单添加一条吧。</div>
+                      <div id="manager-loveNotes-list" class="list-group list-group-flush mb-4"></div>
+                      <h3 class="text-5 fw-600 mb-3">新增情书</h3>
+                      <form id="form-loveNotes" class="row g-3 story-form" novalidate>
+                        <div class="col-md-6"><input type="text" class="form-control" name="love-author" placeholder="来自谁（例如 兜兜）" required></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="love-meta" placeholder="时间或备注（例如 写于2023.05.20）" required></div>
+                        <div class="col-12"><input type="text" class="form-control" name="love-avatar" placeholder="头像图片路径（可选，默认使用心形）"></div>
+                        <div class="col-12"><textarea class="form-control" rows="4" name="love-message" placeholder="写下想说的话" required></textarea></div>
+                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存情书</button></div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="story-pane-memories" role="tabpanel" aria-labelledby="tab-link-memories">
+                    <div class="story-manager-section">
+                      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
+                        <h3 class="text-5 fw-600 mb-2 mb-md-0">我们的记忆墙</h3>
+                        <button id="clear-memories" type="button" class="btn btn-outline-danger rounded-pill btn-sm">清空本地记录</button>
+                      </div>
+                      <div id="memory-empty" class="alert alert-light border text-muted" role="status">还没有新的记录，写下第一段回忆吧！</div>
+                      <div id="memory-list" class="row g-4 mb-4"></div>
+                      <h3 class="text-5 fw-600 mb-3">新增记忆</h3>
+                      <form id="form-memories" class="row g-3 story-form" novalidate>
+                        <div class="col-md-6"><input name="memory-title" type="text" class="form-control" required placeholder="回忆标题或心情"></div>
+                        <div class="col-md-6"><input name="memory-date" type="date" class="form-control" required aria-label="日期"></div>
+                        <div class="col-md-6">
+                          <input id="memory-location" name="memory-location" type="text" class="form-control" placeholder="输入地点或经纬度" autocomplete="off" aria-label="地点">
+                          <input type="hidden" name="memory-lat" id="memory-lat">
+                          <input type="hidden" name="memory-lng" id="memory-lng">
+                          <div class="form-text">可输入地点名称或经纬度，也可以拖动并点击地图标记位置。</div>
+                        </div>
+                        <div class="col-12">
+                          <div id="memory-map" class="memory-map border rounded" style="height: 280px;"></div>
+                          <div class="form-text mt-2">地图数据来自 OpenStreetMap，无需额外 API。</div>
+                        </div>
+                        <div class="col-12"><textarea name="memory-text" class="form-control" rows="5" required placeholder="把当时的细节写下来：见到的风景、想说的话、未来的心愿..."></textarea></div>
+                        <div class="col-12 text-end"><button id="save-memory" class="btn btn-primary rounded-pill" type="submit">保存记忆</button></div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
-                <button id="clear-memories" type="button" class="btn btn-outline-danger rounded-pill btn-sm mt-3 mt-md-0">清空本地记录</button>
               </div>
-              <div id="memory-empty" class="alert alert-light border text-muted" role="status">还没有新的记录，写下第一段回忆吧！</div>
-              <div id="memory-list" class="row g-4"></div>
             </div>
           </div>
         </div>
