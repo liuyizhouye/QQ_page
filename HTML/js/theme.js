@@ -804,6 +804,18 @@ $(function () {
 		return DEFAULT_MOMENT_COVER;
 	}
 
+	function getMomentMediaLabel(media) {
+		if (!media) { return ''; }
+		if (media.name && String(media.name).trim()) {
+			return String(media.name).trim();
+		}
+		var inferred = extractFileNameFromPath(media.src);
+		if (inferred) {
+			return inferred;
+		}
+		return media.type === 'video' ? '上传的视频' : '上传的照片';
+	}
+
 	function getMomentYear(entry) {
 		var timestamp = parseMomentDateValue(entry && entry.occurredAt);
 		if (isNaN(timestamp)) {
@@ -1257,8 +1269,11 @@ $(function () {
 			if (entry.description) {
 				metaParts.push(entry.description);
 			}
-			if (entry.mediaSrc && primaryMedia && primaryMedia.type === 'image') {
-				metaParts.push(entry.mediaSrc);
+			if (primaryMedia) {
+				var mediaLabel = getMomentMediaLabel(primaryMedia);
+				if (mediaLabel) {
+					metaParts.push(mediaLabel);
+				}
 			}
 			if (!metaParts.length && entry.tags && entry.tags.length) {
 				metaParts.push(entry.tags.join(' / '));
@@ -1271,22 +1286,6 @@ $(function () {
 			if (primaryMedia) {
 				var typeBadge = primaryMedia.type === 'video' ? '视频' : '照片';
 				$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(typeBadge));
-			}
-			if (entry.link) {
-				var viewAttrs = {
-					'href': entry.link,
-					'class': 'btn btn-sm btn-outline-secondary'
-				};
-				var linkText = '打开';
-				if (/\.html?$/i.test(entry.link)) {
-					viewAttrs.target = '_self';
-				} else {
-					viewAttrs.target = '_blank';
-					if (/^https?:\/\//i.test(entry.link)) {
-						viewAttrs.rel = 'noopener noreferrer';
-					}
-				}
-				$actions.append($('<a/>', viewAttrs).text(linkText));
 			}
 			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'moments', 'data-id': entry.id }).text('删除'));
 			$item.append($body, $actions);
@@ -1491,16 +1490,8 @@ $(function () {
 		var metaText = dateLabel ? '写于 ' + dateLabel : '日期待补充';
 		$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(metaText));
 		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
-		if (isSafePdfHref(pdfHref)) {
-			var $link = $('<a/>', {
-				'class': 'btn btn-sm btn-outline-primary',
-				'href': pdfHref
-			}).text('打开 PDF');
-			enrichPdfLinkAttributes($link, pdfHref, entry.pdfName);
-			$actions.append($link);
-		} else {
-			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text('PDF 待上传'));
-		}
+		var pdfStatus = isSafePdfHref(pdfHref) ? 'PDF 已保存' : 'PDF 待上传';
+		$actions.append($('<span/>', { 'class': 'badge bg-light text-muted text-nowrap' }).text(pdfStatus));
 		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'loveNotes', 'data-id': entry.id }).text('删除'));
 		$item.append($body, $actions);
 		return $item;
