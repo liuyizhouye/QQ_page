@@ -1356,21 +1356,21 @@ function normalizeMomentsData() {
 		enableTimelineWheelScroll($mainList);
 	}
 
-\tfunction enableTimelineWheelScroll($container) {
-	if (!$container || !$container.length) {
-		return;
-	}
-	$container.off('wheel.timelineScroll').on('wheel.timelineScroll', function (event) {
-		var original = event.originalEvent;
-		if (!original) { return; }
-		var deltaY = original.deltaY;
-		var deltaX = original.deltaX || 0;
-		if (Math.abs(deltaY) <= Math.abs(deltaX)) {
+	function enableTimelineWheelScroll($container) {
+		if (!$container || !$container.length) {
 			return;
 		}
-		event.preventDefault();
-		this.scrollLeft += deltaY;
-	});
+		$container.off('wheel.timelineScroll').on('wheel.timelineScroll', function (event) {
+			var original = event.originalEvent;
+			if (!original) { return; }
+			var deltaY = original.deltaY;
+			var deltaX = original.deltaX || 0;
+			if (Math.abs(deltaY) <= Math.abs(deltaX)) {
+				return;
+			}
+			event.preventDefault();
+			this.scrollLeft += deltaY;
+		});
 	}
 
 	function renderMoments() {
@@ -2641,4 +2641,4 @@ form.on('submit', function (e) {
 	}
 });
 
-})(jQuery)
+})(jQuery);
