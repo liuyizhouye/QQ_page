@@ -1305,31 +1305,33 @@ function normalizeMomentsData() {
 
 		var sorted = storyData.milestones.slice().sort(sortMilestonesAscending);
 		var lastYearLabel = null;
+		var $track = $('<div/>', { 'class': 'timeline-track' });
+		$mainList.append($track);
 
 		sorted.forEach(function (entry) {
 			var dateLabel = formatDateTimeOrDateForDisplay(entry.occurredAt);
 			var yearLabel = formatMilestoneYear(entry.occurredAt);
 
 			if (yearLabel && yearLabel !== lastYearLabel) {
-				$mainList.append($('<div/>', { 'class': 'timeline-year text-muted fw-600' }).text(yearLabel));
+				$track.append($('<div/>', { 'class': 'timeline-year-badge' }).text(yearLabel));
 				lastYearLabel = yearLabel;
 			}
 
-			var $entry = $('<div/>', { 'class': 'timeline-entry' });
+			var $entry = $('<div/>', { 'class': 'timeline-item' });
 			$entry.append($('<span/>', { 'class': 'timeline-dot' }));
 
-			var $card = $('<div/>', { 'class': 'timeline-card bg-white border rounded-4 shadow-sm' });
-			$card.append($('<span/>', { 'class': 'timeline-date small text-uppercase text-muted d-block mb-2' }).text(dateLabel || '日期待补充'));
+			var $card = $('<div/>', { 'class': 'timeline-card' });
+			$card.append($('<span/>', { 'class': 'timeline-date' }).text(dateLabel || '日期待补充'));
 			$card.append($('<h3/>', { 'class': 'timeline-title text-5 fw-600 mb-2' }).text(entry.title || '未命名的里程碑'));
 			if (entry.location) {
-				$card.append($('<p/>', { 'class': 'timeline-location text-primary mb-2' }).text(entry.location));
+				$card.append($('<span/>', { 'class': 'timeline-location' }).text(entry.location));
 			}
 			if (entry.detail) {
 				$card.append($('<p/>', { 'class': 'timeline-detail mb-0' }).text(entry.detail));
 			}
 
 			$entry.append($card);
-			$mainList.append($entry);
+			$track.append($entry);
 
 			var $managerItem = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
 			var $body = $('<div/>', { 'class': 'flex-grow-1' });
@@ -1350,6 +1352,25 @@ function normalizeMomentsData() {
 			$managerItem.append($body, $actions);
 			$managerList.append($managerItem);
 		});
+
+		enableTimelineWheelScroll($mainList);
+	}
+
+\tfunction enableTimelineWheelScroll($container) {
+	if (!$container || !$container.length) {
+		return;
+	}
+	$container.off('wheel.timelineScroll').on('wheel.timelineScroll', function (event) {
+		var original = event.originalEvent;
+		if (!original) { return; }
+		var deltaY = original.deltaY;
+		var deltaX = original.deltaX || 0;
+		if (Math.abs(deltaY) <= Math.abs(deltaX)) {
+			return;
+		}
+		event.preventDefault();
+		this.scrollLeft += deltaY;
+	});
 	}
 
 	function renderMoments() {
