@@ -389,6 +389,27 @@
                           <input type="datetime-local" class="form-control" name="moment-date" required aria-label="发生时间">
                         </div>
                         <div class="col-12">
+                          <span class="form-label small text-muted d-block mb-2">选择标签</span>
+                          <div class="d-flex flex-wrap gap-3">
+                            <div class="form-check form-check-inline mb-0">
+                              <input class="form-check-input" type="checkbox" id="moment-tag-photo" name="moment-tags" value="照片">
+                              <label class="form-check-label small text-muted" for="moment-tag-photo">照片</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-0">
+                              <input class="form-check-input" type="checkbox" id="moment-tag-anniversary" name="moment-tags" value="纪念日">
+                              <label class="form-check-label small text-muted" for="moment-tag-anniversary">纪念日</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-0">
+                              <input class="form-check-input" type="checkbox" id="moment-tag-travel" name="moment-tags" value="旅行">
+                              <label class="form-check-label small text-muted" for="moment-tag-travel">旅行</label>
+                            </div>
+                            <div class="form-check form-check-inline mb-0">
+                              <input class="form-check-input" type="checkbox" id="moment-tag-daily" name="moment-tags" value="日常">
+                              <label class="form-check-label small text-muted" for="moment-tag-daily">日常</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12">
                           <label for="moment-media-input" class="form-label small text-muted mb-1">添加照片或视频（可多选）</label>
                           <input id="moment-media-input" type="file" class="form-control" name="moment-media" accept="image/*,video/*" multiple>
                           <div class="form-text">支持 JPG、PNG、MP4 等常见格式，最大建议 20MB。</div>

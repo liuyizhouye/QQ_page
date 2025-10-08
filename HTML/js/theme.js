@@ -307,6 +307,7 @@ $(function () {
 				id: 'mo-1',
 				title: '大理清晨的粉色天空',
 				occurredAt: '2020-12-25T06:30:00+08:00',
+				tags: ['旅行', '照片'],
 				media: [
 					{ id: 'mm-1', type: 'image', src: 'images/projects/project-1.jpg' }
 				]
@@ -315,6 +316,7 @@ $(function () {
 				id: 'mo-2',
 				title: '第一次跨年烟花',
 				occurredAt: '2020-12-31T23:58:00+08:00',
+				tags: ['纪念日', '照片'],
 				media: [
 					{ id: 'mm-2', type: 'image', src: 'images/projects/project-2.jpg' }
 				]
@@ -323,6 +325,7 @@ $(function () {
 				id: 'mo-3',
 				title: '雨天同款雨衣',
 				occurredAt: '2021-03-20T15:20:00+08:00',
+				tags: ['日常', '照片'],
 				media: [
 					{ id: 'mm-3', type: 'image', src: 'images/projects/project-3.jpg' }
 				]
@@ -331,6 +334,7 @@ $(function () {
 				id: 'mo-4',
 				title: '周年纪念的海边',
 				occurredAt: '2022-07-14T18:45:00+08:00',
+				tags: ['旅行', '纪念日'],
 				media: [
 					{ id: 'mm-4', type: 'video', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', poster: 'images/projects/project-4.jpg' }
 				]
@@ -339,6 +343,7 @@ $(function () {
 				id: 'mo-5',
 				title: '家里的周日下午',
 				occurredAt: '2022-09-18T14:10:00+08:00',
+				tags: ['日常', '照片'],
 				media: [
 					{ id: 'mm-5', type: 'image', src: 'images/projects/project-5.jpg' }
 				]
@@ -347,6 +352,7 @@ $(function () {
 				id: 'mo-6',
 				title: '生日餐桌',
 				occurredAt: '2023-05-12T19:00:00+08:00',
+				tags: ['纪念日', '照片'],
 				media: [
 					{ id: 'mm-6', type: 'image', src: 'images/projects/project-6.jpg' }
 				]
@@ -355,6 +361,7 @@ $(function () {
 				id: 'mo-7',
 				title: '无人岛上的日落',
 				occurredAt: '2023-09-01T17:30:00+08:00',
+				tags: ['旅行', '照片'],
 				media: [
 					{ id: 'mm-7', type: 'image', src: 'images/projects/project-7.jpg' }
 				]
@@ -736,6 +743,10 @@ $(function () {
 		var title = (payload && payload.title) || '';
 		var dateValue = (payload && payload.dateValue) || '';
 		var mediaItems = Array.isArray(payload && payload.mediaItems) ? payload.mediaItems : [];
+		var tags = Array.isArray(payload && payload.tags) ? payload.tags : [];
+		var cleanedTags = tags.map(function (tag) {
+			return String(tag || '').trim();
+		}).filter(Boolean);
 		var normalizedDate = normalizeMomentDateInput(dateValue);
 		if (!normalizedDate) {
 			normalizedDate = new Date().toISOString();
@@ -753,7 +764,7 @@ $(function () {
 			title: title,
 			occurredAt: normalizedDate,
 			description: '',
-			tags: [],
+			tags: dedupeArray(cleanedTags),
 			media: normalizedMedia,
 			mediaType: primaryMedia ? primaryMedia.type : 'image',
 			mediaSrc: primaryMedia ? primaryMedia.src : '',
@@ -1838,13 +1849,17 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			if (!title || !dateValue) {
 				return;
 			}
+			var tags = $form.find('[name="moment-tags"]:checked').map(function () {
+				return $.trim($(this).val());
+			}).get();
 			var fileInput = $form.find('[name="moment-media"]')[0];
 			var files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
 			readMomentFiles(files).then(function (mediaItems) {
 				var newEntry = buildMomentEntryFromForm({
 					title: title,
 					dateValue: dateValue,
-					mediaItems: mediaItems
+					mediaItems: mediaItems,
+					tags: tags
 				});
 				storyData.moments.unshift(newEntry);
 				saveData();
