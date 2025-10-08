@@ -405,7 +405,7 @@
                   </div>
                   <div class="tab-pane fade" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
                     <div class="story-manager-section">
-                      <div id="manager-loveNotes-empty" class="alert alert-light border text-muted" role="status">还没有信件，填写下方表单添加一封吧。</div>
+                      <div id="manager-loveNotes-empty" class="alert alert-light border text-muted" role="status">还没有信件，选择写信的人、日期，并上传一份 PDF 吧。</div>
                       <div id="manager-loveNotes-list" class="list-group list-group-flush mb-4"></div>
                       <h3 class="text-5 fw-600 mb-3">新增信件</h3>
                       <form id="form-loveNotes" class="row g-3 story-form" novalidate>
@@ -417,11 +417,11 @@
                           </select>
                         </div>
                         <div class="col-md-6"><input type="date" class="form-control" name="letter-date" required aria-label="写信日期"></div>
-                        <div class="col-12"><input type="text" class="form-control" name="letter-title" placeholder="信件标题（例如 春日的札记）" required></div>
-                        <div class="col-12"><textarea class="form-control" rows="3" name="letter-excerpt" placeholder="节选或想对彼此说的话（可写 1-2 句话）" required></textarea></div>
                         <div class="col-12">
-                          <input type="text" class="form-control" name="letter-pdf" placeholder="PDF 文件路径或在线链接（例如 files/letters/20240520-doudou.pdf）" required>
-                          <div class="form-text">把上传好的 PDF 相对路径或链接填在这里，页面会提供按钮打开原件。</div>
+                          <label for="letter-file" class="form-label fw-600">上传 PDF 信件</label>
+                          <input id="letter-file" class="form-control" type="file" name="letter-file" accept="application/pdf" aria-label="上传 PDF 信件" required>
+                          <div class="form-text">点击“选取文件”在电脑中找到信件 PDF，数据仅保存在当前浏览器。</div>
+                          <div id="letter-file-status" class="form-text text-muted mt-2">尚未选择文件</div>
                         </div>
                         <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存信件</button></div>
                       </form>
