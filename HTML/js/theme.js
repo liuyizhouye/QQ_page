@@ -833,7 +833,7 @@ $(function () {
 
 			$list.empty();
 			pageEntries.forEach(function (entry) {
-				$list.append(buildLetterCard(entry, config));
+				$list.append(buildLetterCard(entry));
 			});
 			updateLetterPaginationControls(side, currentPage, totalPages);
 		});
@@ -878,79 +878,38 @@ $(function () {
 		});
 	}
 
-	function buildLetterCard(entry, config) {
-		var routeLabel = (config.writerName || '') + ' → ' + (config.recipientName || entry.recipient || '');
+	function buildLetterCard(entry) {
 		var dateLabel = formatLetterDateForDisplay(entry.date);
-		var excerpt = entry.excerpt || '';
 		var pdfHref = getLetterPdfHref(entry);
-		var createdAtLabel = formatLetterDateTimeForDisplay(entry.createdAt);
-		var fileMetaParts = [];
-		if (entry.pdfName) {
-			fileMetaParts.push(entry.pdfName);
-		}
-		if (entry.pdfSize) {
-			fileMetaParts.push(formatFileSize(entry.pdfSize));
-		}
-
-		var $card = $('<article/>', { 'class': 'letter-card border rounded-4 bg-light p-4 shadow-sm' });
-		var $meta = $('<div/>', { 'class': 'd-flex justify-content-between align-items-center flex-wrap gap-2 mb-3' });
-		$meta.append($('<span/>', { 'class': 'badge letter-date-badge' }).text(dateLabel || '日期待补充'));
-		$meta.append($('<span/>', { 'class': 'text-muted small fw-500' }).text(routeLabel));
-		$card.append($meta);
-		$card.append($('<h4/>', { 'class': 'text-5 fw-600 mb-3' }).text(deriveLetterTitle(entry, config)));
-		if (excerpt) {
-			$card.append($('<p/>', { 'class': 'mb-4 text-muted small lh-lg' }).text(excerpt));
-		} else {
-			var defaultMessage = (config.writerName || '我们') + '写给' + (config.recipientName || '彼此') + '的信，请点击下方按钮阅读完整版。';
-			$card.append($('<p/>', { 'class': 'mb-4 text-muted small fst-italic' }).text(defaultMessage));
-		}
-		var $footer = $('<div/>', { 'class': 'd-flex flex-wrap align-items-center gap-3' });
+		var displayName = getLetterDisplayName(entry);
+		var $card = $('<article/>', { 'class': 'letter-card border rounded-4 bg-light p-4 shadow-sm d-flex flex-column gap-3' });
+		$card.append($('<span/>', { 'class': 'badge letter-date-badge align-self-start' }).text(dateLabel || '日期待补充'));
+		var $content = $('<div/>', { 'class': 'd-flex flex-column gap-1' });
 		if (isSafePdfHref(pdfHref)) {
 			var $link = $('<a/>', {
-				'class': 'btn btn-sm btn-outline-primary rounded-pill',
-				'href': pdfHref
-			}).text('阅读完整信件 (PDF)');
+				'href': pdfHref,
+				'class': 'text-decoration-none fw-600 letter-file-link'
+			}).text(displayName);
 			enrichPdfLinkAttributes($link, pdfHref, entry.pdfName);
-			$footer.append($link);
+			$content.append($link);
 		} else {
-			$footer.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text('PDF 链接待补充'));
+			$content.append($('<span/>', { 'class': 'fw-600 text-muted' }).text(displayName));
+			$content.append($('<span/>', { 'class': 'small text-muted' }).text('PDF 链接待补充'));
 		}
-		if (fileMetaParts.length) {
-			$footer.append($('<span/>', { 'class': 'text-muted small' }).text(fileMetaParts.join(' · ')));
-		}
-		if (createdAtLabel) {
-			$footer.append($('<span/>', { 'class': 'text-muted small' }).text('更新于 ' + createdAtLabel));
-		}
-		$card.append($footer);
+		$card.append($content);
 		return $card;
 	}
 
 	function buildLetterManagerItem(entry) {
-		var config = LETTER_WRITER_CONFIG[entry.writer] || LETTER_WRITER_CONFIG.doudou;
-		var routeLabel = (config.writerName || entry.writer) + ' → ' + (config.recipientName || entry.recipient || '彼此');
 		var dateLabel = formatLetterDateForDisplay(entry.date);
-		var excerpt = entry.excerpt || '';
 		var pdfHref = getLetterPdfHref(entry);
-		var fileMetaParts = [];
-		if (entry.pdfName) {
-			fileMetaParts.push(entry.pdfName);
-		}
-		if (entry.pdfSize) {
-			fileMetaParts.push(formatFileSize(entry.pdfSize));
-		}
-
+		var displayName = getLetterDisplayName(entry);
 		var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
 		var $body = $('<div/>', { 'class': 'flex-grow-1' });
-		$body.append($('<h5/>', { 'class': 'mb-1' }).text(deriveLetterTitle(entry, config)));
-		var metaParts = [routeLabel, dateLabel ? ('写于 ' + dateLabel) : '日期待补充'];
-		$body.append($('<p/>', { 'class': 'mb-1 small text-muted' }).text(metaParts.join(' · ')));
-		if (excerpt) {
-			$body.append($('<p/>', { 'class': 'mb-1 small text-muted' }).text(excerpt));
-		}
-		if (fileMetaParts.length) {
-			$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text('文件：' + fileMetaParts.join(' · ')));
-		}
-
+		var $title = $('<h5/>', { 'class': 'mb-1 fw-600' }).text(displayName);
+		$body.append($title);
+		var metaText = dateLabel ? '写于 ' + dateLabel : '日期待补充';
+		$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(metaText));
 		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
 		if (isSafePdfHref(pdfHref)) {
 			var $link = $('<a/>', {
@@ -963,48 +922,60 @@ $(function () {
 			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text('PDF 待上传'));
 		}
 		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'loveNotes', 'data-id': entry.id }).text('删除'));
-
-	$item.append($body, $actions);
-	return $item;
-}
-
-function deriveLetterTitle(entry, config) {
-	if (!entry) { return '未命名的信件'; }
-	var title = entry.title;
-	if (title && String(title).trim()) {
-		return String(title).trim();
+		$item.append($body, $actions);
+		return $item;
 	}
-	var resolvedConfig = config || LETTER_WRITER_CONFIG[entry.writer] || LETTER_WRITER_CONFIG.doudou;
-	return generateAutoLetterTitle(resolvedConfig, entry.date, entry.pdfName);
-}
 
-function getLetterPdfHref(entry) {
-	if (!entry) { return ''; }
-	var href = entry.pdfData || entry.pdfUrl || '';
-	if (typeof href !== 'string') {
-		return '';
+	function deriveLetterTitle(entry, config) {
+		if (!entry) { return '未命名的信件'; }
+		var title = entry.title;
+		if (title && String(title).trim()) {
+			return String(title).trim();
+		}
+		var resolvedConfig = config || LETTER_WRITER_CONFIG[entry.writer] || LETTER_WRITER_CONFIG.doudou;
+		return generateAutoLetterTitle(resolvedConfig, entry.date, entry.pdfName);
 	}
-	return href.trim();
-}
 
-function isSafePdfHref(href) {
-	if (!href) { return false; }
-	return href.toLowerCase().indexOf('javascript:') === -1;
-}
+	function getLetterPdfHref(entry) {
+		if (!entry) { return ''; }
+		var href = entry.pdfData || entry.pdfUrl || '';
+		if (typeof href !== 'string') {
+			return '';
+		}
+		return href.trim();
+	}
 
-function enrichPdfLinkAttributes($anchor, href, filename) {
-	if (!$anchor || !href) { return; }
-	if (/^https?:\/\//i.test(href)) {
-		$anchor.attr({ target: '_blank', rel: 'noopener noreferrer' });
-	} else if (/^data:/i.test(href)) {
-		$anchor.attr('target', '_blank');
-	} else {
-		$anchor.attr('target', '_blank');
+	function isSafePdfHref(href) {
+		if (!href) { return false; }
+		return href.toLowerCase().indexOf('javascript:') === -1;
 	}
-	if (filename) {
-		$anchor.attr('download', filename);
+
+	function enrichPdfLinkAttributes($anchor, href, filename) {
+		if (!$anchor || !href) { return; }
+		if (/^https?:\/\//i.test(href)) {
+			$anchor.attr({ target: '_blank', rel: 'noopener noreferrer' });
+		} else if (/^data:/i.test(href)) {
+			$anchor.attr('target', '_blank');
+		} else {
+			$anchor.attr('target', '_blank');
+		}
+		if (filename) {
+			$anchor.attr('download', filename);
+		}
 	}
-}
+
+	function getLetterDisplayName(entry) {
+		if (!entry) { return '信件.pdf'; }
+		if (entry.pdfName && String(entry.pdfName).trim()) {
+			return String(entry.pdfName).trim();
+		}
+		var href = getLetterPdfHref(entry);
+		var extracted = extractFileNameFromPath(href);
+		if (extracted) {
+			return extracted;
+		}
+		return deriveLetterTitle(entry);
+	}
 
 function generateAutoLetterTitle(config, dateValue, pdfName) {
 	var trimmedName = trimPdfExtension(pdfName || '');
