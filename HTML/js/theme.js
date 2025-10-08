@@ -320,15 +320,21 @@ $(function () {
 			{ id: 'fa-6', badge: '年度清单', title: '手帐 + 拍立得', highlight: '每年12月整理', description: '挑选最喜欢的照片贴进手帐，为这一年画上温柔的句号。' }
 		],
 		loveNotes: [
-			{ id: 'ln-1', author: '来自兜兜', meta: '写于2023.05.20', message: '谢谢你把普通的日子过成节日。愿以后每一次出发，都能牵着你的手一起回家。', avatar: 'images/testimonial/client-sm-3.jpg' },
-			{ id: 'ln-2', author: '来自汉堡', meta: '写于2023.08.01', message: '看你认真做饭的样子是我最喜欢的风景。愿我们始终温柔、勇敢，也一起成为更好的大人。', avatar: 'images/testimonial/client-sm-1.jpg' },
-			{ id: 'ln-3', author: '来自未来的我们', meta: '写于2025.01.01', message: '不管那时我们在哪里，请继续保持好奇，继续拥抱，继续记录彼此依靠的样子。', avatar: 'images/testimonial/client-sm-2.jpg' },
-			{ id: 'ln-4', author: '来自朋友们', meta: '我们爱你们', message: '谢谢你们让我们看到爱情最温柔的样子。请继续彼此陪伴，记得多拍照片给我们看。', avatar: 'images/testimonial/client-sm-4.jpg' }
+			{ id: 'ln-20200214-d', writer: 'doudou', recipient: '汉堡', date: '2020-02-14', title: '写给你的第一封信', excerpt: '那天的风很柔软，我把第一次为你写下的句子都折进了信封里。', pdfUrl: 'files/letters/20200214-doudou.pdf', createdAt: '2020-02-14T09:00:00+08:00' },
+			{ id: 'ln-20210520-h', writer: 'hamburger', recipient: '兜兜', date: '2021-05-20', title: '给兜兜的长信', excerpt: '谢谢你出现在我最需要的时刻，我会用一生回应你温柔的邀请。', pdfUrl: 'files/letters/20210520-hamburger.pdf', createdAt: '2021-05-20T21:10:00+08:00' },
+			{ id: 'ln-20221231-d', writer: 'doudou', recipient: '汉堡', date: '2022-12-31', title: '写在跨年的夜里', excerpt: '新年的钟声敲响之前，我想先亲手为未来写下一些祝福。', pdfUrl: 'files/letters/20221231-doudou.pdf', createdAt: '2022-12-31T23:40:00+08:00' },
+			{ id: 'ln-20230808-h', writer: 'hamburger', recipient: '兜兜', date: '2023-08-08', title: '我们的日常也是情书', excerpt: '我喜欢和你一起过每一个普通的清晨，把最平凡的日子写成情书。', pdfUrl: 'files/letters/20230808-hamburger.pdf', createdAt: '2023-08-08T08:08:00+08:00' }
 		],
 		memories: []
 	};
 
 	var storyData = loadData();
+	var LETTERS_PER_PAGE = 4;
+	var LETTER_WRITER_CONFIG = {
+		doudou: { writerName: '兜兜', recipientName: '汉堡', listSelector: '#letters-doudou-list', pageSelector: '#letters-doudou-page', emptyText: '兜兜还没有写新的信件。' },
+		hamburger: { writerName: '汉堡', recipientName: '兜兜', listSelector: '#letters-hamburger-list', pageSelector: '#letters-hamburger-page', emptyText: '汉堡还没有写新的信件。' }
+	};
+	var letterPaginationState = { doudou: 0, hamburger: 0 };
 	var momentsIsotope = null;
 	var $momentsGrid = null;
 	var currentMomentsFilter = '*';
@@ -346,10 +352,12 @@ $(function () {
 	var $momentNext = $('#moment-viewer-next');
 	var $momentClose = $('#moment-viewer-close');
 
+	normalizeLoveNotesData();
 	renderAllSections();
 	bindForms();
 	bindDeletion();
 	setupTabListeners();
+	bindLetterPaginationControls();
 
 	if ($momentViewer.length) {
 		$momentClose.on('click', function () {
@@ -435,6 +443,96 @@ $(function () {
 			}
 		});
 		return data;
+	}
+
+	function normalizeLoveNotesData() {
+		var mutated = false;
+		var normalized = [];
+		storyData.loveNotes.forEach(function (entry) {
+			var upgraded = upgradeLoveNoteEntry(entry);
+			if (!upgraded) {
+				return;
+			}
+			if (upgraded.__forceSave) {
+				mutated = true;
+				delete upgraded.__forceSave;
+			}
+			normalized.push(upgraded);
+		});
+		if (mutated) {
+			storyData.loveNotes = normalized;
+			saveData();
+		} else {
+			storyData.loveNotes = normalized;
+		}
+	}
+
+	function upgradeLoveNoteEntry(entry) {
+		if (!entry || typeof entry !== 'object') {
+			return null;
+		}
+		var changed = false;
+		var writer = entry.writer;
+		if (!writer) {
+			var author = entry.author || '';
+			if (author.indexOf('汉堡') !== -1) {
+				writer = 'hamburger';
+			} else {
+				writer = 'doudou';
+			}
+			changed = true;
+		}
+		if (!LETTER_WRITER_CONFIG[writer]) {
+			writer = 'doudou';
+			changed = true;
+		}
+		var recipient = entry.recipient;
+		if (!recipient) {
+			recipient = LETTER_WRITER_CONFIG[writer].recipientName;
+			changed = true;
+		}
+		var normalizedDate = normalizeLetterDateInput(entry.date || entry.meta || '');
+		if (!normalizedDate && entry.date && entry.date !== normalizedDate) {
+			normalizedDate = entry.date;
+		}
+		var title = entry.title || entry.meta || '未命名的信件';
+		if (!entry.title) {
+			changed = true;
+		}
+		var excerpt = entry.excerpt || entry.message || '';
+		if (!entry.excerpt && entry.message) {
+			changed = true;
+		}
+		var pdfUrl = entry.pdfUrl || entry.pdf || '';
+		if (!entry.pdfUrl && entry.pdf) {
+			changed = true;
+		}
+		var createdAt = entry.createdAt;
+		if (!createdAt) {
+			createdAt = new Date().toISOString();
+			changed = true;
+		}
+		var id = entry.id || generateId('ln');
+		if (!entry.id) {
+			changed = true;
+		}
+
+		var upgraded = Object.assign({}, entry, {
+			id: id,
+			writer: writer,
+			recipient: recipient,
+			date: normalizedDate || (entry.date || ''),
+			title: title,
+			excerpt: excerpt,
+			pdfUrl: pdfUrl,
+			createdAt: createdAt
+		});
+
+		if (changed) {
+			upgraded.__forceSave = true;
+		}
+
+		return upgraded;
 	}
 
 	function saveData() {
@@ -650,39 +748,75 @@ $(function () {
 	}
 
 	function renderLoveNotes() {
-		var $mainList = $('#love-notes-list');
-		var $mainEmpty = $('#love-notes-empty');
+		var $board = $('#letters-board');
+		var $empty = $('#letters-empty');
 		var $managerList = $('#manager-loveNotes-list');
 		var $managerEmpty = $('#manager-loveNotes-empty');
-		$mainList.empty();
+
+		Object.keys(LETTER_WRITER_CONFIG).forEach(function (side) {
+			var selector = LETTER_WRITER_CONFIG[side].listSelector;
+			$(selector).empty();
+			updateLetterPaginationControls(side, 0, 0);
+		});
+
 		$managerList.empty();
+
 		if (!storyData.loveNotes.length) {
-			$mainEmpty.removeClass('d-none');
+			$empty.removeClass('d-none');
+			$board.addClass('d-none');
 			$managerEmpty.removeClass('d-none');
+			Object.keys(LETTER_WRITER_CONFIG).forEach(function (side) {
+				var config = LETTER_WRITER_CONFIG[side];
+				var $list = $(config.listSelector);
+				if ($list.length) {
+					$list.append($('<div/>', { 'class': 'alert alert-light border text-muted small mb-0' }).text(config.emptyText));
+				}
+			});
 			return;
 		}
-		$mainEmpty.addClass('d-none');
-		$managerEmpty.addClass('d-none');
-		storyData.loveNotes.forEach(function (entry) {
-			var $col = $('<div/>', { 'class': 'col-md-6' });
-			var $card = $('<div/>', { 'class': 'bg-light rounded p-4 h-100 shadow-sm' });
-			var $header = $('<div/>', { 'class': 'd-flex align-items-center mb-3' });
-			var avatarSrc = entry.avatar || 'images/testimonial/client-sm-1.jpg';
-			$header.append($('<img/>', { 'class': 'img-fluid rounded-circle border d-inline-block', 'src': avatarSrc, 'alt': entry.author, 'width': 56, 'height': 56 }));
-			$header.append($('<p/>', { 'class': 'ms-3 mb-0' }).html('<strong class="d-block text-dark fw-600">' + entry.author + '</strong><span class="text-muted fw-500">' + entry.meta + '</span>'));
-			$card.append($header);
-			$card.append($('<p/>', { 'class': 'text-dark fw-500 mb-0' }).text(entry.message));
-			$col.append($card);
-			$mainList.append($col);
 
-			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
-			var $body = $('<div/>', { 'class': 'flex-grow-1' });
-			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.author));
-			$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(entry.meta));
-			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
-			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'loveNotes', 'data-id': entry.id }).text('删除'));
-			$item.append($body, $actions);
-			$managerList.append($item);
+		$empty.addClass('d-none');
+		$board.removeClass('d-none');
+		$managerEmpty.addClass('d-none');
+
+		var grouped = { doudou: [], hamburger: [] };
+		storyData.loveNotes.forEach(function (entry) {
+			var side = LETTER_WRITER_CONFIG[entry.writer] ? entry.writer : 'doudou';
+			grouped[side].push(entry);
+		});
+
+		Object.keys(LETTER_WRITER_CONFIG).forEach(function (side) {
+			var config = LETTER_WRITER_CONFIG[side];
+			var $list = $(config.listSelector);
+			if (!$list.length) { return; }
+
+			var letters = grouped[side].slice().sort(sortLettersAscending);
+			if (!letters.length) {
+				$list.append($('<div/>', { 'class': 'alert alert-light border text-muted small mb-0' }).text(config.emptyText));
+				updateLetterPaginationControls(side, 0, 0);
+				return;
+			}
+
+			var totalPages = Math.max(1, Math.ceil(letters.length / LETTERS_PER_PAGE));
+			if (!letterPaginationState[side]) {
+				letterPaginationState[side] = totalPages;
+			}
+			letterPaginationState[side] = Math.min(Math.max(letterPaginationState[side], 1), totalPages);
+
+			var currentPage = letterPaginationState[side];
+			var start = (currentPage - 1) * LETTERS_PER_PAGE;
+			var pageEntries = letters.slice(start, start + LETTERS_PER_PAGE);
+
+			$list.empty();
+			pageEntries.forEach(function (entry) {
+				$list.append(buildLetterCard(entry, config));
+			});
+			updateLetterPaginationControls(side, currentPage, totalPages);
+		});
+
+		var managerLetters = storyData.loveNotes.slice().sort(sortLettersDescending);
+		managerLetters.forEach(function (entry) {
+			$managerList.append(buildLetterManagerItem(entry));
 		});
 	}
 
@@ -718,6 +852,211 @@ $(function () {
 			$col.append($card);
 			$list.append($col);
 		});
+	}
+
+	function buildLetterCard(entry, config) {
+		var routeLabel = (config.writerName || '') + ' → ' + (config.recipientName || entry.recipient || '');
+		var dateLabel = formatLetterDateForDisplay(entry.date);
+		var excerpt = entry.excerpt || '';
+		var pdfHref = (entry.pdfUrl || '').trim();
+		var createdAtLabel = formatLetterDateTimeForDisplay(entry.createdAt);
+
+		var $card = $('<article/>', { 'class': 'letter-card border rounded-4 bg-light p-4 shadow-sm' });
+		var $meta = $('<div/>', { 'class': 'd-flex justify-content-between align-items-center flex-wrap gap-2 mb-3' });
+		$meta.append($('<span/>', { 'class': 'badge letter-date-badge' }).text(dateLabel || '日期待补充'));
+		$meta.append($('<span/>', { 'class': 'text-muted small fw-500' }).text(routeLabel));
+		$card.append($meta);
+		$card.append($('<h4/>', { 'class': 'text-5 fw-600 mb-3' }).text(entry.title || '未命名的信件'));
+		if (excerpt) {
+			$card.append($('<p/>', { 'class': 'mb-4 text-muted small lh-lg' }).text(excerpt));
+		} else {
+			$card.append($('<p/>', { 'class': 'mb-4 text-muted small fst-italic' }).text('这封信还没有节选，打开 PDF 阅读全部内容。'));
+		}
+		var $footer = $('<div/>', { 'class': 'd-flex flex-wrap align-items-center gap-3' });
+		if (pdfHref && pdfHref.toLowerCase().indexOf('javascript:') === -1) {
+			$footer.append($('<a/>', {
+				'class': 'btn btn-sm btn-outline-primary rounded-pill',
+				'href': pdfHref,
+				'target': '_blank',
+				'rel': 'noopener noreferrer'
+			}).text('阅读完整信件 (PDF)'));
+		} else {
+			$footer.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text('PDF 链接待补充'));
+		}
+		if (createdAtLabel) {
+			$footer.append($('<span/>', { 'class': 'text-muted small' }).text('更新于 ' + createdAtLabel));
+		}
+		$card.append($footer);
+		return $card;
+	}
+
+	function buildLetterManagerItem(entry) {
+		var config = LETTER_WRITER_CONFIG[entry.writer] || LETTER_WRITER_CONFIG.doudou;
+		var routeLabel = (config.writerName || entry.writer) + ' → ' + (config.recipientName || entry.recipient || '彼此');
+		var dateLabel = formatLetterDateForDisplay(entry.date);
+		var excerpt = entry.excerpt || '';
+		var pdfHref = (entry.pdfUrl || '').trim();
+
+		var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
+		var $body = $('<div/>', { 'class': 'flex-grow-1' });
+		$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title || '未命名的信件'));
+		var metaParts = [routeLabel, dateLabel ? ('写于 ' + dateLabel) : '日期待补充'];
+		$body.append($('<p/>', { 'class': 'mb-1 small text-muted' }).text(metaParts.join(' · ')));
+		if (excerpt) {
+			$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(excerpt));
+		}
+
+		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
+		if (pdfHref && pdfHref.toLowerCase().indexOf('javascript:') === -1) {
+			$actions.append($('<a/>', {
+				'class': 'btn btn-sm btn-outline-primary',
+				'href': pdfHref,
+				'target': '_blank',
+				'rel': 'noopener noreferrer'
+			}).text('打开 PDF'));
+		} else {
+			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text('PDF 待上传'));
+		}
+		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'loveNotes', 'data-id': entry.id }).text('删除'));
+
+		$item.append($body, $actions);
+		return $item;
+	}
+
+	function updateLetterPaginationControls(side, page, totalPages) {
+		var indicatorSelector = LETTER_WRITER_CONFIG[side] && LETTER_WRITER_CONFIG[side].pageSelector;
+		if (indicatorSelector) {
+			var $indicator = $(indicatorSelector);
+			if ($indicator.length) {
+				if (!totalPages) {
+					$indicator.text('暂无信件');
+				} else {
+					$indicator.text('第 ' + page + ' / ' + totalPages + ' 页');
+				}
+			}
+		}
+		var $prev = $('.letters-page-prev[data-side="' + side + '"]');
+		var $next = $('.letters-page-next[data-side="' + side + '"]');
+		if (!totalPages) {
+			$prev.prop('disabled', true);
+			$next.prop('disabled', true);
+			return;
+		}
+		$prev.prop('disabled', page <= 1);
+		$next.prop('disabled', page >= totalPages);
+	}
+
+	function sortLettersAscending(a, b) {
+		var timeA = parseLetterDateValue(a.date);
+		var timeB = parseLetterDateValue(b.date);
+		if (!isNaN(timeA) && !isNaN(timeB) && timeA !== timeB) {
+			return timeA - timeB;
+		}
+		if (!isNaN(timeA) && isNaN(timeB)) {
+			return -1;
+		}
+		if (isNaN(timeA) && !isNaN(timeB)) {
+			return 1;
+		}
+		var writerCompare = (a.writer || '').localeCompare(b.writer || '');
+		if (writerCompare !== 0) {
+			return writerCompare;
+		}
+		return (a.title || '').localeCompare(b.title || '');
+	}
+
+	function sortLettersDescending(a, b) {
+		var timeA = parseLetterDateValue(a.date);
+		var timeB = parseLetterDateValue(b.date);
+		if (!isNaN(timeA) && !isNaN(timeB) && timeA !== timeB) {
+			return timeB - timeA;
+		}
+		if (!isNaN(timeA) && isNaN(timeB)) {
+			return -1;
+		}
+		if (isNaN(timeA) && !isNaN(timeB)) {
+			return 1;
+		}
+		return (b.createdAt || '').localeCompare(a.createdAt || '');
+	}
+
+	function parseLetterDateValue(value) {
+		if (!value) { return NaN; }
+		var trimmed = value.toString().trim();
+		if (!trimmed) { return NaN; }
+		var normalized = trimmed.replace(/[年\/\.]/g, '-').replace(/月/g, '-').replace(/日/g, '');
+		var parts = normalized.split('-').filter(Boolean);
+		if (parts.length >= 3) {
+			parts[1] = parts[1].padStart(2, '0');
+			parts[2] = parts[2].padStart(2, '0');
+			normalized = parts[0] + '-' + parts[1] + '-' + parts[2];
+		}
+		var timestamp = Date.parse(normalized);
+		if (isNaN(timestamp)) {
+			return NaN;
+		}
+		return timestamp;
+	}
+
+	function formatLetterDateForDisplay(value) {
+		if (!value) { return ''; }
+		var trimmed = value.toString().trim();
+		if (!trimmed) { return ''; }
+		if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+			return trimmed.replace(/-/g, '.');
+		}
+		if (/^\d{4}\.\d{1,2}\.\d{1,2}$/.test(trimmed)) {
+			var parts = trimmed.split('.');
+			return parts[0] + '.' + parts[1].padStart(2, '0') + '.' + parts[2].padStart(2, '0');
+		}
+		return trimmed;
+	}
+
+	function formatLetterDateTimeForDisplay(value) {
+		if (!value) { return ''; }
+		var date = new Date(value);
+		if (isNaN(date.getTime())) { return ''; }
+		var y = date.getFullYear();
+		var m = String(date.getMonth() + 1).padStart(2, '0');
+		var d = String(date.getDate()).padStart(2, '0');
+		var h = String(date.getHours()).padStart(2, '0');
+		var min = String(date.getMinutes()).padStart(2, '0');
+		return y + '.' + m + '.' + d + ' ' + h + ':' + min;
+	}
+
+	function normalizeLetterDateInput(value) {
+		if (!value) { return ''; }
+		var trimmed = value.toString().trim();
+		if (!trimmed) { return ''; }
+		var match = trimmed.match(/(\d{4})[年\-\/\.](\d{1,2})[月\-\/\.](\d{1,2})/);
+		if (match) {
+			var year = match[1];
+			var month = match[2].padStart(2, '0');
+			var day = match[3].padStart(2, '0');
+			return year + '-' + month + '-' + day;
+		}
+		if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
+			return trimmed;
+		}
+		return trimmed;
+	}
+
+	function getLettersByWriter(side) {
+		return storyData.loveNotes.filter(function (entry) {
+			return entry.writer === side;
+		});
+	}
+
+	function changeLetterPage(side, delta) {
+		if (!LETTER_WRITER_CONFIG[side]) { return; }
+		var letters = getLettersByWriter(side);
+		if (!letters.length) { return; }
+		var totalPages = Math.max(1, Math.ceil(letters.length / LETTERS_PER_PAGE));
+		var nextPage = (letterPaginationState[side] || totalPages) + delta;
+		nextPage = Math.max(1, Math.min(nextPage, totalPages));
+		if (nextPage === letterPaginationState[side]) { return; }
+		letterPaginationState[side] = nextPage;
+		renderLoveNotes();
 	}
 
 	function bindForms() {
@@ -763,12 +1102,25 @@ $(function () {
 
 		$('#form-loveNotes').on('submit', function (event) {
 			event.preventDefault();
-			var author = $.trim($(this).find('[name="love-author"]').val());
-			var meta = $.trim($(this).find('[name="love-meta"]').val());
-			var avatar = $.trim($(this).find('[name="love-avatar"]').val());
-			var message = $.trim($(this).find('[name="love-message"]').val());
-			if (!author || !meta || !message) { return; }
-			storyData.loveNotes.unshift({ id: generateId('ln'), author: author, meta: meta, message: message, avatar: avatar });
+			var writer = $(this).find('[name="letter-writer"]').val();
+			var date = $(this).find('[name="letter-date"]').val();
+			var title = $.trim($(this).find('[name="letter-title"]').val());
+			var excerpt = $.trim($(this).find('[name="letter-excerpt"]').val());
+			var pdfUrl = $.trim($(this).find('[name="letter-pdf"]').val());
+			if (!writer || !date || !title || !excerpt || !pdfUrl) { return; }
+			var normalizedDate = normalizeLetterDateInput(date);
+			var config = LETTER_WRITER_CONFIG[writer] || LETTER_WRITER_CONFIG.doudou;
+			storyData.loveNotes.push({
+				id: generateId('ln'),
+				writer: writer,
+				recipient: config.recipientName,
+				date: normalizedDate || date,
+				title: title,
+				excerpt: excerpt,
+				pdfUrl: pdfUrl,
+				createdAt: new Date().toISOString()
+			});
+			letterPaginationState[writer] = 0;
 			saveData();
 			renderAllSections();
 			this.reset();
@@ -810,6 +1162,17 @@ $(function () {
 			saveData();
 			renderAllSections();
 			resetMemoryForm();
+		});
+	}
+
+	function bindLetterPaginationControls() {
+		$(document).on('click', '.letters-page-prev', function () {
+			var side = $(this).data('side');
+			changeLetterPage(side, -1);
+		});
+		$(document).on('click', '.letters-page-next', function () {
+			var side = $(this).data('side');
+			changeLetterPage(side, 1);
 		});
 	}
 
