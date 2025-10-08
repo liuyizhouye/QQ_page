@@ -226,13 +226,15 @@
         <div class="moment-viewer-scroller">
           <div class="row g-4 align-items-center">
             <div class="col-lg-7">
-              <div class="moment-viewer-image">
-                <img id="moment-viewer-image" src="" alt="" class="img-fluid" />
+              <div class="moment-viewer-media">
+                <img id="moment-viewer-image" src="" alt="" class="img-fluid d-none" />
+                <video id="moment-viewer-video" class="w-100 d-none" controls playsinline preload="metadata"></video>
               </div>
             </div>
             <div class="col-lg-5">
-              <div id="moment-viewer-subtitle" class="text-muted mb-2"></div>
+              <div id="moment-viewer-date" class="text-muted small text-uppercase tracking-wide mb-2"></div>
               <h3 id="moment-viewer-title" class="text-5 fw-600 mb-3"></h3>
+              <div id="moment-viewer-description" class="mb-3 text-muted"></div>
               <div id="moment-viewer-tags" class="moment-viewer-tags d-flex flex-wrap gap-2 mb-4"></div>
               <div class="moment-viewer-actions d-flex flex-wrap gap-2">
                 <button type="button" class="btn btn-outline-secondary" id="moment-viewer-prev"><i class="fas fa-chevron-left me-1"></i>上一张</button>
@@ -380,12 +382,20 @@
                       <div id="manager-moments-list" class="list-group list-group-flush mb-4"></div>
                       <h3 class="text-5 fw-600 mb-3">新增瞬间</h3>
                       <form id="form-moments" class="row g-3 story-form" novalidate>
-                        <div class="col-md-6"><input type="text" class="form-control" name="moment-title" placeholder="标题（例如 海边日落）" required></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="moment-subtitle" placeholder="副标题 / 分类标签" required></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="moment-image" placeholder="图片路径或链接（例如 images/projects/project-1.jpg）" required></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="moment-link" placeholder="点击后打开的链接（可选，例如 ajax/portfolio-ajax-project-1.html）"></div>
-                        <div class="col-md-4"><input type="text" class="form-control" name="moment-tag" placeholder="展示标签（如 旅行日记）" required></div>
-                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button></div>
+                        <div class="col-md-6">
+                          <input type="text" class="form-control" name="moment-title" placeholder="标题（例如 海边日落）" required>
+                        </div>
+                        <div class="col-md-6">
+                          <input type="datetime-local" class="form-control" name="moment-date" required aria-label="发生时间">
+                        </div>
+                        <div class="col-12">
+                          <label for="moment-media-input" class="form-label small text-muted mb-1">添加照片或视频（可多选）</label>
+                          <input id="moment-media-input" type="file" class="form-control" name="moment-media" accept="image/*,video/*" multiple>
+                          <div class="form-text">支持 JPG、PNG、MP4 等常见格式，最大建议 20MB。</div>
+                        </div>
+                        <div class="col-12 text-end">
+                          <button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button>
+                        </div>
                       </form>
                     </div>
                   </div>
@@ -416,7 +426,7 @@
                             <option value="hamburger">汉堡</option>
                           </select>
                         </div>
-                        <div class="col-md-6"><input type="date" class="form-control" name="letter-date" required aria-label="写信日期"></div>
+                        <div class="col-md-6"><input type="datetime-local" class="form-control" name="letter-date" required aria-label="写信时间"></div>
                         <div class="col-12">
                           <label for="letter-file" class="form-label fw-600">上传 PDF 信件</label>
                           <input id="letter-file" class="form-control" type="file" name="letter-file" accept="application/pdf" aria-label="上传 PDF 信件" required>
@@ -438,7 +448,7 @@
                       <h3 class="text-5 fw-600 mb-3">新增记忆</h3>
                       <form id="form-memories" class="row g-3 story-form" novalidate>
                         <div class="col-md-6"><input name="memory-title" type="text" class="form-control" required placeholder="回忆标题或心情"></div>
-                        <div class="col-md-6"><input name="memory-date" type="date" class="form-control" required aria-label="日期"></div>
+                        <div class="col-md-6"><input name="memory-date" type="datetime-local" class="form-control" required aria-label="发生时间"></div>
                         <div class="col-md-6">
                           <input id="memory-location" name="memory-location" type="text" class="form-control" placeholder="输入地点或经纬度" autocomplete="off" aria-label="地点">
                           <input type="hidden" name="memory-lat" id="memory-lat">

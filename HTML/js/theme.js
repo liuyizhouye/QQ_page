@@ -303,13 +303,62 @@ $(function () {
 			{ id: 'ms-20230901', date: '2023.09.01', title: '新家入住', icon: 'fas fa-home', description: '我们亲手布置每个角落，把生活的碎片变成名为“家”的答案。' }
 		],
 		moments: [
-			{ id: 'mo-1', title: '大理清晨的粉色天空', subtitle: '旅行日记', image: 'images/projects/project-1.jpg', link: 'ajax/portfolio-ajax-project-1.html', tag: '旅行' },
-			{ id: 'mo-2', title: '第一次跨年烟花', subtitle: '纪念日', image: 'images/projects/project-2.jpg', link: 'ajax/portfolio-ajax-project-2.html', tag: '纪念日' },
-			{ id: 'mo-3', title: '雨天同款雨衣', subtitle: '日常碎片', image: 'images/projects/project-3.jpg', link: 'ajax/portfolio-ajax-project-3.html', tag: '日常' },
-			{ id: 'mo-4', title: '周年纪念的海边', subtitle: '旅行 + 纪念', image: 'images/projects/project-4.jpg', link: 'ajax/portfolio-ajax-project-4.html', tag: '旅行,纪念日' },
-			{ id: 'mo-5', title: '家里的周日下午', subtitle: '慵懒时光', image: 'images/projects/project-5.jpg', link: 'ajax/portfolio-ajax-project-5.html', tag: '日常' },
-			{ id: 'mo-6', title: '生日餐桌', subtitle: '专属于你的颜色', image: 'images/projects/project-6.jpg', link: 'ajax/portfolio-ajax-project-6.html', tag: '纪念日' },
-			{ id: 'mo-7', title: '无人岛上的日落', subtitle: '旅行日记', image: 'images/projects/project-7.jpg', link: 'ajax/portfolio-ajax-project-7.html', tag: '旅行' }
+			{
+				id: 'mo-1',
+				title: '大理清晨的粉色天空',
+				occurredAt: '2020-12-25T06:30:00+08:00',
+				media: [
+					{ id: 'mm-1', type: 'image', src: 'images/projects/project-1.jpg' }
+				]
+			},
+			{
+				id: 'mo-2',
+				title: '第一次跨年烟花',
+				occurredAt: '2020-12-31T23:58:00+08:00',
+				media: [
+					{ id: 'mm-2', type: 'image', src: 'images/projects/project-2.jpg' }
+				]
+			},
+			{
+				id: 'mo-3',
+				title: '雨天同款雨衣',
+				occurredAt: '2021-03-20T15:20:00+08:00',
+				media: [
+					{ id: 'mm-3', type: 'image', src: 'images/projects/project-3.jpg' }
+				]
+			},
+			{
+				id: 'mo-4',
+				title: '周年纪念的海边',
+				occurredAt: '2022-07-14T18:45:00+08:00',
+				media: [
+					{ id: 'mm-4', type: 'video', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', poster: 'images/projects/project-4.jpg' }
+				]
+			},
+			{
+				id: 'mo-5',
+				title: '家里的周日下午',
+				occurredAt: '2022-09-18T14:10:00+08:00',
+				media: [
+					{ id: 'mm-5', type: 'image', src: 'images/projects/project-5.jpg' }
+				]
+			},
+			{
+				id: 'mo-6',
+				title: '生日餐桌',
+				occurredAt: '2023-05-12T19:00:00+08:00',
+				media: [
+					{ id: 'mm-6', type: 'image', src: 'images/projects/project-6.jpg' }
+				]
+			},
+			{
+				id: 'mo-7',
+				title: '无人岛上的日落',
+				occurredAt: '2023-09-01T17:30:00+08:00',
+				media: [
+					{ id: 'mm-7', type: 'image', src: 'images/projects/project-7.jpg' }
+				]
+			}
 		],
 		favorites: [
 			{ id: 'fa-1', badge: '每周仪式', title: '周五百花计划', highlight: '一束花 + 一张手写小卡', description: '把日常写进花香里，提醒自己永远对彼此表达爱意。' },
@@ -320,10 +369,10 @@ $(function () {
 			{ id: 'fa-6', badge: '年度清单', title: '手帐 + 拍立得', highlight: '每年12月整理', description: '挑选最喜欢的照片贴进手帐，为这一年画上温柔的句号。' }
 		],
 		loveNotes: [
-			{ id: 'ln-20200214-d', writer: 'doudou', recipient: '汉堡', date: '2020-02-14', title: '写给你的第一封信', excerpt: '那天的风很柔软，我把第一次为你写下的句子都折进了信封里。', pdfUrl: 'files/letters/20200214-doudou.pdf', pdfName: '20200214-doudou.pdf', createdAt: '2020-02-14T09:00:00+08:00' },
-			{ id: 'ln-20210520-h', writer: 'hamburger', recipient: '兜兜', date: '2021-05-20', title: '给兜兜的长信', excerpt: '谢谢你出现在我最需要的时刻，我会用一生回应你温柔的邀请。', pdfUrl: 'files/letters/20210520-hamburger.pdf', pdfName: '20210520-hamburger.pdf', createdAt: '2021-05-20T21:10:00+08:00' },
-			{ id: 'ln-20221231-d', writer: 'doudou', recipient: '汉堡', date: '2022-12-31', title: '写在跨年的夜里', excerpt: '新年的钟声敲响之前，我想先亲手为未来写下一些祝福。', pdfUrl: 'files/letters/20221231-doudou.pdf', pdfName: '20221231-doudou.pdf', createdAt: '2022-12-31T23:40:00+08:00' },
-			{ id: 'ln-20230808-h', writer: 'hamburger', recipient: '兜兜', date: '2023-08-08', title: '我们的日常也是情书', excerpt: '我喜欢和你一起过每一个普通的清晨，把最平凡的日子写成情书。', pdfUrl: 'files/letters/20230808-hamburger.pdf', pdfName: '20230808-hamburger.pdf', createdAt: '2023-08-08T08:08:00+08:00' }
+			{ id: 'ln-20200214-d', writer: 'doudou', recipient: '汉堡', date: '2020-02-14T09:00:00+08:00', title: '写给你的第一封信', excerpt: '那天的风很柔软，我把第一次为你写下的句子都折进了信封里。', pdfUrl: 'files/letters/20200214-doudou.pdf', pdfName: '20200214-doudou.pdf', createdAt: '2020-02-14T09:00:00+08:00' },
+			{ id: 'ln-20210520-h', writer: 'hamburger', recipient: '兜兜', date: '2021-05-20T21:10:00+08:00', title: '给兜兜的长信', excerpt: '谢谢你出现在我最需要的时刻，我会用一生回应你温柔的邀请。', pdfUrl: 'files/letters/20210520-hamburger.pdf', pdfName: '20210520-hamburger.pdf', createdAt: '2021-05-20T21:10:00+08:00' },
+			{ id: 'ln-20221231-d', writer: 'doudou', recipient: '汉堡', date: '2022-12-31T23:40:00+08:00', title: '写在跨年的夜里', excerpt: '新年的钟声敲响之前，我想先亲手为未来写下一些祝福。', pdfUrl: 'files/letters/20221231-doudou.pdf', pdfName: '20221231-doudou.pdf', createdAt: '2022-12-31T23:40:00+08:00' },
+			{ id: 'ln-20230808-h', writer: 'hamburger', recipient: '兜兜', date: '2023-08-08T08:08:00+08:00', title: '我们的日常也是情书', excerpt: '我喜欢和你一起过每一个普通的清晨，把最平凡的日子写成情书。', pdfUrl: 'files/letters/20230808-hamburger.pdf', pdfName: '20230808-hamburger.pdf', createdAt: '2023-08-08T08:08:00+08:00' }
 		],
 		memories: []
 	};
@@ -336,6 +385,8 @@ $(function () {
 	};
 	var letterPaginationState = { doudou: 0, hamburger: 0 };
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
+	var DEFAULT_MOMENT_COVER = 'images/projects/project-1.jpg';
+	var MAX_MOMENT_FILE_SIZE = 20 * 1024 * 1024;
 	var momentsIsotope = null;
 	var $momentsGrid = null;
 	var currentMomentsFilter = '*';
@@ -345,14 +396,17 @@ $(function () {
 	var currentVisibleMomentIds = [];
 	var $momentViewer = $('#moment-viewer');
 	var $momentImage = $('#moment-viewer-image');
+	var $momentVideo = $('#moment-viewer-video');
 	var $momentTitle = $('#moment-viewer-title');
-	var $momentSubtitle = $('#moment-viewer-subtitle');
+	var $momentDate = $('#moment-viewer-date');
+	var $momentDescription = $('#moment-viewer-description');
 	var $momentTags = $('#moment-viewer-tags');
 	var $momentLink = $('#moment-viewer-link');
 	var $momentPrev = $('#moment-viewer-prev');
 	var $momentNext = $('#moment-viewer-next');
 	var $momentClose = $('#moment-viewer-close');
 
+	normalizeMomentsData();
 	normalizeLoveNotesData();
 	renderAllSections();
 	bindForms();
@@ -445,6 +499,497 @@ $(function () {
 			}
 		});
 		return data;
+	}
+
+	function normalizeMomentsData() {
+		var mutated = false;
+		var normalized = [];
+		storyData.moments.forEach(function (entry) {
+			var upgraded = upgradeMomentEntry(entry);
+			if (!upgraded) {
+				return;
+			}
+			if (upgraded.__forceSave) {
+				mutated = true;
+				delete upgraded.__forceSave;
+			}
+			normalized.push(upgraded);
+		});
+		if (mutated) {
+			storyData.moments = normalized;
+			saveData();
+		} else {
+			storyData.moments = normalized;
+		}
+	}
+
+	function upgradeMomentEntry(entry) {
+		if (!entry || typeof entry !== 'object') {
+			return null;
+		}
+		var changed = false;
+		var id = entry.id || generateId('mo');
+		if (!entry.id) {
+			changed = true;
+		}
+		var normalizedDate = normalizeMomentDateInput(entry.occurredAt || entry.date || entry.momentDate || '');
+		if (!normalizedDate) {
+			normalizedDate = new Date().toISOString();
+			changed = true;
+		} else if (entry.occurredAt !== normalizedDate) {
+			changed = true;
+		}
+		var description = entry.description;
+		if (!description && entry.subtitle) {
+			description = entry.subtitle;
+			changed = true;
+		}
+		var tags = [];
+		if (Array.isArray(entry.tags)) {
+			tags = entry.tags.map(function (tag) {
+				return String(tag || '').trim();
+			}).filter(Boolean);
+		} else if (entry.tag) {
+			tags = entry.tag.toString().split(/[,+/|]+/).map(function (tag) {
+				return tag.trim();
+			}).filter(Boolean);
+			changed = true;
+		}
+		var mediaArray = Array.isArray(entry.media) ? entry.media.slice() : [];
+		if (!mediaArray.length) {
+			var typeGuess = entry.mediaType || (entry.video ? 'video' : 'image');
+			var srcGuess = entry.mediaSrc || entry.video || entry.image || '';
+			if (srcGuess) {
+				mediaArray.push({
+					id: entry.mediaId || generateId('mm'),
+					type: typeGuess && typeGuess.toLowerCase().indexOf('video') !== -1 ? 'video' : 'image',
+					src: srcGuess,
+					poster: entry.posterSrc || entry.poster || (typeGuess === 'image' ? srcGuess : (entry.image || '')),
+					name: entry.mediaName || '',
+					size: entry.mediaSize || 0,
+					mimeType: entry.mediaMimeType || ''
+				});
+				changed = true;
+			}
+		}
+		var normalizedMedia = [];
+		mediaArray.forEach(function (item) {
+			var normalizedItem = normalizeMomentMediaItem(item);
+			if (normalizedItem) {
+				if (normalizedItem.__forceSave) {
+					changed = true;
+					delete normalizedItem.__forceSave;
+				}
+				normalizedMedia.push(normalizedItem);
+			}
+		});
+		var primaryMedia = normalizedMedia[0] || null;
+		var mediaType = primaryMedia ? primaryMedia.type : 'image';
+		var mediaSrc = primaryMedia ? primaryMedia.src : '';
+		var posterSrc = primaryMedia ? (primaryMedia.poster || (primaryMedia.type === 'image' ? primaryMedia.src : '')) : '';
+		if (!posterSrc && entry.posterSrc) {
+			posterSrc = entry.posterSrc;
+		}
+		var createdAt = entry.createdAt;
+		if (!createdAt) {
+			createdAt = new Date().toISOString();
+			changed = true;
+		}
+		var upgraded = Object.assign({}, entry, {
+			id: id,
+			title: entry.title || '',
+			occurredAt: normalizedDate,
+			description: description || '',
+			tags: dedupeArray(tags),
+			media: normalizedMedia,
+			mediaType: mediaType,
+			mediaSrc: mediaSrc,
+			posterSrc: posterSrc,
+			link: entry.link || '',
+			createdAt: createdAt
+		});
+		if (changed) {
+			upgraded.__forceSave = true;
+		}
+		return upgraded;
+	}
+
+	function normalizeMomentMediaItem(item) {
+		if (!item || typeof item !== 'object') {
+			return null;
+		}
+		var changed = false;
+		var id = item.id || generateId('mm');
+		if (!item.id) {
+			changed = true;
+		}
+		var src = item.src || item.url || item.data || '';
+		if (!src || typeof src !== 'string') {
+			return null;
+		}
+		src = src.trim();
+		var mime = item.mimeType || item.type || '';
+		var type = item.type || '';
+		if (!type) {
+			if (mime && mime.toLowerCase().indexOf('video/') === 0) {
+				type = 'video';
+			} else {
+				type = 'image';
+			}
+			changed = true;
+		}
+		type = type.toLowerCase().indexOf('video') === 0 ? 'video' : 'image';
+		var poster = item.poster || item.posterSrc || item.cover || '';
+		if (!poster && type === 'image') {
+			poster = src;
+		} else if (!poster && type === 'video') {
+			poster = DEFAULT_MOMENT_COVER;
+			changed = true;
+		}
+		var size = item.size;
+		if (typeof size === 'string') {
+			var parsedSize = parseInt(size, 10);
+			if (!isNaN(parsedSize)) {
+				size = parsedSize;
+				changed = true;
+			} else {
+				size = 0;
+				changed = true;
+			}
+		}
+		if (typeof size !== 'number' || isNaN(size)) {
+			size = 0;
+			changed = true;
+		}
+		var normalized = {
+			id: id,
+			type: type,
+			src: src,
+			name: item.name || '',
+			size: size,
+			mimeType: mime || '',
+			poster: poster
+		};
+		if (changed) {
+			normalized.__forceSave = true;
+		}
+		return normalized;
+	}
+
+	function dedupeArray(list) {
+		if (!Array.isArray(list)) {
+			return [];
+		}
+		var map = Object.create(null);
+		var result = [];
+		list.forEach(function (item) {
+			var key = item ? item.toString() : '';
+			if (!key) { return; }
+			if (!map[key]) {
+				result.push(item);
+				map[key] = true;
+			}
+		});
+		return result;
+	}
+
+	function readMomentFiles(files) {
+		if (!files || !files.length) {
+			return Promise.resolve([]);
+		}
+		var tasks = files.map(function (file) {
+			return new Promise(function (resolve, reject) {
+				if (file.size > MAX_MOMENT_FILE_SIZE) {
+					reject(new Error('文件 "' + file.name + '" 超过 20MB， 请压缩后重新上传'));
+					return;
+				}
+				var reader = new FileReader();
+				reader.onload = function (event) {
+					resolve({
+						id: generateId('mm'),
+						type: (file.type && file.type.toLowerCase().indexOf('video/') === 0) ? 'video' : 'image',
+						src: event.target.result,
+						name: file.name,
+						size: file.size,
+						mimeType: file.type || '',
+						poster: (file.type && file.type.toLowerCase().indexOf('image/') === 0) ? event.target.result : ''
+					});
+				};
+				reader.onerror = function () {
+					reject(new Error('读取文件 "' + file.name + '" 时出错，请重试'));
+				};
+				reader.readAsDataURL(file);
+			});
+		});
+		return Promise.all(tasks).then(function (items) {
+			return items.map(function (item) {
+				var normalized = normalizeMomentMediaItem(item);
+				if (normalized && normalized.__forceSave) {
+					delete normalized.__forceSave;
+				}
+				return normalized;
+			}).filter(Boolean);
+		});
+	}
+
+	function buildMomentEntryFromForm(payload) {
+		var title = (payload && payload.title) || '';
+		var dateValue = (payload && payload.dateValue) || '';
+		var mediaItems = Array.isArray(payload && payload.mediaItems) ? payload.mediaItems : [];
+		var normalizedDate = normalizeMomentDateInput(dateValue);
+		if (!normalizedDate) {
+			normalizedDate = new Date().toISOString();
+		}
+		var normalizedMedia = mediaItems.map(function (item) {
+			var normalized = normalizeMomentMediaItem(item);
+			if (normalized && normalized.__forceSave) {
+				delete normalized.__forceSave;
+			}
+			return normalized;
+		}).filter(Boolean);
+		var primaryMedia = normalizedMedia[0] || null;
+		var entry = {
+			id: generateId('mo'),
+			title: title,
+			occurredAt: normalizedDate,
+			description: '',
+			tags: [],
+			media: normalizedMedia,
+			mediaType: primaryMedia ? primaryMedia.type : 'image',
+			mediaSrc: primaryMedia ? primaryMedia.src : '',
+			posterSrc: primaryMedia ? (primaryMedia.poster || (primaryMedia.type === 'image' ? primaryMedia.src : '')) : '',
+			link: '',
+			createdAt: new Date().toISOString()
+		};
+		return entry;
+	}
+
+	function getMomentPrimaryMedia(entry) {
+		if (!entry) { return null; }
+		if (entry.media && entry.media.length) {
+			return entry.media[0];
+		}
+		if (entry.mediaSrc) {
+			return {
+				id: entry.mediaId || generateId('mm'),
+				type: entry.mediaType || 'image',
+				src: entry.mediaSrc,
+				poster: entry.posterSrc || ''
+			};
+		}
+		if (entry.image) {
+			return {
+				id: entry.mediaId || generateId('mm'),
+				type: 'image',
+				src: entry.image,
+				poster: entry.image
+			};
+		}
+		return null;
+	}
+
+	function getMomentCoverSrc(entry) {
+		var primary = getMomentPrimaryMedia(entry);
+		if (primary) {
+			if (primary.type === 'image' && primary.src) {
+				return primary.src;
+			}
+			if (primary.type === 'video' && primary.poster) {
+				return primary.poster;
+			}
+		}
+		if (entry && entry.posterSrc) {
+			return entry.posterSrc;
+		}
+		return DEFAULT_MOMENT_COVER;
+	}
+
+	function getMomentYear(entry) {
+		var timestamp = parseMomentDateValue(entry && entry.occurredAt);
+		if (isNaN(timestamp)) {
+			return '';
+		}
+		return new Date(timestamp).getFullYear().toString();
+	}
+
+	function getMomentFilterDescriptors(entry) {
+		var descriptors = [];
+		var primary = getMomentPrimaryMedia(entry);
+		if (primary) {
+			descriptors.push({
+				label: primary.type === 'video' ? '视频' : '照片',
+				slug: primary.type === 'video' ? 'type-video' : 'type-image'
+			});
+		}
+		var year = getMomentYear(entry);
+		if (year) {
+			descriptors.push({
+				label: year + ' 年',
+				slug: 'year-' + year
+			});
+		}
+		if (entry && entry.tags && entry.tags.length) {
+			entry.tags.forEach(function (tag) {
+				var clean = (tag || '').trim();
+				if (!clean) { return; }
+				var slug = 'tag-' + slugifyCategory(clean);
+				descriptors.push({ label: clean, slug: slug });
+			});
+		}
+		var unique = [];
+		var seen = {};
+		descriptors.forEach(function (descriptor) {
+			if (!descriptor.slug || seen[descriptor.slug]) {
+				return;
+			}
+			seen[descriptor.slug] = true;
+			unique.push(descriptor);
+		});
+		return unique;
+	}
+
+	function orderMomentMenuOptions(options) {
+		if (!Array.isArray(options)) {
+			return [];
+		}
+		var priority = { 'type-image': 1, 'type-video': 2 };
+		return options.slice().sort(function (a, b) {
+			var aPriority = priority[a.slug || ''] || (a.slug && a.slug.indexOf('type-') === 0 ? 5 : (a.slug && a.slug.indexOf('year-') === 0 ? 10 : 20));
+			var bPriority = priority[b.slug || ''] || (b.slug && b.slug.indexOf('type-') === 0 ? 5 : (b.slug && b.slug.indexOf('year-') === 0 ? 10 : 20));
+			if (aPriority !== bPriority) {
+				return aPriority - bPriority;
+			}
+			return a.label.localeCompare(b.label, 'zh-CN');
+		});
+	}
+
+	function formatMomentDateForDisplay(value) {
+		var timestamp = parseMomentDateValue(value);
+		if (isNaN(timestamp)) {
+			return '';
+		}
+		try {
+			var formatter = new Intl.DateTimeFormat('zh-CN', {
+				year: 'numeric',
+				month: '2-digit',
+				day: '2-digit',
+				hour: '2-digit',
+				minute: '2-digit'
+			});
+			return formatter.format(new Date(timestamp));
+		} catch (error) {
+			return new Date(timestamp).toLocaleString();
+		}
+	}
+
+	function hasTimeComponent(value) {
+		if (!value) { return false; }
+		return /[T\s]\d{1,2}:\d{2}/.test(value) || /[+-]\d{2}:?\d{2}$/.test(value);
+	}
+
+	function formatDisplayDate(value) {
+		if (!value) { return ''; }
+		var date = value instanceof Date ? value : new Date(value);
+		if (isNaN(date.getTime())) { return ''; }
+		var y = date.getFullYear();
+		var m = String(date.getMonth() + 1).padStart(2, '0');
+		var d = String(date.getDate()).padStart(2, '0');
+		return y + '.' + m + '.' + d;
+	}
+
+	function formatDisplayDateTime(value) {
+		if (!value) { return ''; }
+		var date = value instanceof Date ? value : new Date(value);
+		if (isNaN(date.getTime())) { return ''; }
+		var y = date.getFullYear();
+		var m = String(date.getMonth() + 1).padStart(2, '0');
+		var d = String(date.getDate()).padStart(2, '0');
+		var h = String(date.getHours()).padStart(2, '0');
+		var min = String(date.getMinutes()).padStart(2, '0');
+		return y + '.' + m + '.' + d + ' ' + h + ':' + min;
+	}
+
+	function formatDateTimeOrDateForDisplay(value) {
+		if (!value) { return ''; }
+		if (value instanceof Date) {
+			return formatDisplayDateTime(value);
+		}
+		var trimmed = value.toString().trim();
+		if (!trimmed) { return ''; }
+		if (hasTimeComponent(trimmed)) {
+			return formatDisplayDateTime(trimmed);
+		}
+		var match = trimmed.match(/^(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})$/);
+		if (match) {
+			var year = match[1];
+			var month = match[2].padStart(2, '0');
+			var day = match[3].padStart(2, '0');
+			return year + '.' + month + '.' + day;
+		}
+		var parsed = Date.parse(trimmed);
+		if (!isNaN(parsed)) {
+			var parsedDate = new Date(parsed);
+			if (!hasTimeComponent(trimmed) && parsedDate.getHours() === 0 && parsedDate.getMinutes() === 0 && parsedDate.getSeconds() === 0) {
+				return formatDisplayDate(parsedDate);
+			}
+			return formatDisplayDateTime(parsedDate);
+		}
+		return trimmed;
+	}
+
+	function normalizeDateTimeInput(value) {
+		var timestamp = parseMomentDateValue(value);
+		if (isNaN(timestamp)) {
+			return '';
+		}
+		return new Date(timestamp).toISOString();
+	}
+
+	function normalizeMomentDateInput(value) {
+		return normalizeDateTimeInput(value);
+	}
+
+	function parseMomentDateValue(value) {
+		if (!value) { return NaN; }
+		var trimmed = value.toString().trim();
+		if (!trimmed) { return NaN; }
+		var normalized = trimmed.replace(/[\/\.]/g, '-').replace(/[年]/g, '-').replace(/月/g, '-').replace(/日/g, '');
+		var match = normalized.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T\s](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?(?:([+-])(\d{2}):?(\d{2}))?$/);
+		if (match) {
+			var year = parseInt(match[1], 10);
+			var month = parseInt(match[2], 10) - 1;
+			var day = parseInt(match[3], 10);
+			var hour = match[4] !== undefined ? parseInt(match[4], 10) : 0;
+			var minute = match[5] !== undefined ? parseInt(match[5], 10) : 0;
+			var second = match[6] !== undefined ? parseInt(match[6], 10) : 0;
+			var sign = match[7];
+			var offsetHour = match[8] ? parseInt(match[8], 10) : 0;
+			var offsetMinute = match[9] ? parseInt(match[9], 10) : 0;
+			if (sign) {
+				var offsetTotal = offsetHour * 60 + offsetMinute;
+				if (sign === '-') {
+					offsetTotal = -offsetTotal;
+				}
+				var base = Date.UTC(year, month, day, hour, minute, second);
+				return base - offsetTotal * 60000;
+			}
+			var localDate = new Date(year, month, day, hour, minute, second, 0);
+			if (!isNaN(localDate.getTime())) {
+				return localDate.getTime();
+			}
+		}
+		var appended = normalized;
+		if (/^\d{4}-\d{2}-\d{2}$/.test(appended)) {
+			appended += 'T00:00:00';
+		}
+		if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(appended)) {
+			appended += ':00';
+		}
+		var parsed = Date.parse(appended);
+		if (!isNaN(parsed)) {
+			return parsed;
+		}
+		return NaN;
 	}
 
 	function normalizeLoveNotesData() {
@@ -646,22 +1191,28 @@ $(function () {
 		$mainEmpty.addClass('d-none');
 		$managerEmpty.addClass('d-none');
 		$menuWrapper.removeClass('d-none');
-		var categorySet = new Set();
+		var filterMap = new Map();
 		storyData.moments.forEach(function (entry) {
-			var categories = getMomentCategories(entry);
-			if (!categories.length) {
-				categories = ['未分类'];
-			}
-			categories.forEach(function (cat) { categorySet.add(cat); });
-			var categoryClasses = categories.map(function (cat) {
-				var slug = slugifyCategory(cat);
-				return slug ? 'cat-' + slug : '';
+			var filters = getMomentFilterDescriptors(entry);
+			filters.forEach(function (descriptor) {
+				if (descriptor.slug) {
+					filterMap.set(descriptor.slug, descriptor.label);
+				}
+			});
+			var filterClasses = filters.map(function (descriptor) {
+				return descriptor.slug ? 'cat-' + descriptor.slug : '';
 			}).filter(Boolean);
-			var colClasses = ['col-sm-6', 'col-lg-4', 'moment-item'].concat(categoryClasses).join(' ').trim();
+			var colClasses = ['col-sm-6', 'col-lg-4', 'moment-item'].concat(filterClasses).join(' ').trim();
 			var $col = $('<div/>', { 'class': colClasses });
-			var $box = $('<div/>', { 'class': 'portfolio-box rounded position-relative' });
-			var $imgWrap = $('<div/>', { 'class': 'portfolio-img rounded' });
-			$imgWrap.append($('<img/>', { 'class': 'img-fluid d-block', 'src': entry.image || 'images/projects/project-1.jpg', 'alt': entry.title || 'moment image' }));
+			var $box = $('<article/>', { 'class': 'portfolio-box moment-card rounded position-relative overflow-hidden h-100' });
+			var $mediaWrap = $('<div/>', { 'class': 'portfolio-img moment-card-media rounded' });
+			var primaryMedia = getMomentPrimaryMedia(entry);
+			var coverSrc = getMomentCoverSrc(entry);
+			var mediaAlt = entry.title || 'moment media';
+			$mediaWrap.append($('<img/>', { 'class': 'img-fluid d-block', 'src': coverSrc, 'alt': mediaAlt }));
+			if (primaryMedia && primaryMedia.type === 'video') {
+				$mediaWrap.append($('<span/>', { 'class': 'moment-media-indicator', 'aria-hidden': 'true' }).append($('<i/>', { 'class': 'fas fa-play' })));
+			}
 			var $overlay = $('<div/>', { 'class': 'portfolio-overlay' });
 			var $anchor = $('<a/>', {
 				'href': '#',
@@ -671,38 +1222,62 @@ $(function () {
 			});
 			$overlay.append($anchor);
 			var $details = $('<div/>', { 'class': 'portfolio-overlay-details' });
-			$details.append($('<h5/>', { 'class': 'text-white fw-400' }).text(entry.title));
-			$details.append($('<span/>', { 'class': 'text-light' }).text(entry.subtitle || categories.join(' · ')));
+			$details.append($('<h5/>', { 'class': 'text-white fw-400' }).text(entry.title || '未命名瞬间'));
+			var infoParts = [];
+			var dateLabel = formatMomentDateForDisplay(entry.occurredAt);
+			if (dateLabel) {
+				infoParts.push(dateLabel);
+			}
+			if (entry.description) {
+				infoParts.push(entry.description);
+			}
+			if (!infoParts.length && entry.tags && entry.tags.length) {
+				infoParts.push(entry.tags.join(' · '));
+			}
+			if (infoParts.length) {
+				$details.append($('<span/>', { 'class': 'text-light small' }).text(infoParts.join(' · ')));
+			}
 			$overlay.append($details);
-			$imgWrap.append($overlay);
-			$box.append($imgWrap);
+			$mediaWrap.append($overlay);
+			$box.append($mediaWrap);
 			$col.append($box);
 			$mainList.append($col);
 
 			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
 			var $body = $('<div/>', { 'class': 'flex-grow-1' });
-			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title));
-			var metaText = [];
-			if (entry.subtitle) {
-				metaText.push(entry.subtitle);
+			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title || '未命名瞬间'));
+			var $meta = $('<p/>', { 'class': 'mb-0 small text-muted' });
+			var metaParts = [];
+			if (dateLabel) {
+				metaParts.push(dateLabel);
 			}
-			if (categories.length) {
-				metaText.push(categories.join(' / '));
+			if (primaryMedia) {
+				metaParts.push(primaryMedia.type === 'video' ? '视频' : '照片');
 			}
-			if (entry.image) {
-				metaText.push(entry.image);
+			if (entry.description) {
+				metaParts.push(entry.description);
 			}
-			if (metaText.length) {
-				$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(metaText.join(' · ')));
+			if (entry.mediaSrc && primaryMedia && primaryMedia.type === 'image') {
+				metaParts.push(entry.mediaSrc);
 			}
-			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
-			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(categories.join(' / ')));
+			if (!metaParts.length && entry.tags && entry.tags.length) {
+				metaParts.push(entry.tags.join(' / '));
+			}
+			if (metaParts.length) {
+				$meta.text(metaParts.join(' · '));
+				$body.append($meta);
+			}
+			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
+			if (primaryMedia) {
+				var typeBadge = primaryMedia.type === 'video' ? '视频' : '照片';
+				$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(typeBadge));
+			}
 			if (entry.link) {
 				var viewAttrs = {
 					'href': entry.link,
-					'class': 'btn btn-sm btn-outline-secondary',
-					'text': '查看'
+					'class': 'btn btn-sm btn-outline-secondary'
 				};
+				var linkText = '打开';
 				if (/\.html?$/i.test(entry.link)) {
 					viewAttrs.target = '_self';
 				} else {
@@ -711,13 +1286,15 @@ $(function () {
 						viewAttrs.rel = 'noopener noreferrer';
 					}
 				}
-				$actions.append($('<a/>', viewAttrs));
+				$actions.append($('<a/>', viewAttrs).text(linkText));
 			}
 			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'moments', 'data-id': entry.id }).text('删除'));
 			$item.append($body, $actions);
 			$managerList.append($item);
 		});
-		var categoriesArray = Array.from(categorySet);
+		var categoriesArray = Array.from(filterMap.entries()).map(function (entry) {
+			return { slug: entry[0], label: entry[1] };
+		});
 		buildMomentsMenu(categoriesArray);
 		initMomentsIsotope();
 		bindMomentTriggers();
@@ -859,7 +1436,8 @@ $(function () {
 			var $body = $('<div/>', { 'class': 'card-body d-flex flex-column' });
 			$body.append($('<h4/>', { 'class': 'card-title text-primary mb-3' }).text(entry.title));
 			var $meta = $('<ul/>', { 'class': 'list-unstyled small text-muted mb-3' });
-			$meta.append($('<li/>').text('日期：' + entry.date));
+			var dateLabel = formatDateTimeOrDateForDisplay(entry.date);
+			$meta.append($('<li/>').text('日期：' + (dateLabel || '待补充')));
 			if (entry.location) {
 				if (entry.lat && entry.lng) {
 					var link = 'https://www.openstreetmap.org/?mlat=' + encodeURIComponent(entry.lat) + '&mlon=' + encodeURIComponent(entry.lng) + '&zoom=14';
@@ -871,7 +1449,9 @@ $(function () {
 			}
 			$body.append($meta);
 			$body.append($('<p/>', { 'class': 'card-text flex-grow-1' }).text(entry.text));
-			$body.append($('<div/>', { 'class': 'd-flex justify-content-between align-items-center mt-3' }).append($('<span/>', { 'class': 'text-muted small' }).text('记录于 ' + new Date(entry.createdAt).toLocaleString())).append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'memories', 'data-id': entry.id }).text('删除')));
+			var createdAtLabel = formatDateTimeOrDateForDisplay(entry.createdAt);
+			var recordedText = createdAtLabel ? ('记录于 ' + createdAtLabel) : '记录时间待补充';
+			$body.append($('<div/>', { 'class': 'd-flex justify-content-between align-items-center mt-3' }).append($('<span/>', { 'class': 'text-muted small' }).text(recordedText)).append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'memories', 'data-id': entry.id }).text('删除')));
 			$card.append($body);
 			$col.append($card);
 			$list.append($col);
@@ -1083,16 +1663,14 @@ function updateLetterPaginationControls(side, page, totalPages) {
 	}
 
 	function parseLetterDateValue(value) {
+		var parsed = parseMomentDateValue(value);
+		if (!isNaN(parsed)) {
+			return parsed;
+		}
 		if (!value) { return NaN; }
 		var trimmed = value.toString().trim();
 		if (!trimmed) { return NaN; }
 		var normalized = trimmed.replace(/[年\/\.]/g, '-').replace(/月/g, '-').replace(/日/g, '');
-		var parts = normalized.split('-').filter(Boolean);
-		if (parts.length >= 3) {
-			parts[1] = parts[1].padStart(2, '0');
-			parts[2] = parts[2].padStart(2, '0');
-			normalized = parts[0] + '-' + parts[1] + '-' + parts[2];
-		}
 		var timestamp = Date.parse(normalized);
 		if (isNaN(timestamp)) {
 			return NaN;
@@ -1101,35 +1679,30 @@ function updateLetterPaginationControls(side, page, totalPages) {
 	}
 
 	function formatLetterDateForDisplay(value) {
-		if (!value) { return ''; }
-		var trimmed = value.toString().trim();
-		if (!trimmed) { return ''; }
-		if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) {
-			return trimmed.replace(/-/g, '.');
-		}
-		if (/^\d{4}\.\d{1,2}\.\d{1,2}$/.test(trimmed)) {
-			var parts = trimmed.split('.');
-			return parts[0] + '.' + parts[1].padStart(2, '0') + '.' + parts[2].padStart(2, '0');
-		}
-		return trimmed;
+		return formatDateTimeOrDateForDisplay(value);
 	}
 
 	function formatLetterDateTimeForDisplay(value) {
-		if (!value) { return ''; }
-		var date = new Date(value);
-		if (isNaN(date.getTime())) { return ''; }
-		var y = date.getFullYear();
-		var m = String(date.getMonth() + 1).padStart(2, '0');
-		var d = String(date.getDate()).padStart(2, '0');
-		var h = String(date.getHours()).padStart(2, '0');
-		var min = String(date.getMinutes()).padStart(2, '0');
-		return y + '.' + m + '.' + d + ' ' + h + ':' + min;
+		return formatDisplayDateTime(value);
 	}
 
 	function normalizeLetterDateInput(value) {
 		if (!value) { return ''; }
 		var trimmed = value.toString().trim();
 		if (!trimmed) { return ''; }
+		var hasTime = /[T\s]\d{1,2}:\d{2}/.test(trimmed);
+		if (hasTime || /[+-]\d{2}:?\d{2}$/.test(trimmed)) {
+			var isoResult = normalizeDateTimeInput(trimmed);
+			if (isoResult) {
+				return isoResult;
+			}
+		}
+		if (/T/.test(trimmed)) {
+			var isoFallback = normalizeDateTimeInput(trimmed);
+			if (isoFallback) {
+				return isoFallback;
+			}
+		}
 		var match = trimmed.match(/(\d{4})[年\-\/\.](\d{1,2})[月\-\/\.](\d{1,2})/);
 		if (match) {
 			var year = match[1];
@@ -1268,16 +1841,32 @@ function updateLetterPaginationControls(side, page, totalPages) {
 
 		$('#form-moments').on('submit', function (event) {
 			event.preventDefault();
-			var title = $.trim($(this).find('[name="moment-title"]').val());
-			var subtitle = $.trim($(this).find('[name="moment-subtitle"]').val());
-			var image = $.trim($(this).find('[name="moment-image"]').val());
-			var link = $.trim($(this).find('[name="moment-link"]').val());
-			var tag = $.trim($(this).find('[name="moment-tag"]').val());
-			if (!title || !subtitle || !image || !tag) { return; }
-			storyData.moments.unshift({ id: generateId('mo'), title: title, subtitle: subtitle, image: image, link: link, tag: tag });
-			saveData();
-			renderAllSections();
-			this.reset();
+			var $form = $(this);
+			var title = $.trim($form.find('[name="moment-title"]').val());
+			var dateValue = $.trim($form.find('[name="moment-date"]').val());
+			if (!title || !dateValue) {
+				return;
+			}
+			var fileInput = $form.find('[name="moment-media"]')[0];
+			var files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
+			readMomentFiles(files).then(function (mediaItems) {
+				var newEntry = buildMomentEntryFromForm({
+					title: title,
+					dateValue: dateValue,
+					mediaItems: mediaItems
+				});
+				storyData.moments.unshift(newEntry);
+				saveData();
+				renderAllSections();
+				if ($form.length && $form[0]) {
+					$form[0].reset();
+				} else {
+					$form.trigger('reset');
+				}
+			}).catch(function (error) {
+				console.error(error);
+				alert(error && error.message ? error.message : '保存瞬间失败，请稍后再试');
+			});
 		});
 
 		$('#form-favorites').on('submit', function (event) {
@@ -1344,7 +1933,9 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			var lng = $.trim($form.find('[name="memory-lng"]').val());
 			var text = $.trim($form.find('[name="memory-text"]').val());
 			if (!title || !date || !text) { return; }
-			storyData.memories.unshift({ id: generateId('me'), title: title, date: date, location: location, lat: lat, lng: lng, text: text, createdAt: new Date().toISOString() });
+			var normalizedDate = normalizeMomentDateInput(date);
+			var entryDate = normalizedDate || date;
+			storyData.memories.unshift({ id: generateId('me'), title: title, date: entryDate, location: location, lat: lat, lng: lng, text: text, createdAt: new Date().toISOString() });
 			saveData();
 			renderAllSections();
 			resetMemoryForm();
@@ -1491,16 +2082,37 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			return;
 		}
 		$wrapper.removeClass('d-none');
-		var options = categories.slice().sort(function (a, b) {
-			return a.localeCompare(b, 'zh-CN');
-		}).map(function (label) {
-			var slug = slugifyCategory(label);
-			return {
+		var seen = {};
+		var options = categories.reduce(function (acc, item) {
+			if (!item) { return acc; }
+			var label;
+			var slug;
+			if (typeof item === 'string') {
+				label = item;
+				slug = slugifyCategory(item);
+			} else {
+				label = item.label || item.slug || '';
+				slug = item.slug || slugifyCategory(label);
+			}
+			label = (label || '').trim();
+			if (!label) { return acc; }
+			if (slug && seen[slug]) { return acc; }
+			if (!slug && seen[label]) { return acc; }
+			acc.push({
 				label: label,
+				slug: slug,
 				filter: slug ? '.cat-' + slug : '*'
-			};
-		}).filter(function (option) { return option.filter !== '*'; });
-		options.unshift({ label: '全部', filter: '*' });
+			});
+			if (slug) {
+				seen[slug] = true;
+			} else {
+				seen[label] = true;
+			}
+			return acc;
+		}, []).filter(function (option) { return option.filter !== '*'; });
+
+		options = orderMomentMenuOptions(options);
+		options.unshift({ label: '全部', filter: '*', slug: '' });
 		if (!options.some(function (option) { return option.filter === currentMomentsFilter; })) {
 			currentMomentsFilter = '*';
 		}
@@ -1642,13 +2254,6 @@ function updateLetterPaginationControls(side, page, totalPages) {
 		});
 	}
 
-	function getMomentCategories(entry) {
-		var source = entry.tag || entry.subtitle || '';
-		return source.split(/[,+/|]+/).map(function (item) {
-			return item.trim();
-		}).filter(Boolean);
-	}
-
 	function slugifyCategory(name) {
 		if (!name) { return ''; }
 		return name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9\u4e00-\u9fa5-]/g, '');
@@ -1686,17 +2291,9 @@ function updateLetterPaginationControls(side, page, totalPages) {
 		}
 		currentMomentIndex = index;
 		currentMomentId = id;
-		var categories = getMomentCategories(entry);
-		var imageSrc = entry.image || '';
-
-		if (!imageSrc) {
-			imageSrc = 'images/projects/project-1.jpg';
-		}
-
-		$momentImage.attr({
-			src: imageSrc,
-			alt: entry.title || 'moment image'
-		});
+		var primaryMedia = getMomentPrimaryMedia(entry);
+		var coverSrc = getMomentCoverSrc(entry);
+		updateMomentViewerMedia(primaryMedia, coverSrc, entry.title);
 
 		if (entry.title) {
 			$momentTitle.text(entry.title).removeClass('d-none');
@@ -1704,17 +2301,40 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			$momentTitle.text('').addClass('d-none');
 		}
 
-		if (entry.subtitle) {
-			$momentSubtitle.text(entry.subtitle).removeClass('d-none');
+		var dateLabel = formatMomentDateForDisplay(entry.occurredAt);
+		if (dateLabel) {
+			$momentDate.text(dateLabel).removeClass('d-none');
 		} else {
-			$momentSubtitle.text('').addClass('d-none');
+			$momentDate.text('').addClass('d-none');
 		}
 
+		var description = entry.description || '';
+		if (!description && entry.tags && entry.tags.length) {
+			description = entry.tags.join(' · ');
+		}
+		if (description) {
+			$momentDescription.text(description).removeClass('d-none');
+		} else {
+			$momentDescription.text('').addClass('d-none');
+		}
+
+		var tagList = [];
+		if (primaryMedia) {
+			tagList.push(primaryMedia.type === 'video' ? '视频' : '照片');
+		}
+		if (entry.tags && entry.tags.length) {
+			tagList = tagList.concat(entry.tags);
+		}
+		var yearLabel = getMomentYear(entry);
+		if (yearLabel) {
+			tagList.push(yearLabel + ' 年');
+		}
+		tagList = dedupeArray(tagList);
 		$momentTags.empty();
-		if (categories.length) {
+		if (tagList.length) {
 			$momentTags.removeClass('d-none');
-			categories.forEach(function (cat) {
-				$momentTags.append($('<span/>', { 'class': 'badge' }).text(cat));
+			tagList.forEach(function (tag) {
+				$momentTags.append($('<span/>', { 'class': 'badge' }).text(tag));
 			});
 		} else {
 			$momentTags.addClass('d-none');
@@ -1735,6 +2355,75 @@ function updateLetterPaginationControls(side, page, totalPages) {
 
 		updateMomentNavState();
 		showMomentViewer();
+	}
+
+	function updateMomentViewerMedia(primaryMedia, coverSrc, title) {
+		if (!$momentImage.length || !$momentVideo.length) {
+			return;
+		}
+		var videoEl = $momentVideo.get(0);
+		if (primaryMedia && primaryMedia.type === 'video' && primaryMedia.src) {
+			$momentImage.addClass('d-none').attr({ src: '', alt: '' });
+			if (videoEl) {
+				videoEl.pause();
+				videoEl.removeAttribute('src');
+				videoEl.removeAttribute('poster');
+				if (primaryMedia.poster || coverSrc) {
+					videoEl.setAttribute('poster', primaryMedia.poster || coverSrc);
+				}
+				videoEl.src = primaryMedia.src;
+				try {
+					videoEl.load();
+				} catch (err) {
+					console.warn('无法加载瞬间视频', err);
+				}
+			}
+			$momentVideo.removeClass('d-none');
+		} else {
+			if (videoEl) {
+				try {
+					videoEl.pause();
+				} catch (error) {
+					// ignore
+				}
+				videoEl.removeAttribute('src');
+				videoEl.removeAttribute('poster');
+				try {
+					videoEl.load();
+				} catch (err2) {
+					// ignore
+				}
+			}
+			$momentVideo.addClass('d-none');
+			$momentImage.attr({
+				src: coverSrc,
+				alt: title || 'moment image'
+			}).removeClass('d-none');
+		}
+	}
+
+	function resetMomentViewerMedia() {
+		if ($momentVideo.length) {
+			var videoEl = $momentVideo.get(0);
+			if (videoEl) {
+				try {
+					videoEl.pause();
+				} catch (error) {
+					// ignore
+				}
+				videoEl.removeAttribute('src');
+				videoEl.removeAttribute('poster');
+				try {
+					videoEl.load();
+				} catch (err) {
+					// ignore
+				}
+			}
+			$momentVideo.addClass('d-none');
+		}
+		if ($momentImage.length) {
+			$momentImage.addClass('d-none').attr({ src: '', alt: '' });
+		}
 	}
 
 	function showMomentViewer() {
@@ -1766,10 +2455,12 @@ function updateLetterPaginationControls(side, page, totalPages) {
 		var delay = immediate ? 0 : 250;
 		if (delay === 0) {
 			$momentViewer.addClass('d-none');
+			resetMomentViewerMedia();
 			hideMomentTimer = null;
 		} else {
 			hideMomentTimer = setTimeout(function () {
 				$momentViewer.addClass('d-none');
+				resetMomentViewerMedia();
 				hideMomentTimer = null;
 			}, delay);
 		}
