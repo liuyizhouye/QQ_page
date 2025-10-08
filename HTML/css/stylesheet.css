@@ -3705,3 +3705,96 @@ body.moment-viewer-open {
 .moment-card-media img {
   object-fit: cover;
 }
+
+/* Milestone Timeline
+--------------------------------------------- */
+.milestone-timeline {
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.milestone-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 1rem;
+  width: 2px;
+  background: rgba(13, 110, 253, 0.18);
+}
+
+.timeline-year {
+  margin: 2.25rem 0 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6b7280;
+}
+
+.timeline-entry {
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding-left: 1.5rem;
+}
+
+.timeline-entry:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  top: 1.25rem;
+  left: -0.65rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.18);
+}
+
+.timeline-card {
+  padding: 1.75rem;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  border-radius: 1.25rem;
+  box-shadow: 0 1.75rem 3.5rem rgba(15, 23, 42, 0.08);
+}
+
+.timeline-date {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+
+.timeline-title {
+  margin-bottom: 0.5rem;
+}
+
+.timeline-location {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.timeline-detail {
+  color: #475569;
+}
+
+@media (max-width: 767.98px) {
+  .milestone-timeline {
+    padding-left: 2rem;
+  }
+  .milestone-timeline::before {
+    left: 0.75rem;
+  }
+  .timeline-entry {
+    padding-left: 1.25rem;
+  }
+  .timeline-dot {
+    left: -0.85rem;
+  }
+  .timeline-card {
+    padding: 1.5rem;
+  }
+}

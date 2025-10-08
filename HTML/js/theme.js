@@ -295,12 +295,12 @@ $(function () {
 	var STORY_STORAGE_KEY = 'storyManagerData';
 	var DEFAULT_STORY_DATA = {
 		milestones: [
-			{ id: 'ms-20190618', date: '2019.06.18', title: '首次遇见', icon: 'fas fa-moon', description: '图书馆的夜灯下，我们因为一本借错的书开始了长长的聊天。' },
-			{ id: 'ms-20190705', date: '2019.07.05', title: '第一杯热可可', icon: 'fas fa-mug-hot', description: '窗外雷雨，我们在星河咖啡谈论梦想，从此每场暴雨都变得浪漫。' },
-			{ id: 'ms-20200214', date: '2020.02.14', title: '确定关系', icon: 'fas fa-heart', description: '情人节的晚安电话里，我们终于说出口：要好好地在一起。' },
-			{ id: 'ms-20201225', date: '2020.12.25', title: '第一趟旅行', icon: 'fas fa-route', description: '在大理的清晨醒来，我们一起看见天空最柔软的粉色。' },
-			{ id: 'ms-20220403', date: '2022.04.03', title: '家里迎来 Nabi', icon: 'fas fa-cat', description: '第一只小猫入住，家里多了肉垫踩踏，也学会一起守护新的生命。' },
-			{ id: 'ms-20230901', date: '2023.09.01', title: '新家入住', icon: 'fas fa-home', description: '我们亲手布置每个角落，把生活的碎片变成名为“家”的答案。' }
+			{ id: 'ms-20190618', title: '首次遇见', occurredAt: '2019-06-18T19:30:00+08:00', location: '校园旧图书馆', detail: '图书馆的夜灯下，我们因为一本借错的书开始了长长的聊天。' },
+			{ id: 'ms-20190705', title: '第一杯热可可', occurredAt: '2019-07-05T21:00:00+08:00', location: '星河咖啡', detail: '窗外雷雨，我们在咖啡馆谈论梦想，从此每场暴雨都变得浪漫。' },
+			{ id: 'ms-20200214', title: '确定关系', occurredAt: '2020-02-14T22:30:00+08:00', location: '深夜电话', detail: '情人节的晚安电话里，我们终于说出口：要好好地在一起。' },
+			{ id: 'ms-20201225', title: '第一趟旅行', occurredAt: '2020-12-25T06:00:00+08:00', location: '大理', detail: '在大理的清晨醒来，我们一起看见天空最柔软的粉色。' },
+			{ id: 'ms-20220403', title: '家里迎来 Nabi', occurredAt: '2022-04-03T10:15:00+08:00', location: '我们的家', detail: '第一只小猫入住，家里多了肉垫踩踏，也学会一起守护新的生命。' },
+			{ id: 'ms-20230901', title: '新家入住', occurredAt: '2023-09-01T09:00:00+08:00', location: '新居', detail: '我们亲手布置每个角落，把生活的碎片变成名为“家”的答案。' }
 		],
 		moments: [
 			{
@@ -413,6 +413,8 @@ $(function () {
 	var $momentNext = $('#moment-viewer-next');
 	var $momentClose = $('#moment-viewer-close');
 
+	mergeMemoriesIntoMilestones();
+	normalizeMilestonesData();
 	normalizeMomentsData();
 	normalizeLoveNotesData();
 	renderAllSections();
@@ -499,16 +501,145 @@ $(function () {
 		return JSON.parse(JSON.stringify(obj));
 	}
 
-	function ensureStructure(data) {
-		['milestones','moments','favorites','loveNotes','memories'].forEach(function (key) {
-			if (!Array.isArray(data[key])) {
-				data[key] = [];
-			}
-		});
-		return data;
-	}
+function ensureStructure(data) {
+	['milestones','moments','favorites','loveNotes','memories'].forEach(function (key) {
+		if (!Array.isArray(data[key])) {
+			data[key] = [];
+		}
+	});
+	return data;
+}
 
-	function normalizeMomentsData() {
+function mergeMemoriesIntoMilestones() {
+	if (!Array.isArray(storyData.memories) || !storyData.memories.length) {
+		return false;
+	}
+	var mutated = false;
+	storyData.memories.forEach(function (memory) {
+		var candidate = {
+			id: memory && memory.id ? memory.id.replace(/^me/, 'ms') : generateId('ms'),
+			title: memory && memory.title ? memory.title : '未命名的记忆',
+			occurredAt: memory && (memory.occurredAt || memory.date || memory.createdAt || ''),
+			location: memory && memory.location ? memory.location : '',
+			detail: memory && (memory.text || memory.detail || ''),
+			createdAt: memory && memory.createdAt ? memory.createdAt : new Date().toISOString()
+		};
+		var upgraded = upgradeMilestoneEntry(candidate);
+		if (!upgraded) { return; }
+		if (storyData.milestones.some(function (item) { return item.id === upgraded.id; })) {
+			upgraded.id = generateId('ms');
+		}
+		if (upgraded.__forceSave) {
+			delete upgraded.__forceSave;
+		}
+		storyData.milestones.push(upgraded);
+		mutated = true;
+	});
+	storyData.memories = [];
+	if (mutated) {
+		saveData();
+	}
+	return mutated;
+}
+
+function normalizeMilestonesData() {
+	var mutated = false;
+	var normalized = [];
+	storyData.milestones.forEach(function (entry) {
+		var upgraded = upgradeMilestoneEntry(entry);
+		if (!upgraded) { return; }
+		if (upgraded.__forceSave) {
+			mutated = true;
+			delete upgraded.__forceSave;
+		}
+		normalized.push(upgraded);
+	});
+	if (mutated) {
+		storyData.milestones = normalized;
+		saveData();
+	} else {
+		storyData.milestones = normalized;
+	}
+}
+
+function upgradeMilestoneEntry(entry) {
+	if (!entry || typeof entry !== 'object') {
+		return null;
+	}
+	var changed = false;
+	var id = entry.id || generateId('ms');
+	if (!entry.id) {
+		changed = true;
+	}
+	var normalizedDate = normalizeMilestoneDateInput(entry.occurredAt || entry.date || '');
+	if (!normalizedDate) {
+		normalizedDate = new Date().toISOString();
+		changed = true;
+	} else if (entry.occurredAt !== normalizedDate) {
+		changed = true;
+	}
+	var title = entry.title ? String(entry.title).trim() : '';
+	if (!title) {
+		title = '未命名的里程碑';
+		changed = true;
+	}
+	var location = entry.location ? String(entry.location).trim() : '';
+	var detail = entry.detail || entry.description || entry.text || '';
+	detail = detail ? String(detail).trim() : '';
+	var createdAt = entry.createdAt;
+	if (!createdAt) {
+		createdAt = new Date().toISOString();
+		changed = true;
+	}
+	var upgraded = {
+		id: id,
+		title: title,
+		occurredAt: normalizedDate,
+		location: location,
+		detail: detail,
+		createdAt: createdAt
+	};
+	if (changed) {
+		upgraded.__forceSave = true;
+	}
+	return upgraded;
+}
+
+function normalizeMilestoneDateInput(value) {
+	if (!value) { return ''; }
+	var normalized = normalizeDateTimeInput(value);
+	if (normalized) { return normalized; }
+	return value.toString().trim();
+}
+
+function parseMilestoneDateValue(value) {
+	return parseMomentDateValue(value);
+}
+
+function sortMilestonesAscending(a, b) {
+	var timeA = parseMilestoneDateValue(a && a.occurredAt);
+	var timeB = parseMilestoneDateValue(b && b.occurredAt);
+	if (!isNaN(timeA) && !isNaN(timeB) && timeA !== timeB) {
+		return timeA - timeB;
+	}
+	if (!isNaN(timeA) && isNaN(timeB)) {
+		return -1;
+	}
+	if (isNaN(timeA) && !isNaN(timeB)) {
+		return 1;
+	}
+	return (a.title || '').localeCompare(b.title || '');
+}
+
+function formatMilestoneYear(value) {
+	var timestamp = parseMilestoneDateValue(value);
+	if (isNaN(timestamp)) {
+		return '';
+	}
+	return new Date(timestamp).getFullYear().toString();
+}
+
+function normalizeMomentsData() {
 		var mutated = false;
 		var normalized = [];
 		storyData.moments.forEach(function (entry) {
@@ -1142,7 +1273,6 @@ $(function () {
 		$('#story-count-moments').text(storyData.moments.length);
 		$('#story-count-favorites').text(storyData.favorites.length);
 		$('#story-count-loveNotes').text(storyData.loveNotes.length);
-		$('#story-count-memories').text(storyData.memories.length);
 	}
 
 	function renderAllSections() {
@@ -1150,7 +1280,6 @@ $(function () {
 		renderMoments();
 		renderFavorites();
 		renderLoveNotes();
-		renderMemories();
 		updateCounts();
 		rebindPopupGalleries();
 		initLetterUpload();
@@ -1161,35 +1290,65 @@ $(function () {
 		var $mainEmpty = $('#milestones-empty');
 		var $managerList = $('#manager-milestones-list');
 		var $managerEmpty = $('#manager-milestones-empty');
+
 		$mainList.empty();
 		$managerList.empty();
+
 		if (!storyData.milestones.length) {
 			$mainEmpty.removeClass('d-none');
 			$managerEmpty.removeClass('d-none');
 			return;
 		}
+
 		$mainEmpty.addClass('d-none');
 		$managerEmpty.addClass('d-none');
-		storyData.milestones.forEach(function (entry) {
-			var $col = $('<div/>', { 'class': 'col-md-6' });
-			var $box = $('<div/>', { 'class': 'featured-box style-3 mb-5' });
-			var $icon = $('<div/>', { 'class': 'featured-box-icon text-primary bg-white shadow-sm rounded' });
-			$icon.append($('<i/>', { 'class': entry.icon || 'fas fa-star' }));
-			$box.append($icon);
-			$box.append($('<h3/>').text(entry.date + ' ' + entry.title));
-			$box.append($('<p/>', { 'class': 'mb-0' }).text(entry.description));
-			$col.append($box);
-			$mainList.append($col);
 
-			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
+		var sorted = storyData.milestones.slice().sort(sortMilestonesAscending);
+		var lastYearLabel = null;
+
+		sorted.forEach(function (entry) {
+			var dateLabel = formatDateTimeOrDateForDisplay(entry.occurredAt);
+			var yearLabel = formatMilestoneYear(entry.occurredAt);
+
+			if (yearLabel && yearLabel !== lastYearLabel) {
+				$mainList.append($('<div/>', { 'class': 'timeline-year text-muted fw-600' }).text(yearLabel));
+				lastYearLabel = yearLabel;
+			}
+
+			var $entry = $('<div/>', { 'class': 'timeline-entry' });
+			$entry.append($('<span/>', { 'class': 'timeline-dot' }));
+
+			var $card = $('<div/>', { 'class': 'timeline-card bg-white border rounded-4 shadow-sm' });
+			$card.append($('<span/>', { 'class': 'timeline-date small text-uppercase text-muted d-block mb-2' }).text(dateLabel || '日期待补充'));
+			$card.append($('<h3/>', { 'class': 'timeline-title text-5 fw-600 mb-2' }).text(entry.title || '未命名的里程碑'));
+			if (entry.location) {
+				$card.append($('<p/>', { 'class': 'timeline-location text-primary mb-2' }).text(entry.location));
+			}
+			if (entry.detail) {
+				$card.append($('<p/>', { 'class': 'timeline-detail mb-0' }).text(entry.detail));
+			}
+
+			$entry.append($card);
+			$mainList.append($entry);
+
+			var $managerItem = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
 			var $body = $('<div/>', { 'class': 'flex-grow-1' });
-			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.date + ' ' + entry.title));
-			$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(entry.description));
-			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
-			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(entry.icon || 'fas fa-star'));
+			var heading = (dateLabel ? dateLabel + ' · ' : '') + (entry.title || '未命名的里程碑');
+			$body.append($('<h5/>', { 'class': 'mb-1' }).text(heading));
+			var managerMeta = [];
+			if (entry.location) {
+				managerMeta.push('地点：' + entry.location);
+			}
+			if (entry.detail) {
+				managerMeta.push(entry.detail);
+			}
+			if (managerMeta.length) {
+				$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(managerMeta.join(' · ')));
+			}
+			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
 			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'milestones', 'data-id': entry.id }).text('删除'));
-			$item.append($body, $actions);
-			$managerList.append($item);
+			$managerItem.append($body, $actions);
+			$managerList.append($managerItem);
 		});
 	}
 
@@ -1428,43 +1587,6 @@ $(function () {
 		var managerLetters = storyData.loveNotes.slice().sort(sortLettersDescending);
 		managerLetters.forEach(function (entry) {
 			$managerList.append(buildLetterManagerItem(entry));
-		});
-	}
-
-	function renderMemories() {
-		var $list = $('#memory-list');
-		var $empty = $('#memory-empty');
-		$list.empty();
-		if (!storyData.memories.length) {
-			$empty.removeClass('d-none');
-			return;
-		}
-		$empty.addClass('d-none');
-		storyData.memories.forEach(function (entry) {
-			var $col = $('<div/>', { 'class': 'col-12 col-lg-6' });
-			var $card = $('<div/>', { 'class': 'card h-100 shadow-sm border-0' });
-			var $body = $('<div/>', { 'class': 'card-body d-flex flex-column' });
-			$body.append($('<h4/>', { 'class': 'card-title text-primary mb-3' }).text(entry.title));
-			var $meta = $('<ul/>', { 'class': 'list-unstyled small text-muted mb-3' });
-			var dateLabel = formatDateTimeOrDateForDisplay(entry.date);
-			$meta.append($('<li/>').text('日期：' + (dateLabel || '待补充')));
-			if (entry.location) {
-				if (entry.lat && entry.lng) {
-					var link = 'https://www.openstreetmap.org/?mlat=' + encodeURIComponent(entry.lat) + '&mlon=' + encodeURIComponent(entry.lng) + '&zoom=14';
-					var $loc = $('<a/>', { 'href': link, 'target': '_blank', 'rel': 'noopener noreferrer', 'text': entry.location });
-					$meta.append($('<li/>').append('地点：').append($loc));
-				} else {
-					$meta.append($('<li/>').text('地点：' + entry.location));
-				}
-			}
-			$body.append($meta);
-			$body.append($('<p/>', { 'class': 'card-text flex-grow-1' }).text(entry.text));
-			var createdAtLabel = formatDateTimeOrDateForDisplay(entry.createdAt);
-			var recordedText = createdAtLabel ? ('记录于 ' + createdAtLabel) : '记录时间待补充';
-			$body.append($('<div/>', { 'class': 'd-flex justify-content-between align-items-center mt-3' }).append($('<span/>', { 'class': 'text-muted small' }).text(recordedText)).append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'memories', 'data-id': entry.id }).text('删除')));
-			$card.append($body);
-			$col.append($card);
-			$list.append($col);
 		});
 	}
 
@@ -1830,15 +1952,33 @@ function updateLetterPaginationControls(side, page, totalPages) {
 	function bindForms() {
 		$('#form-milestones').on('submit', function (event) {
 			event.preventDefault();
-			var date = $.trim($(this).find('[name="milestone-date"]').val());
-			var title = $.trim($(this).find('[name="milestone-title"]').val());
-			var icon = $(this).find('[name="milestone-icon"]').val();
-			var description = $.trim($(this).find('[name="milestone-description"]').val());
-			if (!date || !title || !icon || !description) { return; }
-			storyData.milestones.unshift({ id: generateId('ms'), date: date, title: title, icon: icon, description: description });
+			var $form = $(this);
+			var dateValue = $.trim($form.find('[name="milestone-date"]').val());
+			var title = $.trim($form.find('[name="milestone-title"]').val());
+			var location = $.trim($form.find('[name="milestone-location"]').val());
+			var detail = $.trim($form.find('[name="milestone-detail"]').val());
+			if (!dateValue || !title) { return; }
+			var occurredAt = normalizeMilestoneDateInput(dateValue) || dateValue;
+			var entry = upgradeMilestoneEntry({
+				id: generateId('ms'),
+				title: title,
+				occurredAt: occurredAt,
+				location: location,
+				detail: detail,
+				createdAt: new Date().toISOString()
+			});
+			if (!entry) { return; }
+			if (entry && entry.__forceSave) {
+				delete entry.__forceSave;
+			}
+			storyData.milestones.unshift(entry);
 			saveData();
 			renderAllSections();
-			this.reset();
+			if ($form.length && $form[0]) {
+				$form[0].reset();
+			} else {
+				$form.trigger('reset');
+			}
 		});
 
 		$('#form-moments').on('submit', function (event) {
@@ -1929,23 +2069,6 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			}
 		});
 
-		$('#form-memories').on('submit', function (event) {
-			event.preventDefault();
-			var $form = $(this);
-			var title = $.trim($form.find('[name="memory-title"]').val());
-			var date = $form.find('[name="memory-date"]').val();
-			var location = $.trim($form.find('[name="memory-location"]').val());
-			var lat = $.trim($form.find('[name="memory-lat"]').val());
-			var lng = $.trim($form.find('[name="memory-lng"]').val());
-			var text = $.trim($form.find('[name="memory-text"]').val());
-			if (!title || !date || !text) { return; }
-			var normalizedDate = normalizeMomentDateInput(date);
-			var entryDate = normalizedDate || date;
-			storyData.memories.unshift({ id: generateId('me'), title: title, date: entryDate, location: location, lat: lat, lng: lng, text: text, createdAt: new Date().toISOString() });
-			saveData();
-			renderAllSections();
-			resetMemoryForm();
-		});
 	}
 
 	function bindDeletion() {
@@ -1958,16 +2081,6 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			renderAllSections();
 		});
 
-		$('#clear-memories').on('click', function () {
-			if (!storyData.memories.length) { return; }
-			if (!window.confirm('确定要清空本地保存的所有回忆吗？此操作无法撤销。')) {
-				return;
-			}
-			storyData.memories = [];
-			saveData();
-			renderAllSections();
-			resetMemoryForm();
-		});
 	}
 
 	function bindLetterPaginationControls() {
@@ -1981,101 +2094,13 @@ function updateLetterPaginationControls(side, page, totalPages) {
 		});
 	}
 
-	var memoryMap, memoryMarker, memoryMapReady = false;
-	var $memoryLocation = $('#memory-location');
-	var $memoryLat = $('#memory-lat');
-	var $memoryLng = $('#memory-lng');
-
 	function setupTabListeners() {
 		$('button[data-bs-toggle="pill"]').on('shown.bs.tab', function (event) {
 			var target = $(event.target).attr('data-bs-target');
-			if (target === '#story-pane-memories') {
-				setTimeout(initMemoryMap, 100);
+			if (target === '#story-pane-loveNotes') {
+				setTimeout(initLetterUpload, 50);
 			}
 		});
-		if ($('#story-pane-memories').hasClass('show active')) {
-			initMemoryMap();
-		}
-	}
-
-	function initMemoryMap() {
-		var $mapContainer = $('#memory-map');
-		if (typeof window.L === 'undefined') {
-			if ($mapContainer.length && !$mapContainer.hasClass('story-map-error')) {
-				$mapContainer.addClass('story-map-error bg-light d-flex align-items-center justify-content-center text-muted text-center').html('<span>地图组件未能加载，请检查网络连接。</span>');
-			}
-			return;
-		}
-		if (memoryMapReady) {
-			if (memoryMap) {
-				memoryMap.invalidateSize();
-			}
-			return;
-		}
-		var defaultCenter = [31.2304, 121.4737];
-		memoryMap = L.map('memory-map', {
-			center: defaultCenter,
-			zoom: 4,
-			scrollWheelZoom: true
-		});
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(memoryMap);
-		memoryMapReady = true;
-
-		memoryMap.on('click', function (event) {
-			setMemoryMarker(event.latlng.lat, event.latlng.lng, true);
-		});
-
-		$memoryLocation.on('change', function () {
-			var parsed = parseCoordinateInput($(this).val());
-			if (!parsed) { return; }
-			setMemoryMarker(parsed.lat, parsed.lng, true);
-		});
-
-		resetMemoryForm();
-	}
-
-	function parseCoordinateInput(value) {
-		if (!value) { return null; }
-		var cleaned = value.replace(/\s+/g, '');
-		var parts = cleaned.split(',');
-		if (parts.length !== 2) { return null; }
-		var lat = parseFloat(parts[0]);
-		var lng = parseFloat(parts[1]);
-		if (!isFinite(lat) || !isFinite(lng)) { return null; }
-		if (lat < -90 || lat > 90 || lng < -180 || lng > 180) { return null; }
-		return { lat: lat, lng: lng };
-	}
-
-	function setMemoryMarker(lat, lng, centerMap) {
-		if (!memoryMapReady) { return; }
-		if (!memoryMarker) {
-			memoryMarker = L.marker([lat, lng]).addTo(memoryMap);
-		} else {
-			memoryMarker.setLatLng([lat, lng]);
-		}
-		$memoryLat.val(lat.toFixed(6));
-		$memoryLng.val(lng.toFixed(6));
-		if (centerMap) {
-			memoryMap.setView([lat, lng], Math.max(memoryMap.getZoom(), 12));
-		}
-		if (!$memoryLocation.val() || parseCoordinateInput($memoryLocation.val())) {
-			$memoryLocation.val(lat.toFixed(5) + ', ' + lng.toFixed(5));
-		}
-	}
-
-	function resetMemoryForm() {
-		var $form = $('#form-memories');
-		if (!$form.length) { return; }
-		$form[0].reset();
-		$memoryLat.val('');
-		$memoryLng.val('');
-		if (memoryMapReady) {
-			memoryMap.setView([31.2304, 121.4737], 4);
-			if (memoryMarker) {
-				memoryMap.removeLayer(memoryMarker);
-				memoryMarker = null;
-			}
-		}
 	}
 
 	function buildMomentsMenu(categories) {

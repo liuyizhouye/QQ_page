@@ -16,8 +16,6 @@
 ============================== -->
 <!-- Bootstrap -->
 <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css" />
-<!-- Leaflet -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <!-- Font Awesome Icon -->
 <link rel="stylesheet" type="text/css" href="vendor/font-awesome/css/all.min.css" />
 <!-- Owl Carousel -->
@@ -189,7 +187,7 @@
         <div class="row">
           <div class="col-lg-11 mx-auto">
             <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
-            <div id="milestones-list" class="row"></div>
+            <div id="milestones-list" class="milestone-timeline"></div>
           </div>
         </div>
       </div>
@@ -314,7 +312,7 @@
     </section>
     <!-- Letters end --> 
     
-    <!-- Memory Capsule
+    <!-- Story Manager
     ============================================= -->
     <section id="memory" class="section bg-light">
       <div class="container px-lg-5">
@@ -327,14 +325,13 @@
         <div class="row gy-5">
           <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
             <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
-            <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单、书信与记忆统一管理。每次更新都会保存在浏览器本地。</p>
+            <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。每次更新都会保存在浏览器本地。</p>
             <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
             <ul class="list-unstyled text-3 lh-lg mb-4">
               <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
               <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
               <li><i class="fas fa-star text-primary me-2"></i>偏爱 <span class="badge bg-light text-muted" id="story-count-favorites">0</span></li>
               <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
-              <li><i class="fas fa-memory text-primary me-2"></i>记忆 <span class="badge bg-light text-muted" id="story-count-memories">0</span></li>
             </ul>
             <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
           </div>
@@ -346,7 +343,6 @@
                   <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
                   <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-favorites" data-bs-toggle="pill" data-bs-target="#story-pane-favorites" type="button" role="tab" aria-controls="story-pane-favorites" aria-selected="false">偏爱</button></li>
                   <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
-                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-memories" data-bs-toggle="pill" data-bs-target="#story-pane-memories" type="button" role="tab" aria-controls="story-pane-memories" aria-selected="false">记忆</button></li>
                 </ul>
               </div>
               <div class="card-body">
@@ -357,21 +353,10 @@
                       <div id="manager-milestones-list" class="list-group list-group-flush mb-4"></div>
                       <h3 class="text-5 fw-600 mb-3">新增里程碑</h3>
                       <form id="form-milestones" class="row g-3 story-form" novalidate>
-                        <div class="col-md-6"><input type="text" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024.02.14）" required></div>
+                        <div class="col-md-6"><input type="datetime-local" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024-02-14T20:30）" required></div>
                         <div class="col-md-6"><input type="text" class="form-control" name="milestone-title" placeholder="标题（例如 首次遇见）" required></div>
-                        <div class="col-md-6">
-                          <select class="form-select" name="milestone-icon" required>
-                            <option value="" selected disabled>选择一个图标</option>
-                            <option value="fas fa-moon">月亮</option>
-                            <option value="fas fa-mug-hot">热可可</option>
-                            <option value="fas fa-heart">爱心</option>
-                            <option value="fas fa-route">旅程</option>
-                            <option value="fas fa-cat">小猫</option>
-                            <option value="fas fa-home">新家</option>
-                            <option value="fas fa-star">星星</option>
-                          </select>
-                        </div>
-                        <div class="col-12"><textarea class="form-control" rows="3" name="milestone-description" placeholder="记录这一刻发生了什么" required></textarea></div>
+                        <div class="col-md-6"><input type="text" class="form-control" name="milestone-location" placeholder="地点（可选，例如 校园旧图书馆）"></div>
+                        <div class="col-12"><textarea class="form-control" rows="3" name="milestone-detail" placeholder="细节或想说的话（可选）"></textarea></div>
                         <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存里程碑</button></div>
                       </form>
                     </div>
@@ -458,33 +443,6 @@
                       </form>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="story-pane-memories" role="tabpanel" aria-labelledby="tab-link-memories">
-                    <div class="story-manager-section">
-                      <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3">
-                        <h3 class="text-5 fw-600 mb-2 mb-md-0">我们的记忆墙</h3>
-                        <button id="clear-memories" type="button" class="btn btn-outline-danger rounded-pill btn-sm">清空本地记录</button>
-                      </div>
-                      <div id="memory-empty" class="alert alert-light border text-muted" role="status">还没有新的记录，写下第一段回忆吧！</div>
-                      <div id="memory-list" class="row g-4 mb-4"></div>
-                      <h3 class="text-5 fw-600 mb-3">新增记忆</h3>
-                      <form id="form-memories" class="row g-3 story-form" novalidate>
-                        <div class="col-md-6"><input name="memory-title" type="text" class="form-control" required placeholder="回忆标题或心情"></div>
-                        <div class="col-md-6"><input name="memory-date" type="datetime-local" class="form-control" required aria-label="发生时间"></div>
-                        <div class="col-md-6">
-                          <input id="memory-location" name="memory-location" type="text" class="form-control" placeholder="输入地点或经纬度" autocomplete="off" aria-label="地点">
-                          <input type="hidden" name="memory-lat" id="memory-lat">
-                          <input type="hidden" name="memory-lng" id="memory-lng">
-                          <div class="form-text">可输入地点名称或经纬度，也可以拖动并点击地图标记位置。</div>
-                        </div>
-                        <div class="col-12">
-                          <div id="memory-map" class="memory-map border rounded" style="height: 280px;"></div>
-                          <div class="form-text mt-2">地图数据来自 OpenStreetMap，无需额外 API。</div>
-                        </div>
-                        <div class="col-12"><textarea name="memory-text" class="form-control" rows="5" required placeholder="把当时的细节写下来：见到的风景、想说的话、未来的心愿..."></textarea></div>
-                        <div class="col-12 text-end"><button id="save-memory" class="btn btn-primary rounded-pill" type="submit">保存记忆</button></div>
-                      </form>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -492,7 +450,7 @@
         </div>
       </div>
     </section>
-    <!-- Memory Capsule end --> 
+    <!-- Story Manager end --> 
     
   </div>
   <!-- Content end --> 
@@ -596,7 +554,6 @@
 <!-- Magnific Popup --> 
 <script src="vendor/magnific-popup/jquery.magnific-popup.min.js"></script> 
 <!-- Leaflet --> 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <!-- Custom Script --> 
 <script src="js/theme.js"></script>
 </body>
