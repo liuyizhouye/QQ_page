@@ -102,7 +102,7 @@
                 <p class="text-7 fw-500 text-white mb-2 mb-md-3">Welcome to our journey</p>
                 <h2 class="text-16 fw-600 text-white mb-2 mb-md-3"><span class="typed"></span></h2>
                 <p class="text-5 text-light mb-4">记录每一点回忆、火花与奇遇。</p>
-				<a href="#story" class="btn btn-outline-primary rounded-pill shadow-none smooth-scroll mt-2">Link Start!</a>
+				<a id="link-start-button" href="#story" class="btn btn-outline-primary rounded-pill shadow-none smooth-scroll mt-2">Link Start!</a>
               </div>
             </div>
           </div>
@@ -560,6 +560,7 @@
 <script>
 (function () {
   var audio = document.getElementById('background-audio');
+  var linkStartButton = document.getElementById('link-start-button');
   if (!audio) {
     return;
   }
@@ -567,33 +568,36 @@
   var attemptPlay = function () {
     var playPromise = audio.play();
     if (playPromise && typeof playPromise.then === 'function') {
-      playPromise.catch(showUnlockButton);
+      playPromise.catch(bindLinkStartButton);
     }
   };
 
-  var showUnlockButton = function () {
-    if (document.getElementById('audio-unlock')) {
+  var bindLinkStartButton = function () {
+    if (!linkStartButton || linkStartButton.dataset.audioUnlockAttached === 'true') {
       return;
     }
 
-    var button = document.createElement('button');
-    button.id = 'audio-unlock';
-    button.type = 'button';
-    button.className = 'btn btn-primary btn-sm';
-    button.textContent = '猜你想听';
-    button.style.position = 'fixed';
-    button.style.bottom = '20px';
-    button.style.right = '20px';
-    button.style.zIndex = '1055';
-    button.addEventListener('click', function () {
-      audio.play().then(function () {
-        button.remove();
-      }).catch(function () {
-        // Keep the button if playback still fails.
-      });
-    });
+    // Hint that the Link Start button will unlock the music, then tie playback to the click.
+    linkStartButton.dataset.audioUnlockAttached = 'true';
+    if (!linkStartButton.dataset.originalText) {
+      linkStartButton.dataset.originalText = linkStartButton.textContent;
+      linkStartButton.textContent = linkStartButton.textContent;
+    }
 
-    document.body.appendChild(button);
+    var handleClick = function () {
+      audio.play().then(function () {
+        linkStartButton.removeEventListener('click', handleClick);
+        if (linkStartButton.dataset.originalText) {
+          linkStartButton.textContent = linkStartButton.dataset.originalText;
+          delete linkStartButton.dataset.originalText;
+        }
+        delete linkStartButton.dataset.audioUnlockAttached;
+      }).catch(function () {
+        // Playback still blocked; keep the hint and listener active.
+      });
+    };
+
+    linkStartButton.addEventListener('click', handleClick);
   };
 
   if (document.readyState === 'complete') {
