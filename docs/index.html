@@ -169,6 +169,7 @@
           </div>
         </div>
       </div>
+        </div>
     </section>
     <!-- About end --> 
     
@@ -262,47 +263,64 @@
     <!-- Resume end --> 
     <!-- Letters
     ============================================= -->
-    <section id="letters" class="section">
+    <section id="letters" class="section protected-section" data-protected-key="letters">
       <div class="container px-lg-5"> 
-        <!-- Heading -->
-        <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Letters</h2>
-          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">写给彼此的信<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
-        </div>
-        <!-- Heading end--> 
-        <div id="letters-empty" class="alert alert-light border text-muted text-center" role="status">暂时还没有信件，请在“故事管理”区域添加一封新的书信。</div>
-        <div id="letters-board" class="letters-board">
-          <div class="row g-4">
-            <div class="col-lg-6">
-              <div class="letters-column bg-white rounded-4 shadow-sm border h-100 p-4">
-                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
-                  <div>
-                    <h3 class="text-6 fw-600 mb-1">兜兜</h3>
-                    <p class="text-muted mb-0 small">从最初的心动写到此刻</p>
-                  </div>
-                  <div class="letters-pagination btn-group btn-group-sm" role="group" aria-label="兜兜写的信翻页">
-                    <button type="button" class="btn btn-outline-primary letters-page-prev" data-side="doudou" disabled>上一页</button>
-                    <span class="btn btn-light disabled letters-page-indicator" id="letters-doudou-page" data-side="doudou">第 1 页</span>
-                    <button type="button" class="btn btn-outline-primary letters-page-next" data-side="doudou" disabled>下一页</button>
-                  </div>
+        <div class="card border-0 shadow-sm text-center py-5 mb-5" data-protected-cover>
+          <div class="card-body">
+            <h3 class="text-6 fw-600 mb-3">私人信笺</h3>
+            <p class="text-muted mb-4">这些信件只属于我们，输入密码后再继续阅读。</p>
+            <div class="row justify-content-center">
+              <div class="col-md-6 col-lg-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" placeholder="输入密码" aria-label="信件密码" data-protected-input>
+                  <button type="button" class="btn btn-primary" data-protected-trigger="letters">解锁</button>
                 </div>
-                <div id="letters-doudou-list" class="d-flex flex-column gap-3"></div>
+                <div class="text-danger small mt-3 d-none" data-protected-error>密码错误，请再试一次。</div>
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="letters-column bg-white rounded-4 shadow-sm border h-100 p-4">
-                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
-                  <div>
-                    <h3 class="text-6 fw-600 mb-1">汉堡</h3>
-                    <p class="text-muted mb-0 small">把想说的话写成长长的信</p>
+          </div>
+        </div>
+        <div class="protected-content d-none" data-protected-content>
+          <!-- Heading -->
+          <div class="position-relative d-flex text-center mb-5">
+            <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Letters</h2>
+            <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">写给彼此的信<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
+          </div>
+          <!-- Heading end--> 
+          <div id="letters-empty" class="alert alert-light border text-muted text-center" role="status">暂时还没有信件，请在“故事管理”区域添加一封新的书信。</div>
+          <div id="letters-board" class="letters-board">
+            <div class="row g-4">
+              <div class="col-lg-6">
+                <div class="letters-column bg-white rounded-4 shadow-sm border h-100 p-4">
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+                    <div>
+                      <h3 class="text-6 fw-600 mb-1">兜兜</h3>
+                      <p class="text-muted mb-0 small">从最初的心动写到此刻</p>
+                    </div>
+                    <div class="letters-pagination btn-group btn-group-sm" role="group" aria-label="兜兜写的信翻页">
+                      <button type="button" class="btn btn-outline-primary letters-page-prev" data-side="doudou" disabled>上一页</button>
+                      <span class="btn btn-light disabled letters-page-indicator" id="letters-doudou-page" data-side="doudou">第 1 页</span>
+                      <button type="button" class="btn btn-outline-primary letters-page-next" data-side="doudou" disabled>下一页</button>
+                    </div>
                   </div>
-                  <div class="letters-pagination btn-group btn-group-sm" role="group" aria-label="汉堡写的信翻页">
-                    <button type="button" class="btn btn-outline-primary letters-page-prev" data-side="hamburger" disabled>上一页</button>
-                    <span class="btn btn-light disabled letters-page-indicator" id="letters-hamburger-page" data-side="hamburger">第 1 页</span>
-                    <button type="button" class="btn btn-outline-primary letters-page-next" data-side="hamburger" disabled>下一页</button>
-                  </div>
+                  <div id="letters-doudou-list" class="d-flex flex-column gap-3"></div>
                 </div>
-                <div id="letters-hamburger-list" class="d-flex flex-column gap-3"></div>
+              </div>
+              <div class="col-lg-6">
+                <div class="letters-column bg-white rounded-4 shadow-sm border h-100 p-4">
+                  <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-4">
+                    <div>
+                      <h3 class="text-6 fw-600 mb-1">汉堡</h3>
+                      <p class="text-muted mb-0 small">把想说的话写成长长的信</p>
+                    </div>
+                    <div class="letters-pagination btn-group btn-group-sm" role="group" aria-label="汉堡写的信翻页">
+                      <button type="button" class="btn btn-outline-primary letters-page-prev" data-side="hamburger" disabled>上一页</button>
+                      <span class="btn btn-light disabled letters-page-indicator" id="letters-hamburger-page" data-side="hamburger">第 1 页</span>
+                      <button type="button" class="btn btn-outline-primary letters-page-next" data-side="hamburger" disabled>下一页</button>
+                    </div>
+                  </div>
+                  <div id="letters-hamburger-list" class="d-flex flex-column gap-3"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -313,37 +331,53 @@
     
     <!-- Story Manager
     ============================================= -->
-    <section id="memory" class="section bg-light">
+    <section id="memory" class="section bg-light protected-section" data-protected-key="memory">
       <div class="container px-lg-5">
-        <!-- Heading -->
-        <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Story Manager</h2>
-          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">记录与更新故事<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
-        </div>
-        <!-- Heading end-->
-        <div class="row gy-5">
-          <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
-            <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
-            <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。每次更新都会保存在浏览器本地。</p>
-            <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
-            <ul class="list-unstyled text-3 lh-lg mb-4">
-              <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
-              <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
-              <li><i class="fas fa-star text-primary me-2"></i>偏爱 <span class="badge bg-light text-muted" id="story-count-favorites">0</span></li>
-              <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
-            </ul>
-            <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
-          </div>
-          <div class="col-md-8 col-xl-9 order-0 order-md-1">
-            <div class="card shadow border-0">
-              <div class="card-header bg-white border-0 pb-0">
-                <ul class="nav nav-pills story-tabs flex-wrap" id="storyTabs" role="tablist">
-                  <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
-                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
-                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-favorites" data-bs-toggle="pill" data-bs-target="#story-pane-favorites" type="button" role="tab" aria-controls="story-pane-favorites" aria-selected="false">偏爱</button></li>
-                  <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
-                </ul>
+        <div class="card border-0 shadow-sm text-center py-5 mb-5" data-protected-cover>
+          <div class="card-body">
+            <h3 class="text-6 fw-600 mb-3">故事管理中心</h3>
+            <p class="text-muted mb-4">这里记录着我们的里程碑与计划，输入密码后即可编辑与查看。</p>
+            <div class="row justify-content-center">
+              <div class="col-md-6 col-lg-4">
+                <div class="input-group">
+                  <input type="password" class="form-control" placeholder="输入密码" aria-label="故事管理密码" data-protected-input>
+                  <button type="button" class="btn btn-primary" data-protected-trigger="memory">解锁</button>
+                </div>
+                <div class="text-danger small mt-3 d-none" data-protected-error>密码错误，请再试一次。</div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="protected-content d-none" data-protected-content>
+          <!-- Heading -->
+          <div class="position-relative d-flex text-center mb-5">
+            <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Story Manager</h2>
+            <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">记录与更新故事<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
+          </div>
+          <!-- Heading end-->
+          <div class="row gy-5">
+            <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
+              <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
+              <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。每次更新都会保存在浏览器本地。</p>
+              <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
+              <ul class="list-unstyled text-3 lh-lg mb-4">
+                <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
+                <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
+                <li><i class="fas fa-star text-primary me-2"></i>偏爱 <span class="badge bg-light text-muted" id="story-count-favorites">0</span></li>
+                <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
+              </ul>
+              <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
+            </div>
+            <div class="col-md-8 col-xl-9 order-0 order-md-1">
+              <div class="card shadow border-0">
+                <div class="card-header bg-white border-0 pb-0">
+                  <ul class="nav nav-pills story-tabs flex-wrap" id="storyTabs" role="tablist">
+                    <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-favorites" data-bs-toggle="pill" data-bs-target="#story-pane-favorites" type="button" role="tab" aria-controls="story-pane-favorites" aria-selected="false">偏爱</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
+                  </ul>
+                </div>
               <div class="card-body">
                 <div class="tab-content" id="storyTabContent">
                   <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
@@ -581,7 +615,7 @@
     linkStartButton.dataset.audioUnlockAttached = 'true';
     if (!linkStartButton.dataset.originalText) {
       linkStartButton.dataset.originalText = linkStartButton.textContent;
-      linkStartButton.textContent = linkStartButton.textContent;
+      linkStartButton.textContent = linkStartButton.textContent + ' · 点我播放音乐';
     }
 
     var handleClick = function () {
@@ -605,6 +639,123 @@
   } else {
     window.addEventListener('load', attemptPlay);
   }
+})();
+</script>
+<script>
+(function () {
+  var PASSWORD = 'Lyz@Hcy19990805';
+  var STORAGE_KEY = 'qq_page_protected_sections';
+  var sections = document.querySelectorAll('[data-protected-key]');
+  if (!sections.length) {
+    return;
+  }
+
+  var unlocked = {};
+  try {
+    var cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) {
+      var parsed = JSON.parse(cached);
+      if (parsed && typeof parsed === 'object') {
+        unlocked = parsed;
+      }
+    }
+  } catch (error) {
+    unlocked = {};
+  }
+
+  var persistUnlockState = function () {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(unlocked));
+    } catch (error) {
+      // Ignore storage failures (likely private mode or quota issues).
+    }
+  };
+
+  sections.forEach(function (section) {
+    var key = section.getAttribute('data-protected-key');
+    if (!key) {
+      return;
+    }
+    var cover = section.querySelector('[data-protected-cover]');
+    var content = section.querySelector('[data-protected-content]');
+    var input = section.querySelector('[data-protected-input]');
+    var trigger = section.querySelector('[data-protected-trigger]');
+    var errorHint = section.querySelector('[data-protected-error]');
+
+    if (!cover || !content) {
+      return;
+    }
+
+    var showContent = function () {
+      cover.classList.add('d-none');
+      content.classList.remove('d-none');
+      if (input) {
+        input.value = '';
+      }
+      if (errorHint) {
+        errorHint.classList.add('d-none');
+      }
+    };
+
+    var lockContent = function () {
+      cover.classList.remove('d-none');
+      content.classList.add('d-none');
+      if (input) {
+        input.value = '';
+      }
+      if (errorHint) {
+        errorHint.classList.add('d-none');
+      }
+    };
+
+    var attemptUnlock = function () {
+      if (!input) {
+        return;
+      }
+      var value = (input.value || '').trim();
+      if (!value) {
+        input.focus();
+        return;
+      }
+      if (value === PASSWORD) {
+        unlocked[key] = true;
+        persistUnlockState();
+        showContent();
+      } else {
+        if (errorHint) {
+          errorHint.classList.remove('d-none');
+        }
+        input.focus();
+        input.select();
+      }
+    };
+
+    if (trigger) {
+      trigger.addEventListener('click', attemptUnlock);
+    }
+
+    if (input) {
+      input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          attemptUnlock();
+        } else if (errorHint) {
+          errorHint.classList.add('d-none');
+        }
+      });
+      input.addEventListener('input', function () {
+        if (errorHint) {
+          errorHint.classList.add('d-none');
+        }
+      });
+    }
+
+    if (unlocked[key]) {
+      showContent();
+    } else {
+      lockContent();
+    }
+  });
 })();
 </script>
 </body>
