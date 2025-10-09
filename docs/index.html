@@ -531,6 +531,8 @@
 </div>
 <!-- Disclaimer Modal End --> 
 
+<audio id="background-audio" src="SpotiDown.App - Take A Chance With Me - NIKI.mp3" preload="auto" autoplay loop hidden></audio>
+
 <!-- JavaScript --> 
 <script src="vendor/jquery/jquery.min.js"></script> 
 <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
@@ -555,5 +557,51 @@
 <!-- Leaflet --> 
 <!-- Custom Script --> 
 <script src="js/theme.js"></script>
+<script>
+(function () {
+  var audio = document.getElementById('background-audio');
+  if (!audio) {
+    return;
+  }
+
+  var attemptPlay = function () {
+    var playPromise = audio.play();
+    if (playPromise && typeof playPromise.then === 'function') {
+      playPromise.catch(showUnlockButton);
+    }
+  };
+
+  var showUnlockButton = function () {
+    if (document.getElementById('audio-unlock')) {
+      return;
+    }
+
+    var button = document.createElement('button');
+    button.id = 'audio-unlock';
+    button.type = 'button';
+    button.className = 'btn btn-primary btn-sm';
+    button.textContent = '猜你想听';
+    button.style.position = 'fixed';
+    button.style.bottom = '20px';
+    button.style.right = '20px';
+    button.style.zIndex = '1055';
+    button.addEventListener('click', function () {
+      audio.play().then(function () {
+        button.remove();
+      }).catch(function () {
+        // Keep the button if playback still fails.
+      });
+    });
+
+    document.body.appendChild(button);
+  };
+
+  if (document.readyState === 'complete') {
+    attemptPlay();
+  } else {
+    window.addEventListener('load', attemptPlay);
+  }
+})();
+</script>
 </body>
 </html>
