@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rancho&display=swap');
+
+/*@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');*/
+
+*
+{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  /*font-family: 'Special Elite', cursive;*/
+}
+body
+{
+  overflow-x: hidden;
+  background: #fff;
+  /*background: linear-gradient(#79C6E9,#D9E0EA);*/
+  background: #79C6E9;
+  min-height: 100vh;
+}
+#header
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10000;
+}
+#header .logo
+{
+  color: #fff;
+  font-weight: 700;
+  font-size: 2em;
+  text-decoration: none;
+}
+#header ul
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#header ul li 
+{
+  list-style: none;
+  margin-left: 20px;
+}
+#header ul li a
+{
+  text-decoration: none;
+  padding: 6px 15px;
+  color: #fff;
+  border-radius: 20px;
+}
+#header ul li a:hover,
+#header ul li a.active
+{
+  background: #fff;
+  color: #111;
+}
+section
+{
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+section img
+{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+}
+
+
+section img#stars2
+{
+  display: none;
+}
+
+.sec
+{
+  position: relative;
+  padding: 100px;
+  background: #d2db6d;
+  /*font-family: 'Special Elite', cursive;*/
+}
+.sec h2
+{
+  font-size: 3em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.sec p
+{
+  font-size: 1em;
+  color: #293A2D;
+  font-weight: 300;
+  line-height: 1.6;
+  letter-spacing: .08rem;
+  padding-top: 50px;
+}
+
+.sec1
+{
+  position: relative;
+  padding: 100px;
+  /*background: linear-gradient(#79C6E9,#D9E0EA);*/
+  background: #79C6E9;
+  /*font-family: 'Special Elite', cursive;*/
+}
+.sec1 h2
+{
+  font-size: 3em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.sec1 p
+{
+  font-size: 1em;
+  color: #fff;
+  font-weight: 300;
+}
+
+
+
+@media (max-width: 992px)
+{
+  #header
+  {
+    padding: 20px;
+  }
+  #header .logo
+  {
+    font-size: 1.5em;
+  }
+  #header ul
+  {
+    display: none;
+  }
+  #header ul.active
+  {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background: #79C6E9;
+  }
+  #header ul li
+  {
+    margin-left: 0;
+  }
+  #header ul li a
+  {
+    margin: 5px 0;
+    font-size: 1.5em;
+    border-radius: 30px;
+    display: inline-block;
+  }
+  .toggle
+  {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    background: url(menu.png);
+    background-size: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 100;
+  }
+  .toggle.active
+  {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: url(close.png);
+    background-size: 25px;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+/*  section img
+  {
+    position: absolute;
+    max-width: 100%;
+    height: initial;
+    object-fit: initial;
+  }*/
+
+  section #text
+  {
+    font-size: 15vw;
+  }
+  section img#stars2
+  {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .sec
+  {
+    padding: 20px;
+  }
+  .sec h2
+  {
+    font-size: 1.5em;
+  }
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+footer{
+  text-align: center;
+  margin-top: 10%;
+  color: #234780;
+}
+
+audio{
+      position: fixed;
+      top: 30%;
+      right: 10%;
+      mix-blend-mode: soft-light;
+    }
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  padding-top: 3%;
+  -webkit-filter: drop-shadow(5px 5px 5px #666666);
+  filter: drop-shadow(5px 5px 5px #666666);
+}
+
+.container{
+  animation: transitionIn 3s;
+}
+
+@keyframes transitionIn {
+  from {
+    opacity: 0;
+    transfrom: rotateX(-10deg);
+  }
+  to {
+    opacity: 1;
+    transfrom: rotateX(0deg);
+}
+
