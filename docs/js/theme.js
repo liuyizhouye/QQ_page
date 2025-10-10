@@ -282,6 +282,26 @@ document.addEventListener('DOMContentLoaded', function () {
 	counter.textContent = value;
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+	var toggleButtons = document.querySelectorAll('.toggle-liuyizhouye');
+	if (!toggleButtons.length) {
+		return;
+	}
+
+	toggleButtons.forEach(function (button) {
+		var targetSelector = button.getAttribute('data-target');
+		var target = targetSelector ? document.querySelector(targetSelector) : null;
+		if (!target) {
+			return;
+		}
+
+		button.addEventListener('click', function () {
+			var hidden = target.classList.toggle('liuyizhouye-hidden');
+			button.textContent = hidden ? '恢复内容' : '仅看背景';
+		});
+	});
+});
+
 /*------------------------------------
     Typed
 -------------------------------------- */
