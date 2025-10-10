@@ -3724,6 +3724,148 @@ body.moment-viewer-open {
   object-fit: cover;
 }
 
+.object-fit-cover {
+  object-fit: cover;
+}
+
+/* Birthday Tribute
+--------------------------------------------- */
+.liuyizhouye-section {
+  position: relative;
+  background: linear-gradient(180deg, #79c6e9 0%, #d9e0ea 100%);
+  color: #293a2d;
+  overflow: hidden;
+}
+
+.liuyizhouye-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(121, 198, 233, 0.35) 0%, rgba(217, 224, 234, 0.4) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.liuyizhouye-section > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.liuyizhouye-letter {
+  background: #d2db6d;
+  border-radius: 1.75rem;
+  box-shadow: 0 1.5rem 3rem rgba(41, 58, 45, 0.08);
+}
+
+.liuyizhouye-letter h3 {
+  color: #3b551b;
+}
+
+.liuyizhouye-letter p {
+  color: #293a2d;
+}
+
+.liuyizhouye-media {
+  position: relative;
+  border-radius: 1.75rem;
+  background: rgba(255, 255, 255, 0.65);
+  box-shadow: 0 1.5rem 3rem rgba(41, 58, 45, 0.15);
+}
+
+.liuyizhouye-media img {
+  min-height: 100%;
+  border-radius: 1.75rem;
+}
+
+.liuyizhouye-letter-content {
+  max-height: 24rem;
+  overflow-y: auto;
+  padding-right: 0.75rem;
+}
+
+.liuyizhouye-letter-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.liuyizhouye-letter-content::-webkit-scrollbar-thumb {
+  background: rgba(41, 58, 45, 0.35);
+  border-radius: 999px;
+}
+
+.liuyizhouye-letter-content::-webkit-scrollbar-track {
+  background: rgba(210, 219, 109, 0.3);
+}
+
+.liuyizhouye-letter-content {
+  scrollbar-color: rgba(41, 58, 45, 0.35) rgba(210, 219, 109, 0.3);
+}
+
+.liuyizhouye-media-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(180deg, rgba(41, 58, 45, 0) 0%, rgba(41, 58, 45, 0.75) 100%);
+  color: #fff;
+}
+
+.liuyizhouye-decor {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.liuyizhouye-decor img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: none;
+  filter: drop-shadow(0 12px 30px rgba(15, 23, 42, 0.35));
+  opacity: 0.85;
+}
+
+.liuyizhouye-stars {
+  top: 0;
+  bottom: auto;
+  opacity: 0.65;
+}
+
+.liuyizhouye-stars-secondary {
+  display: none;
+}
+
+.liuyizhouye-cloud {
+  opacity: 0.4;
+}
+
+.liuyizhouye-glass {
+  width: 18%;
+}
+
+.liuyizhouye-breadman {
+  width: 14%;
+}
+
+.liuyizhouye-us {
+  opacity: 0.8;
+}
+
+@media (max-width: 991.98px) {
+  .liuyizhouye-decor img {
+    opacity: 0.6;
+  }
+  .liuyizhouye-glass,
+  .liuyizhouye-breadman,
+  .liuyizhouye-us {
+    display: none;
+  }
+  .liuyizhouye-letter-content {
+    max-height: 20rem;
+  }
+}
+
 /* Milestone Timeline
 --------------------------------------------- */
 .milestone-timeline {
