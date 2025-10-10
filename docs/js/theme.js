@@ -283,40 +283,35 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-	var toggleButtons = document.querySelectorAll('.toggle-liuyizhouye');
-	if (!toggleButtons.length) {
-		return;
-	}
+	var toggleConfig = [
+		{ selector: '.toggle-ourstory', hiddenClass: 'ourstory-hidden' },
+		{ selector: '.toggle-timeline', hiddenClass: 'timeline-hidden' },
+		{ selector: '.toggle-moments', hiddenClass: 'moments-hidden' },
+		{ selector: '.toggle-comments', hiddenClass: 'comments-hidden' },
+		{ selector: '.toggle-letters', hiddenClass: 'letters-hidden' },
+		{ selector: '.toggle-memory', hiddenClass: 'memory-hidden' },
+		{ selector: '.toggle-liuyizhouye', hiddenClass: 'liuyizhouye-hidden' }
+	];
 
-	toggleButtons.forEach(function (button) {
-		var targetSelector = button.getAttribute('data-target');
-		var target = targetSelector ? document.querySelector(targetSelector) : null;
-		if (!target) {
+	toggleConfig.forEach(function (config) {
+		var buttons = document.querySelectorAll(config.selector);
+		if (!buttons.length) {
 			return;
 		}
-
-		button.addEventListener('click', function () {
-			var hidden = target.classList.toggle('liuyizhouye-hidden');
-			button.textContent = hidden ? '恢复内容' : '仅看背景';
+		buttons.forEach(function (button) {
+			var targetSelector = button.getAttribute('data-target');
+			var target = targetSelector ? document.querySelector(targetSelector) : null;
+			if (!target) {
+				return;
+			}
+			button.addEventListener('click', function () {
+				var hidden = target.classList.toggle(config.hiddenClass);
+				button.textContent = hidden ? '恢复内容' : '仅看背景';
+			});
 		});
 	});
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-	var ourStoryButton = document.querySelector('.toggle-ourstory');
-	if (!ourStoryButton) {
-		return;
-	}
-	var targetSelector = ourStoryButton.getAttribute('data-target');
-	var target = targetSelector ? document.querySelector(targetSelector) : null;
-	if (!target) {
-		return;
-	}
-	ourStoryButton.addEventListener('click', function () {
-		var hidden = target.classList.toggle('ourstory-hidden');
-		ourStoryButton.textContent = hidden ? '恢复内容' : '仅看背景';
-	});
-});
 
 /*------------------------------------
     Typed

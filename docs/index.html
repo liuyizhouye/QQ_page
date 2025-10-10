@@ -116,9 +116,7 @@
     ============================================= -->
     <section id="story" class="section section-full ourstory-bg">
       <div class="container px-lg-5"> 
-        <div class="d-flex justify-content-center mb-4">
-          <button type="button" class="btn btn-outline-primary btn-sm toggle-ourstory" data-target="#ourstory-content">仅看背景</button>
-        </div>
+        <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-ourstory" data-target="#ourstory-content">仅看背景</button>
         <!-- Heading -->
         <div id="ourstory-content" class="ourstory-panel">
           <!-- Heading end-->
@@ -184,11 +182,14 @@
     <!-- Services
     ============================================= -->
     <section id="timeline" class="section section-full liuyizhouye-bg-timeline">
+      <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-timeline" data-target="#timeline-content">仅看背景</button>
       <div class="container px-lg-5"> 
         <div class="row">
           <div class="col-lg-11 mx-auto">
-            <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
-            <div id="milestones-list" class="milestone-timeline"></div>
+            <div id="timeline-content">
+              <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
+              <div id="milestones-list" class="milestone-timeline"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -201,20 +202,23 @@
     <!-- Portfolio
     ============================================= -->
     <section id="moments" class="section section-full bg-light">
+      <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-moments" data-target="#moments-content">仅看背景</button>
       <div class="container px-lg-5"> 
-        <!-- Heading -->
-        <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Moments</h2>
-          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">被收藏的瞬间<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
-        </div>
-        <!-- Heading end--> 
-        
-        <div id="moments-menu-wrapper" class="mb-5 d-none">
-          <ul id="moments-menu" class="portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-0"></ul>
-        </div>
-        <div class="portfolio popup-ajax-gallery popup-img-gallery">
-          <div id="moments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的瞬间。</div>
-          <div id="moments-list" class="row portfolio-filter g-4"></div>
+        <div id="moments-content">
+          <!-- Heading -->
+          <div class="position-relative d-flex text-center mb-5">
+            <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Moments</h2>
+            <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">被收藏的瞬间<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
+          </div>
+          <!-- Heading end--> 
+          
+          <div id="moments-menu-wrapper" class="mb-5 d-none">
+            <ul id="moments-menu" class="portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-0"></ul>
+          </div>
+          <div class="portfolio popup-ajax-gallery popup-img-gallery">
+            <div id="moments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的瞬间。</div>
+            <div id="moments-list" class="row portfolio-filter g-4"></div>
+          </div>
         </div>
       </div>
       <a href="#comments" class="scroll-down-arrow text-primary smooth-scroll" aria-label="跳转到QQ留言墙">
@@ -255,44 +259,47 @@
     <!-- Resume
     ============================================= -->
     <section id="comments" class="section section-full">
+      <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-comments" data-target="#comments-content">仅看背景</button>
       <div class="container px-lg-5"> 
-        <!-- Heading -->
-        <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Comments</h2>
-          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">QQ留言墙<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
-        </div>
-        <!-- Heading end-->
-        
-        <div class="row g-4 justify-content-center">
-          <div class="col-lg-7 col-xl-6">
-            <div id="comments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有留言，邀请好友写下祝福吧。</div>
-            <div id="comments-list" class="d-flex flex-column gap-3"></div>
-            <div id="comments-pagination" class="d-flex align-items-center justify-content-center gap-3 mt-4 d-none" aria-label="留言翻页">
-              <button type="button" class="btn btn-outline-primary btn-sm" id="comments-prev" disabled>上一页</button>
-              <span id="comments-page-indicator" class="small text-muted">第 1 页 / 共 1 页</span>
-              <button type="button" class="btn btn-outline-primary btn-sm" id="comments-next" disabled>下一页</button>
-            </div>
+        <div id="comments-content">
+          <!-- Heading -->
+          <div class="position-relative d-flex text-center mb-5">
+            <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Friend Comments</h2>
+            <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">好友留言墙<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
           </div>
-          <div class="col-lg-5 col-xl-4">
-            <div class="card border-0 shadow-sm">
-              <div class="card-body p-4">
-                <h3 class="text-5 fw-600 mb-3">留下留言</h3>
-                <p class="text-muted small mb-4">谁都可以写哦！</p>
-                <form id="friend-comment-form" class="vstack gap-3" novalidate>
-                  <div>
-                    <label class="form-label small text-uppercase text-muted mb-1" for="comment-author">名字 / 昵称（可选）</label>
-                    <input id="comment-author" type="text" class="form-control" name="comment-author" placeholder="例如：牛油果一号" maxlength="40">
-                  </div>
-                  <div>
-                    <label class="form-label small text-uppercase text-muted mb-1" for="comment-message">留言内容</label>
-                    <textarea id="comment-message" class="form-control" name="comment-message" rows="4" placeholder="想对我们说的话..." required maxlength="500"></textarea>
-                  </div>
-                  <div class="text-end">
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">发送留言</button>
-                  </div>
-                </form>
-                <div id="comment-feedback" class="alert alert-success mt-3 d-none" role="status">感谢留言！已为你记录。</div>
-                <p class="form-text text-muted mt-3 mb-0">提示：留言仅保存在你当前的浏览器中。</p>
+          <!-- Heading end-->
+          
+          <div class="row g-4 justify-content-center">
+            <div class="col-lg-7 col-xl-6">
+              <div id="comments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有留言，邀请好友写下祝福吧。</div>
+              <div id="comments-list" class="d-flex flex-column gap-3"></div>
+              <div id="comments-pagination" class="d-flex align-items-center justify-content-center gap-3 mt-4 d-none" aria-label="留言翻页">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="comments-prev" disabled>上一页</button>
+                <span id="comments-page-indicator" class="small text-muted">第 1 页 / 共 1 页</span>
+                <button type="button" class="btn btn-outline-primary btn-sm" id="comments-next" disabled>下一页</button>
+              </div>
+            </div>
+            <div class="col-lg-5 col-xl-4">
+              <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                  <h3 class="text-5 fw-600 mb-3">留下留言</h3>
+                  <p class="text-muted small mb-4">无需密码，朋友们都可以写下一句祝福或分享。</p>
+                  <form id="friend-comment-form" class="vstack gap-3" novalidate>
+                    <div>
+                      <label class="form-label small text-uppercase text-muted mb-1" for="comment-author">名字 / 昵称（可选）</label>
+                      <input id="comment-author" type="text" class="form-control" name="comment-author" placeholder="例如：牛油果一号" maxlength="40">
+                    </div>
+                    <div>
+                      <label class="form-label small text-uppercase text-muted mb-1" for="comment-message">留言内容</label>
+                      <textarea id="comment-message" class="form-control" name="comment-message" rows="4" placeholder="想对我们说的话..." required maxlength="500"></textarea>
+                    </div>
+                    <div class="text-end">
+                      <button type="submit" class="btn btn-primary rounded-pill px-4">发送留言</button>
+                    </div>
+                  </form>
+                  <div id="comment-feedback" class="alert alert-success mt-3 d-none" role="status">感谢留言！已为你记录。</div>
+                  <p class="form-text text-muted mt-3 mb-0">提示：留言仅保存在你当前的浏览器中。</p>
+                </div>
               </div>
             </div>
           </div>
@@ -306,23 +313,25 @@
     <!-- Letters
     ============================================= -->
     <section id="letters" class="section section-full protected-section" data-protected-key="letters">
+      <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-letters" data-target="#letters-content">仅看背景</button>
       <div class="container px-lg-5"> 
-        <div class="card border-0 shadow-sm text-center py-5 mb-5" data-protected-cover>
-          <div class="card-body">
-            <h3 class="text-6 fw-600 mb-3">写给对方的信</h3>
-            <p class="text-muted mb-4">别想偷看</p>
-            <div class="row justify-content-center">
-              <div class="col-md-6 col-lg-4">
-                <div class="input-group">
-                  <input type="password" class="form-control" placeholder="输入密码" aria-label="信件密码" data-protected-input>
-                  <button type="button" class="btn btn-primary" data-protected-trigger="letters">解锁</button>
+        <div id="letters-content">
+          <div class="card border-0 shadow-sm text-center py-5 mb-5" data-protected-cover>
+            <div class="card-body">
+              <h3 class="text-6 fw-600 mb-3">写给对方的信</h3>
+              <p class="text-muted mb-4">别想偷看</p>
+              <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                  <div class="input-group">
+                    <input type="password" class="form-control" placeholder="输入密码" aria-label="信件密码" data-protected-input>
+                    <button type="button" class="btn btn-primary" data-protected-trigger="letters">解锁</button>
+                  </div>
+                  <div class="text-danger small mt-3 d-none" data-protected-error>密码错误，请再试一次。</div>
                 </div>
-                <div class="text-danger small mt-3 d-none" data-protected-error>密码错误，请再试一次。</div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="protected-content d-none" data-protected-content>
+          <div class="protected-content d-none" data-protected-content>
           <!-- Heading -->
           <div class="position-relative d-flex text-center mb-5">
             <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Letters</h2>
@@ -367,6 +376,7 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
       <a href="#memory" class="scroll-down-arrow text-primary smooth-scroll" aria-label="跳转到故事管理中心">
         <span class="animated"><i class="fa fa-chevron-down"></i></span>
@@ -377,66 +387,68 @@
     <!-- Story Manager
     ============================================= -->
     <section id="memory" class="section section-full bg-light protected-section" data-protected-key="memory">
+      <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-memory" data-target="#memory-content">仅看背景</button>
       <div class="container px-lg-5">
-        <div class="card border-0 shadow-sm text-center py-5 mb-5" data-protected-cover>
-          <div class="card-body">
-            <h3 class="text-6 fw-600 mb-3">故事管理中心</h3>
-            <p class="text-muted mb-4">输入密码后即可编辑与查看。</p>
-            <div class="row justify-content-center">
-              <div class="col-md-6 col-lg-4">
-                <div class="input-group">
-                  <input type="password" class="form-control" placeholder="输入密码" aria-label="故事管理密码" data-protected-input>
-                  <button type="button" class="btn btn-primary" data-protected-trigger="memory">解锁</button>
+        <div id="memory-content">
+          <div class="card border-0 shadow-sm text-center py-5 mb-5" data-protected-cover>
+            <div class="card-body">
+              <h3 class="text-6 fw-600 mb-3">故事管理中心</h3>
+              <p class="text-muted mb-4">输入密码后即可编辑与查看。</p>
+              <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                  <div class="input-group">
+                    <input type="password" class="form-control" placeholder="输入密码" aria-label="故事管理密码" data-protected-input>
+                    <button type="button" class="btn btn-primary" data-protected-trigger="memory">解锁</button>
+                  </div>
+                  <div class="text-danger small mt-3 d-none" data-protected-error>密码错误，请再试一次。</div>
                 </div>
-                <div class="text-danger small mt-3 d-none" data-protected-error>密码错误，请再试一次。</div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="protected-content d-none" data-protected-content>
-          <!-- Heading -->
-          <div class="position-relative d-flex text-center mb-5">
-            <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Story Manager</h2>
-            <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">记录与更新故事<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
-          </div>
-          <!-- Heading end-->
-          <div class="row gy-5">
-            <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
-              <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
-              <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。每次更新都会保存在浏览器本地。</p>
-              <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
-              <ul class="list-unstyled text-3 lh-lg mb-4">
-                <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
-                <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
-                <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
-              </ul>
-              <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
+          <div class="protected-content d-none" data-protected-content>
+            <!-- Heading -->
+            <div class="position-relative d-flex text-center mb-5">
+              <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Story Manager</h2>
+              <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">记录与更新故事<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
             </div>
-            <div class="col-md-8 col-xl-9 order-0 order-md-1">
-              <div class="card shadow border-0">
-                <div class="card-header bg-white border-0 pb-0">
-                  <ul class="nav nav-pills story-tabs flex-wrap" id="storyTabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
-                  </ul>
-                </div>
-              <div class="card-body">
-                <div class="tab-content" id="storyTabContent">
-                  <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
-                    <div class="story-manager-section">
-                      <div id="manager-milestones-empty" class="alert alert-light border text-muted" role="status">还没有里程碑，填写下方表单添加一条吧。</div>
-                      <div id="manager-milestones-list" class="list-group list-group-flush mb-4"></div>
-                      <h3 class="text-5 fw-600 mb-3">新增里程碑</h3>
-                      <form id="form-milestones" class="row g-3 story-form" novalidate>
-                        <div class="col-md-6"><input type="datetime-local" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024-02-14T20:30）" required></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="milestone-title" placeholder="标题（例如 首次遇见）" required></div>
-                        <div class="col-md-6"><input type="text" class="form-control" name="milestone-location" placeholder="地点（可选，例如 校园旧图书馆）"></div>
-                        <div class="col-12"><textarea class="form-control" rows="3" name="milestone-detail" placeholder="细节或想说的话（可选）"></textarea></div>
-                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存里程碑</button></div>
-                      </form>
-                    </div>
+            <!-- Heading end-->
+            <div class="row gy-5">
+              <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
+                <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
+                <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。每次更新都会保存在浏览器本地。</p>
+                <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
+                <ul class="list-unstyled text-3 lh-lg mb-4">
+                  <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
+                  <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
+                  <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
+                </ul>
+                <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
+              </div>
+              <div class="col-md-8 col-xl-9 order-0 order-md-1">
+                <div class="card shadow border-0">
+                  <div class="card-header bg-white border-0 pb-0">
+                    <ul class="nav nav-pills story-tabs flex-wrap" id="storyTabs" role="tablist">
+                      <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
+                      <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
+                      <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
+                    </ul>
                   </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="storyTabContent">
+                      <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
+                        <div class="story-manager-section">
+                          <div id="manager-milestones-empty" class="alert alert-light border text-muted" role="status">还没有里程碑，填写下方表单添加一条吧。</div>
+                          <div id="manager-milestones-list" class="list-group list-group-flush mb-4"></div>
+                          <h3 class="text-5 fw-600 mb-3">新增里程碑</h3>
+                          <form id="form-milestones" class="row g-3 story-form" novalidate>
+                            <div class="col-md-6"><input type="datetime-local" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024-02-14T20:30）" required></div>
+                            <div class="col-md-6"><input type="text" class="form-control" name="milestone-title" placeholder="标题（例如 首次遇见）" required></div>
+                            <div class="col-md-6"><input type="text" class="form-control" name="milestone-location" placeholder="地点（可选，例如 校园旧图书馆）"></div>
+                            <div class="col-12"><textarea class="form-control" rows="3" name="milestone-detail" placeholder="细节或想说的话（可选）"></textarea></div>
+                            <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存里程碑</button></div>
+                          </form>
+                        </div>
+                      </div>
                   <div class="tab-pane fade" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
                     <div class="story-manager-section">
                       <div id="manager-moments-empty" class="alert alert-light border text-muted" role="status">还没有瞬间，填写下方表单添加一条吧。</div>
@@ -510,6 +522,7 @@
             </div>
           </div>
         </div>
+        </div>
       </div>
       <a href="#liuyizhouye" class="scroll-down-arrow text-primary smooth-scroll" aria-label="跳转到 Liuyizhouye.com">
         <span class="animated"><i class="fa fa-chevron-down"></i></span>
@@ -520,6 +533,7 @@
     <!-- Liuyizhouye Tribute
     ============================================= -->
     <section id="liuyizhouye" class="section section-full liuyizhouye-section">
+      <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-liuyizhouye" data-target="#liuyizhouye-content">仅看背景</button>
       <div class="liuyizhouye-decor" aria-hidden="true">
         <img src="images/stars.png" class="liuyizhouye-stars" alt="">
         <img src="images/stars2.png" class="liuyizhouye-stars-secondary" alt="">
@@ -533,9 +547,6 @@
         <div class="position-relative d-flex text-center mb-5">
           <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Liuyizhouye.com</h2>
           <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">Liuyizhouye'23<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
-        </div>
-        <div class="d-flex justify-content-center mb-4">
-          <button type="button" class="btn btn-outline-primary btn-sm toggle-liuyizhouye" data-target="#liuyizhouye-content">仅看背景</button>
         </div>
         <!-- Heading end-->
         <div id="liuyizhouye-content" class="row g-4 align-items-start">

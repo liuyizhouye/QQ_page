@@ -3748,6 +3748,7 @@ body.moment-viewer-open {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  padding-bottom: 3.5rem;
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
@@ -3759,22 +3760,11 @@ body.moment-viewer-open {
   padding: 2rem;
 }
 
-.ourstory-block.ourstory-heading {
-  padding-bottom: 2.5rem;
-}
-
 @media (max-width: 575.98px) {
   .ourstory-block {
     padding: 1.5rem;
   }
 }
-
-.ourstory-hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
 
 .liuyizhouye-bg-timeline {
   position: relative;
@@ -4071,4 +4061,47 @@ body.moment-viewer-open {
   .timeline-card {
     padding: 1.5rem;
   }
+}
+.section-toggle-btn {
+  position: absolute;
+  bottom: 4rem;
+  right: 1.5rem;
+  z-index: 10;
+}
+
+@media (max-width: 575.98px) {
+  .section-toggle-btn {
+    bottom: 3rem;
+    right: 1rem;
+  }
+}
+
+#timeline-content,
+#moments-content,
+#comments-content,
+#letters-content,
+#memory-content,
+#liuyizhouye-content {
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.ourstory-hidden,
+.timeline-hidden,
+.moments-hidden,
+.comments-hidden,
+.letters-hidden,
+.memory-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.ourstory-hidden *,
+.timeline-hidden *,
+.moments-hidden *,
+.comments-hidden *,
+.letters-hidden *,
+.memory-hidden * {
+  pointer-events: none !important;
 }
