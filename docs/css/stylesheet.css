@@ -3745,11 +3745,28 @@ body.moment-viewer-open {
 }
 
 .ourstory-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.ourstory-block {
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);
   border-radius: 1.75rem;
   box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.08);
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  padding: 2rem;
+}
+
+.ourstory-block.ourstory-heading {
+  padding-bottom: 2.5rem;
+}
+
+@media (max-width: 575.98px) {
+  .ourstory-block {
+    padding: 1.5rem;
+  }
 }
 
 .ourstory-hidden {
