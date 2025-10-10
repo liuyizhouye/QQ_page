@@ -3730,6 +3730,35 @@ body.moment-viewer-open {
 
 /* Custom Section Backgrounds
 --------------------------------------------- */
+.ourstory-bg {
+  position: relative;
+  background-image: url('../images/ourstory-bg.png');
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #f5f7fb;
+}
+
+.ourstory-bg > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.ourstory-panel {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  border-radius: 1.75rem;
+  box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.08);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.ourstory-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+
 .liuyizhouye-bg-timeline {
   position: relative;
   background-image: url('../images/liuyizhouye-bg.png');

@@ -302,6 +302,22 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+	var ourStoryButton = document.querySelector('.toggle-ourstory');
+	if (!ourStoryButton) {
+		return;
+	}
+	var targetSelector = ourStoryButton.getAttribute('data-target');
+	var target = targetSelector ? document.querySelector(targetSelector) : null;
+	if (!target) {
+		return;
+	}
+	ourStoryButton.addEventListener('click', function () {
+		var hidden = target.classList.toggle('ourstory-hidden');
+		ourStoryButton.textContent = hidden ? '恢复内容' : '仅看背景';
+	});
+});
+
 /*------------------------------------
     Typed
 -------------------------------------- */
