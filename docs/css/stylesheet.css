@@ -3736,6 +3736,8 @@ body.moment-viewer-open {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
 }
 
 .liuyizhouye-bg-timeline::before {
@@ -3748,6 +3750,15 @@ body.moment-viewer-open {
 .liuyizhouye-bg-timeline > .container {
   position: relative;
   z-index: 1;
+  width: 100%;
+  min-height: calc(100vh - 6rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.liuyizhouye-bg-timeline > .container > .row {
+  width: 100%;
 }
 
 /* Birthday Tribute
@@ -3925,6 +3936,7 @@ body.moment-viewer-open {
 .timeline-track {
   display: flex;
   align-items: stretch;
+  justify-content: flex-start;
   gap: 1.75rem;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
   min-height: 100%;
