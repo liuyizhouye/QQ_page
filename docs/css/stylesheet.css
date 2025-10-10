@@ -4083,6 +4083,10 @@ body.moment-viewer-open {
   z-index: 10;
 }
 
+.ourstory-bg .section-toggle-btn {
+  bottom: 1.5rem;
+}
+
 @media (max-width: 575.98px) {
   .section-toggle-btn {
     bottom: 3rem;
