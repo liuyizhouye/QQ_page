@@ -367,14 +367,6 @@ $(function () {
 				]
 			}
 		],
-		favorites: [
-			{ id: 'fa-1', badge: '每周仪式', title: '周五百花计划', highlight: '一束花 + 一张手写小卡', description: '把日常写进花香里，提醒自己永远对彼此表达爱意。' },
-			{ id: 'fa-2', badge: '治愈食物', title: '深夜芝士焗饭', highlight: '限量一份，边追剧边分享', description: '无论多忙，闻到焗饭香味就知道对方在等自己回家。' },
-			{ id: 'fa-3', badge: '影单收藏', title: 'Before Sunrise', highlight: '雨天必看', description: '我们喜欢在人生十字路口重温这部电影，提醒彼此珍惜选择。' },
-			{ id: 'fa-4', badge: '城市漫步', title: '成都、青岛、厦门', highlight: '记录感动的街角', description: '每到一个城市都会寻找最喜欢的咖啡店，再次造访时拍下同一张照片。' },
-			{ id: 'fa-5', badge: '习惯养成', title: '每日一句谢谢你', highlight: '睡前互道', description: '再小的善意都值得被记住，把感激当成爱情的底色。' },
-			{ id: 'fa-6', badge: '年度清单', title: '手帐 + 拍立得', highlight: '每年12月整理', description: '挑选最喜欢的照片贴进手帐，为这一年画上温柔的句号。' }
-		],
 		loveNotes: [
 			{ id: 'ln-20200214-d', writer: 'doudou', recipient: '汉堡', date: '2020-02-14T09:00:00+08:00', title: '写给你的第一封信', excerpt: '那天的风很柔软，我把第一次为你写下的句子都折进了信封里。', pdfUrl: 'files/letters/20200214-doudou.pdf', pdfName: '20200214-doudou.pdf', createdAt: '2020-02-14T09:00:00+08:00' },
 			{ id: 'ln-20210520-h', writer: 'hamburger', recipient: '兜兜', date: '2021-05-20T21:10:00+08:00', title: '给兜兜的长信', excerpt: '谢谢你出现在我最需要的时刻，我会用一生回应你温柔的邀请。', pdfUrl: 'files/letters/20210520-hamburger.pdf', pdfName: '20210520-hamburger.pdf', createdAt: '2021-05-20T21:10:00+08:00' },
@@ -392,6 +384,14 @@ $(function () {
 	};
 	var letterPaginationState = { doudou: 0, hamburger: 0 };
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
+	var FRIEND_COMMENTS_KEY = 'friendCommentsData';
+	var FRIEND_COMMENTS_LIMIT = 200;
+	var friendComments = loadFriendComments();
+	var commentFeedbackTimer = null;
+	var $commentList = null;
+	var $commentEmpty = null;
+	var $commentForm = null;
+	var $commentFeedback = null;
 	var DEFAULT_MOMENT_COVER = 'images/projects/project-1.jpg';
 	var MAX_MOMENT_FILE_SIZE = 20 * 1024 * 1024;
 	var momentsIsotope = null;
@@ -423,6 +423,7 @@ $(function () {
 	setupTabListeners();
 	bindLetterPaginationControls();
 	initLetterUpload();
+	initializeFriendComments();
 
 	if ($momentViewer.length) {
 		$momentClose.on('click', function () {
@@ -502,7 +503,7 @@ $(function () {
 	}
 
 function ensureStructure(data) {
-	['milestones','moments','favorites','loveNotes','memories'].forEach(function (key) {
+	['milestones','moments','loveNotes','memories'].forEach(function (key) {
 		if (!Array.isArray(data[key])) {
 			data[key] = [];
 		}
@@ -1271,14 +1272,12 @@ function normalizeMomentsData() {
 	function updateCounts() {
 		$('#story-count-milestones').text(storyData.milestones.length);
 		$('#story-count-moments').text(storyData.moments.length);
-		$('#story-count-favorites').text(storyData.favorites.length);
 		$('#story-count-loveNotes').text(storyData.loveNotes.length);
 	}
 
 	function renderAllSections() {
 		renderMilestones();
 		renderMoments();
-		renderFavorites();
 		renderLoveNotes();
 		updateCounts();
 		rebindPopupGalleries();
@@ -1503,39 +1502,176 @@ function normalizeMomentsData() {
 		}
 	}
 
-	function renderFavorites() {
-		var $mainList = $('#favorites-list');
-		var $mainEmpty = $('#favorites-empty');
-		var $managerList = $('#manager-favorites-list');
-		var $managerEmpty = $('#manager-favorites-empty');
-		$mainList.empty();
-		$managerList.empty();
-		if (!storyData.favorites.length) {
-			$mainEmpty.removeClass('d-none');
-			$managerEmpty.removeClass('d-none');
+	function initializeFriendComments() {
+		$commentList = $('#comments-list');
+		$commentEmpty = $('#comments-empty');
+		$commentForm = $('#friend-comment-form');
+		$commentFeedback = $('#comment-feedback');
+
+		if (!$commentList.length || !$commentEmpty.length) {
 			return;
 		}
-		$mainEmpty.addClass('d-none');
-		$managerEmpty.addClass('d-none');
-		storyData.favorites.forEach(function (entry) {
-			var $col = $('<div/>', { 'class': 'col-md-6' });
-			var $card = $('<div/>', { 'class': 'bg-white border rounded p-4 h-100 shadow-sm' });
-			$card.append($('<p/>', { 'class': 'badge bg-primary text-2 fw-400' }).text(entry.badge));
-			$card.append($('<h3/>', { 'class': 'text-5' }).text(entry.title));
-			$card.append($('<p/>', { 'class': 'text-danger' }).text(entry.highlight));
-			$card.append($('<p/>', { 'class': 'mb-0' }).text(entry.description));
-			$col.append($card);
-			$mainList.append($col);
 
-			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
-			var $body = $('<div/>', { 'class': 'flex-grow-1' });
-			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title));
-			$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(entry.badge + ' · ' + entry.highlight));
-			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
-			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'favorites', 'data-id': entry.id }).text('删除'));
-			$item.append($body, $actions);
-			$managerList.append($item);
+		renderFriendComments();
+		bindFriendCommentForm();
+	}
+
+	function bindFriendCommentForm() {
+		if (!$commentForm || !$commentForm.length) {
+			return;
+		}
+		$commentForm.off('submit.friendComments').on('submit.friendComments', function (event) {
+			event.preventDefault();
+			handleFriendCommentSubmit();
 		});
+	}
+
+	function handleFriendCommentSubmit() {
+		if (!$commentForm || !$commentForm.length) {
+			return;
+		}
+		var $authorInput = $commentForm.find('[name="comment-author"]');
+		var $messageInput = $commentForm.find('[name="comment-message"]');
+		var author = $authorInput.length ? $.trim($authorInput.val()) : '';
+		var message = $messageInput.length ? $.trim($messageInput.val()) : '';
+		if (!message) {
+			displayFriendCommentFeedback('请填写留言内容后再提交。', 'error');
+			if ($messageInput.length) {
+				$messageInput.trigger('focus');
+			}
+			return;
+		}
+		var newEntry = normalizeFriendCommentEntry({
+			id: generateFriendCommentId(),
+			author: author,
+			message: message,
+			submittedAt: new Date().toISOString()
+		});
+		if (!newEntry) {
+			displayFriendCommentFeedback('未能保存留言，请稍后再试。', 'error');
+			return;
+		}
+		friendComments.unshift(newEntry);
+		if (friendComments.length > FRIEND_COMMENTS_LIMIT) {
+			friendComments = friendComments.slice(0, FRIEND_COMMENTS_LIMIT);
+		}
+		renderFriendComments();
+		var persisted = saveFriendComments();
+		if (!persisted) {
+			displayFriendCommentFeedback('留言已显示，但浏览器未能保存，请检查设置。', 'error');
+		} else {
+			displayFriendCommentFeedback('感谢留言！已为你记录。', 'success');
+		}
+		if ($commentForm.length && $commentForm[0] && typeof $commentForm[0].reset === 'function') {
+			$commentForm[0].reset();
+		}
+	}
+
+	function renderFriendComments() {
+		if (!$commentList || !$commentList.length) {
+			return;
+		}
+		$commentList.empty();
+		if (!friendComments.length) {
+			if ($commentEmpty && $commentEmpty.length) {
+				$commentEmpty.removeClass('d-none');
+			}
+			return;
+		}
+		if ($commentEmpty && $commentEmpty.length) {
+			$commentEmpty.addClass('d-none');
+		}
+		var sorted = friendComments.slice().sort(function (a, b) {
+			var aTime = Date.parse(a.submittedAt) || 0;
+			var bTime = Date.parse(b.submittedAt) || 0;
+			return bTime - aTime;
+		});
+		sorted.forEach(function (entry) {
+			var displayName = entry.author || '匿名好友';
+			var displayTime = formatFriendCommentTimestamp(entry.submittedAt);
+			var $card = $('<div/>', { 'class': 'card border-0 shadow-sm' });
+			var $body = $('<div/>', { 'class': 'card-body p-4' });
+			var $header = $('<div/>', { 'class': 'd-flex flex-wrap justify-content-between align-items-start gap-2 mb-2' });
+			$header.append($('<h3/>', { 'class': 'text-5 fw-600 mb-0 text-break' }).text(displayName));
+			$header.append($('<span/>', { 'class': 'small text-muted ms-auto text-nowrap' }).text(displayTime));
+			var $message = $('<p/>', { 'class': 'mb-0 text-muted lh-lg text-break' }).text(entry.message);
+			$message.css('white-space', 'pre-wrap');
+			$body.append($header, $message);
+			$card.append($body);
+			$commentList.append($card);
+		});
+	}
+
+	function loadFriendComments() {
+		if (typeof window.localStorage === 'undefined') {
+			return [];
+		}
+		try {
+			var saved = window.localStorage.getItem(FRIEND_COMMENTS_KEY);
+			if (!saved) {
+				return [];
+			}
+			var parsed = JSON.parse(saved);
+			if (!Array.isArray(parsed)) {
+				return [];
+			}
+			return parsed.map(normalizeFriendCommentEntry).filter(Boolean);
+		} catch (error) {
+			console.warn('无法读取好友留言', error);
+			return [];
+		}
+	}
+
+	function saveFriendComments() {
+		if (typeof window.localStorage === 'undefined') {
+			return false;
+		}
+		try {
+			window.localStorage.setItem(FRIEND_COMMENTS_KEY, JSON.stringify(friendComments));
+			return true;
+		} catch (error) {
+			console.warn('无法保存好友留言', error);
+			return false;
+		}
+	}
+
+	function normalizeFriendCommentEntry(entry) {
+		if (!entry || typeof entry !== 'object') {
+			return null;
+		}
+		var message = typeof entry.message === 'string' ? entry.message.trim() : '';
+		if (!message) {
+			return null;
+		}
+		var author = typeof entry.author === 'string' ? entry.author.trim() : '';
+		var submittedAt = entry.submittedAt && typeof entry.submittedAt === 'string' ? entry.submittedAt : new Date().toISOString();
+		return {
+			id: entry.id || generateFriendCommentId(),
+			author: author,
+			message: message,
+			submittedAt: submittedAt
+		};
+	}
+
+	function generateFriendCommentId() {
+		return 'fc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+	}
+
+	function formatFriendCommentTimestamp(value) {
+		return formatDisplayDateTime(value) || formatDisplayDate(value) || '刚刚';
+	}
+
+	function displayFriendCommentFeedback(message, type) {
+		if (!$commentFeedback || !$commentFeedback.length) {
+			return;
+		}
+		var isError = type === 'error';
+		$commentFeedback.removeClass('d-none alert-success alert-danger');
+		$commentFeedback.addClass(isError ? 'alert-danger' : 'alert-success').text(message);
+		clearTimeout(commentFeedbackTimer);
+		commentFeedbackTimer = setTimeout(function () {
+			$commentFeedback.addClass('d-none');
+		}, 2600);
 	}
 
 	function renderLoveNotes() {
@@ -2034,19 +2170,6 @@ function updateLetterPaginationControls(side, page, totalPages) {
 				console.error(error);
 				alert(error && error.message ? error.message : '保存瞬间失败，请稍后再试');
 			});
-		});
-
-		$('#form-favorites').on('submit', function (event) {
-			event.preventDefault();
-			var badge = $.trim($(this).find('[name="favorite-badge"]').val());
-			var title = $.trim($(this).find('[name="favorite-title"]').val());
-			var highlight = $.trim($(this).find('[name="favorite-highlight"]').val());
-			var description = $.trim($(this).find('[name="favorite-description"]').val());
-			if (!badge || !title || !highlight || !description) { return; }
-			storyData.favorites.unshift({ id: generateId('fa'), badge: badge, title: title, highlight: highlight, description: description });
-			saveData();
-			renderAllSections();
-			this.reset();
 		});
 
 		$('#form-loveNotes').on('submit', function (event) {

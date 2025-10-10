@@ -64,7 +64,7 @@
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#story">Our Story</a></li>
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#timeline">Milestones</a></li>
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#moments">Moments</a></li>
-            <li class="nav-item"><a class="nav-link smooth-scroll" href="#favorites">Favorites</a></li>
+            <li class="nav-item"><a class="nav-link smooth-scroll" href="#comments">Comments</a></li>
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#letters">Letters</a></li>
             <li class="nav-item"><a class="nav-link smooth-scroll" href="#memory">Story Manager</a></li>
           </ul>
@@ -247,17 +247,44 @@
     
     <!-- Resume
     ============================================= -->
-    <section id="favorites" class="section">
+    <section id="comments" class="section">
       <div class="container px-lg-5"> 
         <!-- Heading -->
         <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Favorites</h2>
-          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">我们的偏爱<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
+          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Comments</h2>
+          <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">留言墙<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
         </div>
         <!-- Heading end-->
         
-        <div id="favorites-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的偏爱项目。</div>
-        <div id="favorites-list" class="row g-4"></div>
+        <div class="row g-4 justify-content-center">
+          <div class="col-lg-7 col-xl-6">
+            <div id="comments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有留言，邀请好友写下祝福吧。</div>
+            <div id="comments-list" class="d-flex flex-column gap-3"></div>
+          </div>
+          <div class="col-lg-5 col-xl-4">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                <h3 class="text-5 fw-600 mb-3">留下留言</h3>
+                <p class="text-muted small mb-4">无需密码，朋友们都可以写下一句祝福或分享。</p>
+                <form id="friend-comment-form" class="vstack gap-3" novalidate>
+                  <div>
+                    <label class="form-label small text-uppercase text-muted mb-1" for="comment-author">名字 / 昵称（可选）</label>
+                    <input id="comment-author" type="text" class="form-control" name="comment-author" placeholder="例如：小王" maxlength="40">
+                  </div>
+                  <div>
+                    <label class="form-label small text-uppercase text-muted mb-1" for="comment-message">留言内容</label>
+                    <textarea id="comment-message" class="form-control" name="comment-message" rows="4" placeholder="想对我们说的话..." required maxlength="500"></textarea>
+                  </div>
+                  <div class="text-end">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">发送留言</button>
+                  </div>
+                </form>
+                <div id="comment-feedback" class="alert alert-success mt-3 d-none" role="status">感谢留言！已为你记录。</div>
+                <p class="form-text text-muted mt-3 mb-0">提示：留言仅保存在你当前的浏览器中。</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <!-- Resume end --> 
@@ -363,7 +390,6 @@
               <ul class="list-unstyled text-3 lh-lg mb-4">
                 <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
                 <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
-                <li><i class="fas fa-star text-primary me-2"></i>偏爱 <span class="badge bg-light text-muted" id="story-count-favorites">0</span></li>
                 <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
               </ul>
               <div class="alert alert-info small" role="note">数据存在当前浏览器的 LocalStorage 中，清除浏览数据会一并删除。</div>
@@ -374,7 +400,6 @@
                   <ul class="nav nav-pills story-tabs flex-wrap" id="storyTabs" role="tablist">
                     <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
                     <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-favorites" data-bs-toggle="pill" data-bs-target="#story-pane-favorites" type="button" role="tab" aria-controls="story-pane-favorites" aria-selected="false">偏爱</button></li>
                     <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
                   </ul>
                 </div>
@@ -435,20 +460,6 @@
                         <div class="col-12 text-end">
                           <button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button>
                         </div>
-                      </form>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="story-pane-favorites" role="tabpanel" aria-labelledby="tab-link-favorites">
-                    <div class="story-manager-section">
-                      <div id="manager-favorites-empty" class="alert alert-light border text-muted" role="status">还没有偏爱项目，填写下方表单添加一条吧。</div>
-                      <div id="manager-favorites-list" class="list-group list-group-flush mb-4"></div>
-                      <h3 class="text-5 fw-600 mb-3">新增偏爱项目</h3>
-                      <form id="form-favorites" class="row g-3 story-form" novalidate>
-                        <div class="col-md-4"><input type="text" class="form-control" name="favorite-badge" placeholder="标签（例如 每周仪式）" required></div>
-                        <div class="col-md-8"><input type="text" class="form-control" name="favorite-title" placeholder="标题（例如 周五百花计划）" required></div>
-                        <div class="col-12"><input type="text" class="form-control" name="favorite-highlight" placeholder="一句话亮点（例如 一束花 + 一张手写小卡）" required></div>
-                        <div class="col-12"><textarea class="form-control" rows="3" name="favorite-description" placeholder="描述这份偏爱的意义" required></textarea></div>
-                        <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存偏爱</button></div>
                       </form>
                     </div>
                   </div>
