@@ -259,6 +259,24 @@ $(".counter").each(function () {
     });
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+	var counter = document.getElementById('days-together-counter');
+	if (!counter) {
+		return;
+	}
+	var startDate = new Date('2022-02-12T00:00:00+08:00');
+	var now = new Date();
+	var diff = now - startDate;
+	if (isNaN(diff) || diff < 0) {
+		counter.setAttribute('data-to', '0');
+		counter.textContent = '0';
+		return;
+	}
+	var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+	counter.setAttribute('data-to', days.toString());
+	counter.textContent = days.toString();
+});
+
 /*------------------------------------
     Typed
 -------------------------------------- */
