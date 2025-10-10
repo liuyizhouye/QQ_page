@@ -259,7 +259,7 @@
       <div class="container px-lg-5"> 
         <!-- Heading -->
         <div class="position-relative d-flex text-center mb-5">
-          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Friend Comments</h2>
+          <h2 class="text-24 text-light opacity-4 text-uppercase fw-600 w-100 mb-0">Comments</h2>
           <p class="text-9 text-dark fw-600 position-absolute w-100 align-self-center lh-base mb-0">好友留言墙<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span> </p>
         </div>
         <!-- Heading end-->
@@ -644,32 +644,12 @@
 <script>
 (function () {
   var PASSWORD = 'Lyz@Hcy19990805';
-  var STORAGE_KEY = 'qq_page_protected_sections';
   var sections = document.querySelectorAll('[data-protected-key]');
   if (!sections.length) {
     return;
   }
 
   var unlocked = {};
-  try {
-    var cached = localStorage.getItem(STORAGE_KEY);
-    if (cached) {
-      var parsed = JSON.parse(cached);
-      if (parsed && typeof parsed === 'object') {
-        unlocked = parsed;
-      }
-    }
-  } catch (error) {
-    unlocked = {};
-  }
-
-  var persistUnlockState = function () {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(unlocked));
-    } catch (error) {
-      // Ignore storage failures (likely private mode or quota issues).
-    }
-  };
 
   sections.forEach(function (section) {
     var key = section.getAttribute('data-protected-key');
@@ -719,7 +699,6 @@
       }
       if (value === PASSWORD) {
         unlocked[key] = true;
-        persistUnlockState();
         showContent();
       } else {
         if (errorHint) {
