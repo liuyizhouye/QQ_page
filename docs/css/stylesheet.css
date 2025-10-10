@@ -3728,6 +3728,28 @@ body.moment-viewer-open {
   object-fit: cover;
 }
 
+/* Custom Section Backgrounds
+--------------------------------------------- */
+.liuyizhouye-bg-timeline {
+  position: relative;
+  background-image: url('../images/liuyizhouye-bg.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.liuyizhouye-bg-timeline::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.liuyizhouye-bg-timeline > .container {
+  position: relative;
+  z-index: 1;
+}
+
 /* Birthday Tribute
 --------------------------------------------- */
 .liuyizhouye-section {
