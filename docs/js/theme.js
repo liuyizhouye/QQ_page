@@ -991,15 +991,23 @@ function normalizeMomentsData() {
 				descriptors.push({ label: clean, slug: slug });
 			});
 		}
-		var unique = [];
-		var seen = {};
-		descriptors.forEach(function (descriptor) {
-			if (!descriptor.slug || seen[descriptor.slug]) {
-				return;
-			}
-			seen[descriptor.slug] = true;
-			unique.push(descriptor);
-		});
+	var unique = [];
+	var seenSlug = {};
+	var seenLabel = {};
+	descriptors.forEach(function (descriptor) {
+		if (!descriptor.slug) {
+			return;
+		}
+		var normalizedLabel = descriptor.label ? descriptor.label.toString().trim().toLowerCase() : '';
+		if (seenSlug[descriptor.slug] || (normalizedLabel && seenLabel[normalizedLabel])) {
+			return;
+		}
+		seenSlug[descriptor.slug] = true;
+		if (normalizedLabel) {
+			seenLabel[normalizedLabel] = true;
+		}
+		unique.push(descriptor);
+	});
 		return unique;
 	}
 
