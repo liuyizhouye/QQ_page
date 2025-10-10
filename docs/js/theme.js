@@ -273,8 +273,13 @@ document.addEventListener('DOMContentLoaded', function () {
 		return;
 	}
 	var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-	counter.setAttribute('data-to', days.toString());
-	counter.textContent = days.toString();
+	var value = days.toString();
+	counter.setAttribute('data-to', value);
+	counter.dataset.to = value;
+	if (window.jQuery && typeof window.jQuery === 'function') {
+		window.jQuery(counter).attr('data-to', value).data('to', days);
+	}
+	counter.textContent = value;
 });
 
 /*------------------------------------
