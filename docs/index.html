@@ -590,7 +590,7 @@
 </div>
 <!-- Disclaimer Modal End --> 
 
-<audio id="background-audio" src="SpotiDown.App - Take A Chance With Me - NIKI.mp3" preload="auto" autoplay loop hidden></audio>
+<audio id="background-audio" src="SpotiDown.App - Take A Chance With Me - NIKI.mp3" preload="auto" loop hidden></audio>
 
 <!-- JavaScript --> 
 <script src="vendor/jquery/jquery.min.js"></script> 
@@ -620,50 +620,25 @@
 (function () {
   var audio = document.getElementById('background-audio');
   var linkStartButton = document.getElementById('link-start-button');
-  if (!audio) {
+  if (!audio || !linkStartButton) {
     return;
   }
 
-  var attemptPlay = function () {
-    var playPromise = audio.play();
-    if (playPromise && typeof playPromise.then === 'function') {
-      playPromise.catch(bindLinkStartButton);
-    }
-  };
-
-  var bindLinkStartButton = function () {
-    if (!linkStartButton || linkStartButton.dataset.audioUnlockAttached === 'true') {
-      return;
-    }
-
-    // Hint that the Link Start button will unlock the music, then tie playback to the click.
-    linkStartButton.dataset.audioUnlockAttached = 'true';
-    if (!linkStartButton.dataset.originalText) {
-      linkStartButton.dataset.originalText = linkStartButton.textContent;
-      linkStartButton.textContent = linkStartButton.textContent;
-    }
-
-    var handleClick = function () {
-      audio.play().then(function () {
-        linkStartButton.removeEventListener('click', handleClick);
-        if (linkStartButton.dataset.originalText) {
-          linkStartButton.textContent = linkStartButton.dataset.originalText;
-          delete linkStartButton.dataset.originalText;
-        }
-        delete linkStartButton.dataset.audioUnlockAttached;
-      }).catch(function () {
-        // Playback still blocked; keep the hint and listener active.
-      });
-    };
-
-    linkStartButton.addEventListener('click', handleClick);
-  };
-
-  if (document.readyState === 'complete') {
-    attemptPlay();
-  } else {
-    window.addEventListener('load', attemptPlay);
+  try {
+    audio.pause();
+    audio.currentTime = 0;
+  } catch (error) {
+    // Ignore if resetting playback state fails.
   }
+
+  var handleClick = function () {
+    audio.play().catch(function (error) {
+      console.warn('Background audio playback was blocked.', error);
+    });
+    linkStartButton.removeEventListener('click', handleClick);
+  };
+
+  linkStartButton.addEventListener('click', handleClick);
 })();
 </script>
 <script>
