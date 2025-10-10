@@ -386,12 +386,18 @@ $(function () {
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
 	var FRIEND_COMMENTS_KEY = 'friendCommentsData';
 	var FRIEND_COMMENTS_LIMIT = 200;
+	var FRIEND_COMMENTS_PER_PAGE = 6;
 	var friendComments = loadFriendComments();
+	var friendCommentsPage = 0;
 	var commentFeedbackTimer = null;
 	var $commentList = null;
 	var $commentEmpty = null;
 	var $commentForm = null;
 	var $commentFeedback = null;
+	var $commentPagination = null;
+	var $commentPrev = null;
+	var $commentNext = null;
+	var $commentPageIndicator = null;
 	var DEFAULT_MOMENT_COVER = 'images/projects/project-1.jpg';
 	var MAX_MOMENT_FILE_SIZE = 20 * 1024 * 1024;
 	var momentsIsotope = null;
@@ -1515,13 +1521,19 @@ function normalizeMomentsData() {
 		$commentEmpty = $('#comments-empty');
 		$commentForm = $('#friend-comment-form');
 		$commentFeedback = $('#comment-feedback');
+		$commentPagination = $('#comments-pagination');
+		$commentPrev = $('#comments-prev');
+		$commentNext = $('#comments-next');
+		$commentPageIndicator = $('#comments-page-indicator');
+		friendCommentsPage = 0;
 
 		if (!$commentList.length || !$commentEmpty.length) {
 			return;
 		}
 
-		renderFriendComments();
 		bindFriendCommentForm();
+		bindFriendCommentPaginationControls();
+		renderFriendComments();
 	}
 
 	function bindFriendCommentForm() {
@@ -1532,6 +1544,21 @@ function normalizeMomentsData() {
 			event.preventDefault();
 			handleFriendCommentSubmit();
 		});
+	}
+
+	function bindFriendCommentPaginationControls() {
+		if ($commentPrev && $commentPrev.length) {
+			$commentPrev.off('click.friendCommentsPagination').on('click.friendCommentsPagination', function (event) {
+				event.preventDefault();
+				changeFriendCommentsPage(-1);
+			});
+		}
+		if ($commentNext && $commentNext.length) {
+			$commentNext.off('click.friendCommentsPagination').on('click.friendCommentsPagination', function (event) {
+				event.preventDefault();
+				changeFriendCommentsPage(1);
+			});
+		}
 	}
 
 	function handleFriendCommentSubmit() {
@@ -1563,6 +1590,7 @@ function normalizeMomentsData() {
 		if (friendComments.length > FRIEND_COMMENTS_LIMIT) {
 			friendComments = friendComments.slice(0, FRIEND_COMMENTS_LIMIT);
 		}
+		friendCommentsPage = 0;
 		renderFriendComments();
 		var persisted = saveFriendComments();
 		if (!persisted) {
@@ -1579,11 +1607,13 @@ function normalizeMomentsData() {
 		if (!$commentList || !$commentList.length) {
 			return;
 		}
-		$commentList.empty();
 		if (!friendComments.length) {
+			friendCommentsPage = 0;
 			if ($commentEmpty && $commentEmpty.length) {
 				$commentEmpty.removeClass('d-none');
 			}
+			hideFriendCommentPagination();
+			$commentList.empty();
 			return;
 		}
 		if ($commentEmpty && $commentEmpty.length) {
@@ -1594,7 +1624,19 @@ function normalizeMomentsData() {
 			var bTime = Date.parse(b.submittedAt) || 0;
 			return bTime - aTime;
 		});
-		sorted.forEach(function (entry) {
+		friendComments = sorted;
+		var totalEntries = friendComments.length;
+		var totalPages = Math.max(1, Math.ceil(totalEntries / FRIEND_COMMENTS_PER_PAGE));
+		if (friendCommentsPage >= totalPages) {
+			friendCommentsPage = totalPages - 1;
+		}
+		if (friendCommentsPage < 0) {
+			friendCommentsPage = 0;
+		}
+		var startIndex = friendCommentsPage * FRIEND_COMMENTS_PER_PAGE;
+		var pageItems = friendComments.slice(startIndex, startIndex + FRIEND_COMMENTS_PER_PAGE);
+		$commentList.empty();
+		pageItems.forEach(function (entry) {
 			var displayName = entry.author || '匿名好友';
 			var displayTime = formatFriendCommentTimestamp(entry.submittedAt);
 			var $card = $('<div/>', { 'class': 'card border-0 shadow-sm' });
@@ -1608,6 +1650,61 @@ function normalizeMomentsData() {
 			$card.append($body);
 			$commentList.append($card);
 		});
+		updateFriendCommentPagination(totalPages);
+	}
+
+	function changeFriendCommentsPage(delta) {
+		if (!friendComments.length) {
+			return;
+		}
+		var totalPages = Math.max(1, Math.ceil(friendComments.length / FRIEND_COMMENTS_PER_PAGE));
+		var target = friendCommentsPage + delta;
+		if (target < 0) {
+			target = 0;
+		} else if (target > totalPages - 1) {
+			target = totalPages - 1;
+		}
+		if (target === friendCommentsPage) {
+			return;
+		}
+		friendCommentsPage = target;
+		renderFriendComments();
+		if ($commentList && $commentList.length) {
+			try {
+				$commentList.get(0).scrollIntoView({ behavior: 'smooth', block: 'start' });
+			} catch (error) {
+				// Ignore scroll failures (e.g., older browsers).
+			}
+		}
+	}
+
+	function updateFriendCommentPagination(totalPages) {
+		if (!$commentPagination || !$commentPagination.length) {
+			return;
+		}
+		if (!totalPages || totalPages <= 1) {
+			$commentPagination.addClass('d-none');
+			return;
+		}
+		$commentPagination.removeClass('d-none');
+		var current = Math.min(Math.max(friendCommentsPage + 1, 1), totalPages);
+		if ($commentPageIndicator && $commentPageIndicator.length) {
+			$commentPageIndicator.text('第 ' + current + ' 页 / 共 ' + totalPages + ' 页');
+		}
+		var hasPrev = friendCommentsPage > 0;
+		var hasNext = friendCommentsPage < totalPages - 1;
+		if ($commentPrev && $commentPrev.length) {
+			$commentPrev.prop('disabled', !hasPrev).toggleClass('disabled', !hasPrev);
+		}
+		if ($commentNext && $commentNext.length) {
+			$commentNext.prop('disabled', !hasNext).toggleClass('disabled', !hasNext);
+		}
+	}
+
+	function hideFriendCommentPagination() {
+		if ($commentPagination && $commentPagination.length) {
+			$commentPagination.addClass('d-none');
+		}
 	}
 
 	function loadFriendComments() {

@@ -268,6 +268,11 @@
           <div class="col-lg-7 col-xl-6">
             <div id="comments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有留言，邀请好友写下祝福吧。</div>
             <div id="comments-list" class="d-flex flex-column gap-3"></div>
+            <div id="comments-pagination" class="d-flex align-items-center justify-content-center gap-3 mt-4 d-none" aria-label="留言翻页">
+              <button type="button" class="btn btn-outline-primary btn-sm" id="comments-prev" disabled>上一页</button>
+              <span id="comments-page-indicator" class="small text-muted">第 1 页 / 共 1 页</span>
+              <button type="button" class="btn btn-outline-primary btn-sm" id="comments-next" disabled>下一页</button>
+            </div>
           </div>
           <div class="col-lg-5 col-xl-4">
             <div class="card border-0 shadow-sm">
