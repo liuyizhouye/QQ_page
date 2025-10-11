@@ -51,6 +51,7 @@ body {
   background: #dddddd;
   color: #4c4d4d;
   font-family: "Poppins", sans-serif;
+  overflow-x: hidden;
 }
 
 /*-------- Preloader --------*/
@@ -165,6 +166,8 @@ form {
 
 img {
   vertical-align: inherit;
+  max-width: 100%;
+  height: auto;
 }
 
 a, a:focus {
@@ -633,6 +636,20 @@ hr {
   .section-full {
     padding-top: 4.5rem;
     padding-bottom: 4.5rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .section-full {
+    min-height: auto;
+  }
+  .scroll-down-arrow {
+    display: none;
+  }
+  .liuyizhouye-bg-timeline > .container {
+    min-height: auto;
+    align-items: stretch;
+    justify-content: flex-start;
   }
 }
 
@@ -4047,6 +4064,13 @@ body.moment-viewer-open {
   }
 }
 
+@media (max-width: 575.98px) {
+  .liuyizhouye-letter-content {
+    max-height: none;
+    padding-right: 0;
+  }
+}
+
 /* Milestone Timeline
 --------------------------------------------- */
 .milestone-timeline {
@@ -4172,6 +4196,16 @@ body.moment-viewer-open {
 
 .ourstory-bg .section-toggle-btn {
   bottom: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+  .section-toggle-btn {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 1.25rem auto;
+  }
 }
 
 @media (max-width: 575.98px) {
