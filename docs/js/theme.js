@@ -459,12 +459,14 @@ $(function () {
 	};
 
 	var storyData = loadData();
-	var LETTERS_PER_PAGE = 4;
-	var LETTER_WRITER_CONFIG = {
-		doudou: { writerName: '兜兜', recipientName: '汉堡', listSelector: '#letters-doudou-list', pageSelector: '#letters-doudou-page', emptyText: '兜兜还没有写新的信件。' },
-		hamburger: { writerName: '汉堡', recipientName: '兜兜', listSelector: '#letters-hamburger-list', pageSelector: '#letters-hamburger-page', emptyText: '汉堡还没有写新的信件。' }
-	};
-	var letterPaginationState = { doudou: 0, hamburger: 0 };
+var LETTERS_PER_PAGE = 4;
+var STORY_MANAGER_PAGE_SIZE = 4;
+var LETTER_WRITER_CONFIG = {
+	doudou: { writerName: '兜兜', recipientName: '汉堡', listSelector: '#letters-doudou-list', pageSelector: '#letters-doudou-page', emptyText: '兜兜还没有写新的信件。' },
+	hamburger: { writerName: '汉堡', recipientName: '兜兜', listSelector: '#letters-hamburger-list', pageSelector: '#letters-hamburger-page', emptyText: '汉堡还没有写新的信件。' }
+};
+var letterPaginationState = { doudou: 0, hamburger: 0 };
+var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0 };
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
 	var FRIEND_COMMENTS_KEY = 'friendCommentsData';
 	var FRIEND_COMMENTS_LIMIT = 200;
@@ -507,11 +509,12 @@ $(function () {
 	normalizeLoveNotesData();
 	renderAllSections();
 	bindForms();
-	bindDeletion();
-	setupTabListeners();
-	bindLetterPaginationControls();
-	initLetterUpload();
-	initializeFriendComments();
+bindDeletion();
+setupTabListeners();
+bindLetterPaginationControls();
+bindStoryManagerPaginationControls();
+initLetterUpload();
+initializeFriendComments();
 
 	if ($momentViewer.length) {
 		$momentClose.on('click', function () {
@@ -1386,26 +1389,29 @@ function normalizeMomentsData() {
 		var $managerList = $('#manager-milestones-list');
 		var $managerEmpty = $('#manager-milestones-empty');
 
-		$mainList.empty();
-		$managerList.empty();
+	$mainList.empty();
+	$managerList.empty();
 
-		if (!storyData.milestones.length) {
-			$mainEmpty.removeClass('d-none');
-			$managerEmpty.removeClass('d-none');
-			return;
-		}
+	if (!storyData.milestones.length) {
+		$mainEmpty.removeClass('d-none');
+		$managerEmpty.removeClass('d-none');
+		storyManagerPaginationState.milestones = 0;
+		updateStoryManagerPaginationControls('milestones', 0, 0);
+		return;
+	}
 
-		$mainEmpty.addClass('d-none');
-		$managerEmpty.addClass('d-none');
+	$mainEmpty.addClass('d-none');
+	$managerEmpty.addClass('d-none');
 
-		var sorted = storyData.milestones.slice().sort(sortMilestonesAscending);
-		var lastYearLabel = null;
-		var $track = $('<div/>', { 'class': 'timeline-track' });
-		$mainList.append($track);
+	var sorted = storyData.milestones.slice().sort(sortMilestonesAscending);
+	var lastYearLabel = null;
+	var $track = $('<div/>', { 'class': 'timeline-track' });
+	var managerItems = [];
+	$mainList.append($track);
 
-		sorted.forEach(function (entry) {
-			var dateLabel = formatDateTimeOrDateForDisplay(entry.occurredAt);
-			var yearLabel = formatMilestoneYear(entry.occurredAt);
+	sorted.forEach(function (entry) {
+		var dateLabel = formatDateTimeOrDateForDisplay(entry.occurredAt);
+		var yearLabel = formatMilestoneYear(entry.occurredAt);
 
 			if (yearLabel && yearLabel !== lastYearLabel) {
 				$track.append($('<div/>', { 'class': 'timeline-year-badge' }).text(yearLabel));
@@ -1441,15 +1447,17 @@ function normalizeMomentsData() {
 			}
 			if (managerMeta.length) {
 				$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(managerMeta.join(' · ')));
-			}
-			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
-			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'milestones', 'data-id': entry.id }).text('删除'));
-			$managerItem.append($body, $actions);
-			$managerList.append($managerItem);
-		});
+		}
+		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
+		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'milestones', 'data-id': entry.id }).text('删除'));
+		$managerItem.append($body, $actions);
+		managerItems.push($managerItem);
+	});
 
-		enableTimelineWheelScroll($mainList);
-	}
+	renderStoryManagerPagedList('milestones', $managerList, managerItems);
+
+	enableTimelineWheelScroll($mainList);
+}
 
 	function enableTimelineWheelScroll($container) {
 		if (!$container || !$container.length) {
@@ -1479,18 +1487,21 @@ function normalizeMomentsData() {
 		$mainList.empty();
 		$menu.empty();
 		$managerList.empty();
-		if (!storyData.moments.length) {
-			$mainEmpty.removeClass('d-none');
-			$managerEmpty.removeClass('d-none');
-			$menuWrapper.addClass('d-none');
-			currentMomentsFilter = '*';
-			return;
-		}
-		$mainEmpty.addClass('d-none');
-		$managerEmpty.addClass('d-none');
-		$menuWrapper.removeClass('d-none');
-		var filterMap = new Map();
-		storyData.moments.forEach(function (entry) {
+	if (!storyData.moments.length) {
+		$mainEmpty.removeClass('d-none');
+		$managerEmpty.removeClass('d-none');
+		$menuWrapper.addClass('d-none');
+		currentMomentsFilter = '*';
+		storyManagerPaginationState.moments = 0;
+		updateStoryManagerPaginationControls('moments', 0, 0);
+		return;
+	}
+	$mainEmpty.addClass('d-none');
+	$managerEmpty.addClass('d-none');
+	$menuWrapper.removeClass('d-none');
+	var filterMap = new Map();
+	var managerItems = [];
+	storyData.moments.forEach(function (entry) {
 			var filters = getMomentFilterDescriptors(entry);
 			filters.forEach(function (descriptor) {
 				if (descriptor.slug) {
@@ -1541,16 +1552,16 @@ function normalizeMomentsData() {
 			$col.append($box);
 			$mainList.append($col);
 
-			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
-			var $body = $('<div/>', { 'class': 'flex-grow-1' });
-			$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title || '未命名瞬间'));
-			var $meta = $('<p/>', { 'class': 'mb-0 small text-muted' });
-			var metaParts = [];
-			if (dateLabel) {
-				metaParts.push(dateLabel);
-			}
-			if (primaryMedia) {
-				metaParts.push(primaryMedia.type === 'video' ? '视频' : '照片');
+		var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
+		var $body = $('<div/>', { 'class': 'flex-grow-1' });
+		$body.append($('<h5/>', { 'class': 'mb-1' }).text(entry.title || '未命名瞬间'));
+		var $meta = $('<p/>', { 'class': 'mb-0 small text-muted' });
+		var metaParts = [];
+		if (dateLabel) {
+			metaParts.push(dateLabel);
+		}
+		if (primaryMedia) {
+			metaParts.push(primaryMedia.type === 'video' ? '视频' : '照片');
 			}
 			if (entry.description) {
 				metaParts.push(entry.description);
@@ -1560,24 +1571,26 @@ function normalizeMomentsData() {
 				if (mediaLabel) {
 					metaParts.push(mediaLabel);
 				}
-			}
-			if (!metaParts.length && entry.tags && entry.tags.length) {
-				metaParts.push(entry.tags.join(' / '));
-			}
-			if (metaParts.length) {
-				$meta.text(metaParts.join(' · '));
-				$body.append($meta);
-			}
-			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
-			if (primaryMedia) {
-				var typeBadge = primaryMedia.type === 'video' ? '视频' : '照片';
-				$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(typeBadge));
-			}
-			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'moments', 'data-id': entry.id }).text('删除'));
-			$item.append($body, $actions);
-			$managerList.append($item);
-		});
-		var categoriesArray = Array.from(filterMap.entries()).map(function (entry) {
+		}
+		if (!metaParts.length && entry.tags && entry.tags.length) {
+			metaParts.push(entry.tags.join(' / '));
+		}
+		if (metaParts.length) {
+			$meta.text(metaParts.join(' · '));
+			$body.append($meta);
+		}
+		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
+		if (primaryMedia) {
+			var typeBadge = primaryMedia.type === 'video' ? '视频' : '照片';
+			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(typeBadge));
+		}
+		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'moments', 'data-id': entry.id }).text('删除'));
+		$item.append($body, $actions);
+		managerItems.push($item);
+	});
+
+	renderStoryManagerPagedList('moments', $managerList, managerItems);
+	var categoriesArray = Array.from(filterMap.entries()).map(function (entry) {
 			return { slug: entry[0], label: entry[1] };
 		});
 		buildMomentsMenu(categoriesArray);
@@ -1879,6 +1892,8 @@ function normalizeMomentsData() {
 			$empty.removeClass('d-none');
 			$board.addClass('d-none');
 			$managerEmpty.removeClass('d-none');
+			storyManagerPaginationState.loveNotes = 0;
+			updateStoryManagerPaginationControls('loveNotes', 0, 0);
 			Object.keys(LETTER_WRITER_CONFIG).forEach(function (side) {
 				var config = LETTER_WRITER_CONFIG[side];
 				var $list = $(config.listSelector);
@@ -1929,9 +1944,8 @@ function normalizeMomentsData() {
 		});
 
 		var managerLetters = storyData.loveNotes.slice().sort(sortLettersDescending);
-		managerLetters.forEach(function (entry) {
-			$managerList.append(buildLetterManagerItem(entry));
-		});
+		var managerItems = managerLetters.map(function (entry) { return buildLetterManagerItem(entry); });
+		renderStoryManagerPagedList('loveNotes', $managerList, managerItems);
 	}
 
 	function buildLetterCard(entry) {
@@ -2094,6 +2108,99 @@ function updateLetterPaginationControls(side, page, totalPages) {
 	}
 	$prev.prop('disabled', page <= 1);
 	$next.prop('disabled', page >= totalPages);
+}
+
+function renderStoryManagerPagedList(category, $list, items) {
+	if (!$list || !$list.length) {
+		return;
+	}
+	var totalItems = Array.isArray(items) ? items.length : 0;
+	var totalPages = totalItems ? Math.ceil(totalItems / STORY_MANAGER_PAGE_SIZE) : 0;
+	if (!Object.prototype.hasOwnProperty.call(storyManagerPaginationState, category)) {
+		storyManagerPaginationState[category] = 0;
+	}
+	if (!totalPages) {
+		$list.empty();
+		storyManagerPaginationState[category] = 0;
+		updateStoryManagerPaginationControls(category, 0, 0);
+		return;
+	}
+	var current = storyManagerPaginationState[category] || 0;
+	if (current < 0) {
+		current = 0;
+	}
+	if (current > totalPages - 1) {
+		current = totalPages - 1;
+	}
+	storyManagerPaginationState[category] = current;
+	var start = current * STORY_MANAGER_PAGE_SIZE;
+	var pageItems = items.slice(start, start + STORY_MANAGER_PAGE_SIZE);
+	$list.empty();
+	pageItems.forEach(function ($item) {
+		$list.append($item);
+	});
+	updateStoryManagerPaginationControls(category, current, totalPages);
+}
+
+function updateStoryManagerPaginationControls(category, currentPage, totalPages) {
+	var $pagination = $('#manager-' + category + '-pagination');
+	if (!$pagination.length) {
+		return;
+	}
+	var $indicator = $('#manager-' + category + '-page');
+	var $prev = $pagination.find('.story-page-prev');
+	var $next = $pagination.find('.story-page-next');
+	if (!totalPages || totalPages <= 1) {
+		$pagination.addClass('d-none');
+		if ($indicator.length) {
+			$indicator.text('第 1 页 / 共 1 页');
+		}
+		if ($prev.length) {
+			$prev.prop('disabled', true).toggleClass('disabled', true);
+		}
+		if ($next.length) {
+			$next.prop('disabled', true).toggleClass('disabled', true);
+		}
+		return;
+	}
+	$pagination.removeClass('d-none');
+	if ($indicator.length) {
+		$indicator.text('第 ' + (currentPage + 1) + ' 页 / 共 ' + totalPages + ' 页');
+	}
+	var hasPrev = currentPage > 0;
+	var hasNext = currentPage < totalPages - 1;
+	if ($prev.length) {
+		$prev.prop('disabled', !hasPrev).toggleClass('disabled', !hasPrev);
+	}
+	if ($next.length) {
+		$next.prop('disabled', !hasNext).toggleClass('disabled', !hasNext);
+	}
+}
+
+function changeStoryManagerPage(category, delta) {
+	if (!category || !Object.prototype.hasOwnProperty.call(storyManagerPaginationState, category)) {
+		return;
+	}
+	var nextPage = (storyManagerPaginationState[category] || 0) + delta;
+	storyManagerPaginationState[category] = nextPage;
+	if (category === 'milestones') {
+		renderMilestones();
+	} else if (category === 'moments') {
+		renderMoments();
+	} else if (category === 'loveNotes') {
+		renderLoveNotes();
+	}
+}
+
+function bindStoryManagerPaginationControls() {
+	$(document).on('click', '.story-page-prev', function () {
+		var category = $(this).data('category');
+		changeStoryManagerPage(category, -1);
+	});
+	$(document).on('click', '.story-page-next', function () {
+		var category = $(this).data('category');
+		changeStoryManagerPage(category, 1);
+	});
 }
 
 	function sortLettersAscending(a, b) {

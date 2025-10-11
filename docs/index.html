@@ -410,7 +410,12 @@
                     <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
                       <div class="story-manager-section">
                         <div id="manager-milestones-empty" class="alert alert-light border text-muted" role="status">还没有里程碑，填写下方表单添加一条吧。</div>
-                        <div id="manager-milestones-list" class="list-group list-group-flush mb-4"></div>
+                        <div id="manager-milestones-list" class="list-group list-group-flush mb-3"></div>
+                        <div id="manager-milestones-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="里程碑翻页">
+                          <button type="button" class="btn btn-outline-primary btn-sm story-page-prev" data-category="milestones" disabled>上一页</button>
+                          <span class="small text-muted" id="manager-milestones-page">第 1 页 / 共 1 页</span>
+                          <button type="button" class="btn btn-outline-primary btn-sm story-page-next" data-category="milestones" disabled>下一页</button>
+                        </div>
                         <h3 class="text-5 fw-600 mb-3">新增里程碑</h3>
                         <form id="form-milestones" class="row g-3 story-form" novalidate>
                           <div class="col-md-6"><input type="datetime-local" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024-02-14T20:30）" required></div>
@@ -424,7 +429,12 @@
                   <div class="tab-pane fade" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
                     <div class="story-manager-section">
                       <div id="manager-moments-empty" class="alert alert-light border text-muted" role="status">还没有瞬间，填写下方表单添加一条吧。</div>
-                      <div id="manager-moments-list" class="list-group list-group-flush mb-4"></div>
+                      <div id="manager-moments-list" class="list-group list-group-flush mb-3"></div>
+                      <div id="manager-moments-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="瞬间翻页">
+                        <button type="button" class="btn btn-outline-primary btn-sm story-page-prev" data-category="moments" disabled>上一页</button>
+                        <span class="small text-muted" id="manager-moments-page">第 1 页 / 共 1 页</span>
+                        <button type="button" class="btn btn-outline-primary btn-sm story-page-next" data-category="moments" disabled>下一页</button>
+                      </div>
                       <h3 class="text-5 fw-600 mb-3">新增瞬间</h3>
                       <form id="form-moments" class="row g-3 story-form" novalidate>
                         <div class="col-md-6">
@@ -468,7 +478,12 @@
                   <div class="tab-pane fade" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
                     <div class="story-manager-section">
                       <div id="manager-loveNotes-empty" class="alert alert-light border text-muted" role="status">还没有信件，选择写信的人、日期，并上传一份 PDF 吧。</div>
-                      <div id="manager-loveNotes-list" class="list-group list-group-flush mb-4"></div>
+                      <div id="manager-loveNotes-list" class="list-group list-group-flush mb-3"></div>
+                      <div id="manager-loveNotes-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="信件翻页">
+                        <button type="button" class="btn btn-outline-primary btn-sm story-page-prev" data-category="loveNotes" disabled>上一页</button>
+                        <span class="small text-muted" id="manager-loveNotes-page">第 1 页 / 共 1 页</span>
+                        <button type="button" class="btn btn-outline-primary btn-sm story-page-next" data-category="loveNotes" disabled>下一页</button>
+                      </div>
                       <h3 class="text-5 fw-600 mb-3">新增信件</h3>
                       <form id="form-loveNotes" class="row g-3 story-form" novalidate>
                         <div class="col-md-6">
