@@ -279,10 +279,36 @@ function updateCounter(elementId, startUtc) {
 function refreshCounters() {
 	updateCounter('days-together-counter', Date.UTC(2022, 1, 11, 16, 0, 0)); // 2022-02-12 00:00:00 +08:00
 	updateCounter('graduation-counter', Date.UTC(2022, 4, 17, 16, 0, 0)); // 2022-05-18 00:00:00 +08:00
+	updateBirthdayCounter('birthday-next-counter');
+	updateBirthdayCounter('birthday-doudou-counter', { month: 10, day: 18 });
 }
 
 document.addEventListener('DOMContentLoaded', refreshCounters);
 window.addEventListener('load', refreshCounters);
+
+function updateBirthdayCounter(elementId, options) {
+	var counter = document.getElementById(elementId);
+	if (!counter) {
+		return;
+	}
+	var now = new Date();
+	var year = now.getFullYear();
+	var month = options && typeof options.month === 'number' ? options.month : 7;
+	var day = options && typeof options.day === 'number' ? options.day : 5;
+	var target = new Date(Date.UTC(year, month, day));
+	if (now > target) {
+		target = new Date(Date.UTC(year + 1, month, day));
+	}
+	var diff = target - now;
+	var days = diff > 0 ? Math.ceil(diff / (1000 * 60 * 60 * 24)) : 0;
+	var value = days.toString();
+	counter.setAttribute('data-to', value);
+	counter.dataset.to = value;
+	if (window.jQuery && typeof window.jQuery === 'function') {
+		window.jQuery(counter).attr('data-to', value).data('to', days);
+	}
+	counter.textContent = value;
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 	var toggleConfig = [
