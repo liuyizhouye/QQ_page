@@ -259,12 +259,11 @@ $(".counter").each(function () {
     });
 });
 
-function updateDaysTogetherCounter() {
-	var counter = document.getElementById('days-together-counter');
+function updateCounter(elementId, startUtc) {
+	var counter = document.getElementById(elementId);
 	if (!counter) {
 		return;
 	}
-	var startUtc = Date.UTC(2022, 1, 11, 16, 0, 0); // 2022-02-12 00:00:00 +08:00
 	var nowUtc = Date.now();
 	var diff = nowUtc - startUtc;
 	var days = diff > 0 ? Math.floor(diff / (1000 * 60 * 60 * 24)) : 0;
@@ -277,8 +276,13 @@ function updateDaysTogetherCounter() {
 	counter.textContent = value;
 }
 
-document.addEventListener('DOMContentLoaded', updateDaysTogetherCounter);
-window.addEventListener('load', updateDaysTogetherCounter);
+function refreshCounters() {
+	updateCounter('days-together-counter', Date.UTC(2022, 1, 11, 16, 0, 0)); // 2022-02-12 00:00:00 +08:00
+	updateCounter('graduation-counter', Date.UTC(2022, 4, 17, 16, 0, 0)); // 2022-05-18 00:00:00 +08:00
+}
+
+document.addEventListener('DOMContentLoaded', refreshCounters);
+window.addEventListener('load', refreshCounters);
 
 document.addEventListener('DOMContentLoaded', function () {
 	var toggleConfig = [
