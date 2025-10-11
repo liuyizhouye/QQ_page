@@ -259,20 +259,15 @@ $(".counter").each(function () {
     });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+function updateDaysTogetherCounter() {
 	var counter = document.getElementById('days-together-counter');
 	if (!counter) {
 		return;
 	}
-	var startDate = new Date('2022-02-12T00:00:00+08:00');
-	var now = new Date();
-	var diff = now - startDate;
-	if (isNaN(diff) || diff < 0) {
-		counter.setAttribute('data-to', '0');
-		counter.textContent = '0';
-		return;
-	}
-	var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+	var startUtc = Date.UTC(2022, 1, 11, 16, 0, 0); // 2022-02-12 00:00:00 +08:00
+	var nowUtc = Date.now();
+	var diff = nowUtc - startUtc;
+	var days = diff > 0 ? Math.floor(diff / (1000 * 60 * 60 * 24)) : 0;
 	var value = days.toString();
 	counter.setAttribute('data-to', value);
 	counter.dataset.to = value;
@@ -280,7 +275,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		window.jQuery(counter).attr('data-to', value).data('to', days);
 	}
 	counter.textContent = value;
-});
+}
+
+document.addEventListener('DOMContentLoaded', updateDaysTogetherCounter);
+window.addEventListener('load', updateDaysTogetherCounter);
 
 document.addEventListener('DOMContentLoaded', function () {
 	var toggleConfig = [
