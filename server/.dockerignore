@@ -1,0 +1,7 @@
+node_modules
+npm-debug.log
+database/*.db
+database/*.db-journal
+logs
+uploads
+.env

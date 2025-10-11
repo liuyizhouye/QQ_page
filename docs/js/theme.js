@@ -468,11 +468,9 @@ var LETTER_WRITER_CONFIG = {
 var letterPaginationState = { doudou: 0, hamburger: 0 };
 var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0 };
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
-	var FRIEND_COMMENTS_KEY = 'friendCommentsData';
-	var FRIEND_COMMENTS_LIMIT = 200;
 	var FRIEND_COMMENTS_PER_PAGE = 5;
-	var friendComments = loadFriendComments();
-	var friendCommentsPage = 0;
+	var friendComments = [];
+	var friendCommentsState = { page: 1, totalPages: 1, total: 0 };
 	var commentFeedbackTimer = null;
 	var $commentList = null;
 	var $commentEmpty = null;
@@ -503,11 +501,6 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0 };
 	var $momentNext = $('#moment-viewer-next');
 	var $momentClose = $('#moment-viewer-close');
 
-	mergeMemoriesIntoMilestones();
-	normalizeMilestonesData();
-	normalizeMomentsData();
-	normalizeLoveNotesData();
-	renderAllSections();
 	bindForms();
 bindDeletion();
 setupTabListeners();
@@ -515,6 +508,7 @@ bindLetterPaginationControls();
 bindStoryManagerPaginationControls();
 initLetterUpload();
 initializeFriendComments();
+	refreshStoryData();
 
 	if ($momentViewer.length) {
 		$momentClose.on('click', function () {
@@ -550,42 +544,7 @@ initializeFriendComments();
 	});
 
 	function loadData() {
-		if (typeof window.localStorage === 'undefined') {
-			return ensureStructure(cloneData(DEFAULT_STORY_DATA));
-		}
-		try {
-			var saved = window.localStorage.getItem(STORY_STORAGE_KEY);
-			if (!saved) {
-				var initial = ensureStructure(cloneData(DEFAULT_STORY_DATA));
-				var legacyMemories = window.localStorage.getItem('memoryEntries');
-				if (legacyMemories) {
-					try {
-						var parsedLegacy = JSON.parse(legacyMemories);
-						if (Array.isArray(parsedLegacy)) {
-							initial.memories = parsedLegacy.map(function (entry) {
-								if (!entry.id) {
-									entry.id = generateId('me');
-								}
-								if (!entry.createdAt) {
-									entry.createdAt = new Date().toISOString();
-								}
-								return entry;
-							});
-						}
-					} catch (err) {
-						console.warn('无法迁移旧版记忆数据', err);
-					}
-					window.localStorage.removeItem('memoryEntries');
-				}
-				window.localStorage.setItem(STORY_STORAGE_KEY, JSON.stringify(initial));
-				return initial;
-			}
-			var parsed = JSON.parse(saved);
-			return ensureStructure(parsed);
-		} catch (error) {
-			console.error('Failed to load story data', error);
-			return ensureStructure(cloneData(DEFAULT_STORY_DATA));
-		}
+		return ensureStructure({ milestones: [], moments: [], loveNotes: [], memories: [] });
 	}
 
 
@@ -600,6 +559,26 @@ function ensureStructure(data) {
 		}
 	});
 	return data;
+}
+
+function ensureArray(value) {
+	if (!Array.isArray(value)) {
+		return [];
+	}
+	return value;
+}
+
+function unwrapApiData(payload, fallback) {
+	if (!payload) {
+		return fallback;
+	}
+	if (Array.isArray(payload)) {
+		return payload;
+	}
+	if (typeof payload === 'object' && payload.data !== undefined) {
+		return payload.data;
+	}
+	return fallback;
 }
 
 function mergeMemoriesIntoMilestones() {
@@ -1358,10 +1337,7 @@ function normalizeMomentsData() {
 	}
 
 	function saveData() {
-		if (typeof window.localStorage === 'undefined') {
-			return;
-		}
-		window.localStorage.setItem(STORY_STORAGE_KEY, JSON.stringify(storyData));
+		// 数据交由后端存储，此处保留空函数以兼容旧代码路径。
 	}
 
 	function generateId(prefix) {
@@ -1377,10 +1353,55 @@ function normalizeMomentsData() {
 	function renderAllSections() {
 		renderMilestones();
 		renderMoments();
-		renderLoveNotes();
-		updateCounts();
-		rebindPopupGalleries();
-		initLetterUpload();
+	renderLoveNotes();
+	updateCounts();
+	rebindPopupGalleries();
+	initLetterUpload();
+}
+
+	function setStoryLoading(isLoading) {
+		var $container = $('#storyTabContent');
+		if (!$container.length) {
+			return;
+		}
+		$container.toggleClass('story-loading', !!isLoading);
+	}
+
+	function refreshStoryData() {
+		if (!window.QQStoryApiClient) {
+			console.error('QQStoryApiClient 未定义，请检查 api-client.js 是否正确加载。');
+			return Promise.resolve();
+		}
+		setStoryLoading(true);
+		return Promise.all([
+			window.QQStoryApiClient.getMilestones().catch(function (error) {
+				console.error('无法获取里程碑', error);
+				return { data: [] };
+			}),
+			window.QQStoryApiClient.getMoments().catch(function (error) {
+				console.error('无法获取瞬间', error);
+				return { data: [] };
+			}),
+			window.QQStoryApiClient.getLoveNotes().catch(function (error) {
+				console.error('无法获取信件', error);
+				return { data: [] };
+			})
+		]).then(function (results) {
+			storyData.milestones = ensureArray(unwrapApiData(results[0], []));
+			storyData.moments = ensureArray(unwrapApiData(results[1], []));
+			storyData.loveNotes = ensureArray(unwrapApiData(results[2], []));
+			storyData.memories = [];
+			mergeMemoriesIntoMilestones();
+			normalizeMilestonesData();
+			normalizeMomentsData();
+			normalizeLoveNotesData();
+			renderAllSections();
+		}).catch(function (error) {
+			console.error('同步故事数据失败', error);
+			alert('同步故事数据失败，请稍后刷新页面重试。');
+		}).finally(function () {
+			setStoryLoading(false);
+		});
 	}
 
 	function renderMilestones() {
@@ -1620,7 +1641,8 @@ function normalizeMomentsData() {
 		$commentPrev = $('#comments-prev');
 		$commentNext = $('#comments-next');
 		$commentPageIndicator = $('#comments-page-indicator');
-		friendCommentsPage = 0;
+		friendComments = [];
+		friendCommentsState = { page: 1, totalPages: 1, total: 0 };
 
 		if (!$commentList.length || !$commentEmpty.length) {
 			return;
@@ -1628,7 +1650,7 @@ function normalizeMomentsData() {
 
 		bindFriendCommentForm();
 		bindFriendCommentPaginationControls();
-		renderFriendComments();
+		fetchFriendComments(1);
 	}
 
 	function bindFriendCommentForm() {
@@ -1639,6 +1661,47 @@ function normalizeMomentsData() {
 			event.preventDefault();
 			handleFriendCommentSubmit();
 		});
+	}
+
+	function handleFriendCommentSubmit() {
+		if (!$commentForm || !$commentForm.length) {
+			return;
+		}
+		if (!window.QQStoryApiClient) {
+			console.error('QQStoryApiClient 未定义，无法提交留言。');
+			displayFriendCommentFeedback('系统暂不可用，请稍后再试。', 'error');
+			return;
+		}
+		var $authorInput = $commentForm.find('[name="comment-author"]');
+		var $messageInput = $commentForm.find('[name="comment-message"]');
+		var author = $authorInput.length ? $.trim($authorInput.val()) : '';
+		var message = $messageInput.length ? $.trim($messageInput.val()) : '';
+		if (!message) {
+			displayFriendCommentFeedback('请填写留言内容后再提交。', 'error');
+			if ($messageInput.length) {
+				$messageInput.trigger('focus');
+			}
+			return;
+		}
+		$commentForm.addClass('is-submitting');
+		window.QQStoryApiClient.createComment({ author: author, message: message })
+			.then(function () {
+				displayFriendCommentFeedback('感谢留言！已为你记录。', 'success');
+				if ($commentForm.length && $commentForm[0] && typeof $commentForm[0].reset === 'function') {
+					$commentForm[0].reset();
+				} else {
+					$commentForm.trigger('reset');
+				}
+				fetchFriendComments(1);
+			})
+			.catch(function (error) {
+				console.error('提交留言失败', error);
+				var messageText = (error && error.message) ? error.message : '提交留言失败，请稍后再试。';
+				displayFriendCommentFeedback(messageText, 'error');
+			})
+			.finally(function () {
+				$commentForm.removeClass('is-submitting');
+			});
 	}
 
 	function bindFriendCommentPaginationControls() {
@@ -1656,46 +1719,43 @@ function normalizeMomentsData() {
 		}
 	}
 
-	function handleFriendCommentSubmit() {
-		if (!$commentForm || !$commentForm.length) {
+	function fetchFriendComments(page) {
+		if (!window.QQStoryApiClient) {
+			console.error('QQStoryApiClient 未定义，无法加载留言。');
 			return;
 		}
-		var $authorInput = $commentForm.find('[name="comment-author"]');
-		var $messageInput = $commentForm.find('[name="comment-message"]');
-		var author = $authorInput.length ? $.trim($authorInput.val()) : '';
-		var message = $messageInput.length ? $.trim($messageInput.val()) : '';
-		if (!message) {
-			displayFriendCommentFeedback('请填写留言内容后再提交。', 'error');
-			if ($messageInput.length) {
-				$messageInput.trigger('focus');
-			}
-			return;
+		var targetPage = parseInt(page, 10);
+		if (Number.isNaN(targetPage) || targetPage < 1) {
+			targetPage = 1;
 		}
-		var newEntry = normalizeFriendCommentEntry({
-			id: generateFriendCommentId(),
-			author: author,
-			message: message,
-			submittedAt: new Date().toISOString()
-		});
-		if (!newEntry) {
-			displayFriendCommentFeedback('未能保存留言，请稍后再试。', 'error');
-			return;
+		if ($commentList) {
+			$commentList.addClass('is-loading');
 		}
-		friendComments.unshift(newEntry);
-		if (friendComments.length > FRIEND_COMMENTS_LIMIT) {
-			friendComments = friendComments.slice(0, FRIEND_COMMENTS_LIMIT);
-		}
-		friendCommentsPage = 0;
-		renderFriendComments();
-		var persisted = saveFriendComments();
-		if (!persisted) {
-			displayFriendCommentFeedback('留言已显示，但浏览器未能保存，请检查设置。', 'error');
-		} else {
-			displayFriendCommentFeedback('感谢留言！已为你记录。', 'success');
-		}
-		if ($commentForm.length && $commentForm[0] && typeof $commentForm[0].reset === 'function') {
-			$commentForm[0].reset();
-		}
+		window.QQStoryApiClient.getComments({ page: targetPage, pageSize: FRIEND_COMMENTS_PER_PAGE })
+			.then(function (response) {
+				var items = ensureArray(unwrapApiData(response, []));
+				friendComments = items.map(normalizeFriendCommentEntry).filter(Boolean).sort(function (a, b) {
+					var aTime = Date.parse(a.submittedAt) || 0;
+					var bTime = Date.parse(b.submittedAt) || 0;
+					return bTime - aTime;
+				});
+				var pagination = response && response.pagination ? response.pagination : {};
+				friendCommentsState = {
+					page: pagination.page || targetPage,
+					totalPages: pagination.totalPages || Math.max(1, Math.ceil(friendComments.length / FRIEND_COMMENTS_PER_PAGE)),
+					total: pagination.total || friendComments.length
+				};
+				renderFriendComments();
+			})
+			.catch(function (error) {
+				console.error('加载留言失败', error);
+				displayFriendCommentFeedback('加载留言失败，请稍后再试。', 'error');
+			})
+			.finally(function () {
+				if ($commentList) {
+					$commentList.removeClass('is-loading');
+				}
+			});
 	}
 
 	function renderFriendComments() {
@@ -1703,7 +1763,6 @@ function normalizeMomentsData() {
 			return;
 		}
 		if (!friendComments.length) {
-			friendCommentsPage = 0;
 			if ($commentEmpty && $commentEmpty.length) {
 				$commentEmpty.removeClass('d-none');
 			}
@@ -1714,21 +1773,8 @@ function normalizeMomentsData() {
 		if ($commentEmpty && $commentEmpty.length) {
 			$commentEmpty.addClass('d-none');
 		}
-		var sorted = friendComments.slice().sort(function (a, b) {
-			var aTime = Date.parse(a.submittedAt) || 0;
-			var bTime = Date.parse(b.submittedAt) || 0;
-			return bTime - aTime;
-		});
-		friendComments = sorted;
-		var totalEntries = friendComments.length;
-		var totalPages = Math.max(1, Math.ceil(totalEntries / FRIEND_COMMENTS_PER_PAGE));
-		if (friendCommentsPage >= totalPages) {
-			friendCommentsPage = totalPages - 1;
-		}
-		if (friendCommentsPage < 0) {
-			friendCommentsPage = 0;
-		}
-		var startIndex = friendCommentsPage * FRIEND_COMMENTS_PER_PAGE;
+		var currentPage = Math.min(Math.max(friendCommentsState.page || 1, 1), friendCommentsState.totalPages || 1);
+		var startIndex = (currentPage - 1) * FRIEND_COMMENTS_PER_PAGE;
 		var pageItems = friendComments.slice(startIndex, startIndex + FRIEND_COMMENTS_PER_PAGE);
 		$commentList.empty();
 		pageItems.forEach(function (entry) {
@@ -1745,30 +1791,26 @@ function normalizeMomentsData() {
 			$card.append($body);
 			$commentList.append($card);
 		});
-		updateFriendCommentPagination(totalPages);
+		updateFriendCommentPagination(friendCommentsState.totalPages || 1);
 	}
 
 	function changeFriendCommentsPage(delta) {
-		if (!friendComments.length) {
+		var currentPage = friendCommentsState.page || 1;
+		var target = currentPage + delta;
+		if (target < 1) {
+			target = 1;
+		} else if (target > (friendCommentsState.totalPages || 1)) {
+			target = friendCommentsState.totalPages || 1;
+		}
+		if (target === currentPage) {
 			return;
 		}
-		var totalPages = Math.max(1, Math.ceil(friendComments.length / FRIEND_COMMENTS_PER_PAGE));
-		var target = friendCommentsPage + delta;
-		if (target < 0) {
-			target = 0;
-		} else if (target > totalPages - 1) {
-			target = totalPages - 1;
-		}
-		if (target === friendCommentsPage) {
-			return;
-		}
-		friendCommentsPage = target;
-		renderFriendComments();
+		fetchFriendComments(target);
 		if ($commentList && $commentList.length) {
 			try {
 				$commentList.get(0).scrollIntoView({ behavior: 'smooth', block: 'start' });
 			} catch (error) {
-				// Ignore scroll failures (e.g., older browsers).
+				// Ignore
 			}
 		}
 	}
@@ -1782,12 +1824,12 @@ function normalizeMomentsData() {
 			return;
 		}
 		$commentPagination.removeClass('d-none');
-		var current = Math.min(Math.max(friendCommentsPage + 1, 1), totalPages);
+		var current = Math.min(Math.max(friendCommentsState.page || 1, 1), totalPages);
 		if ($commentPageIndicator && $commentPageIndicator.length) {
 			$commentPageIndicator.text('第 ' + current + ' 页 / 共 ' + totalPages + ' 页');
 		}
-		var hasPrev = friendCommentsPage > 0;
-		var hasNext = friendCommentsPage < totalPages - 1;
+		var hasPrev = current > 1;
+		var hasNext = current < totalPages;
 		if ($commentPrev && $commentPrev.length) {
 			$commentPrev.prop('disabled', !hasPrev).toggleClass('disabled', !hasPrev);
 		}
@@ -1802,39 +1844,6 @@ function normalizeMomentsData() {
 		}
 	}
 
-	function loadFriendComments() {
-		if (typeof window.localStorage === 'undefined') {
-			return [];
-		}
-		try {
-			var saved = window.localStorage.getItem(FRIEND_COMMENTS_KEY);
-			if (!saved) {
-				return [];
-			}
-			var parsed = JSON.parse(saved);
-			if (!Array.isArray(parsed)) {
-				return [];
-			}
-			return parsed.map(normalizeFriendCommentEntry).filter(Boolean);
-		} catch (error) {
-			console.warn('无法读取好友留言', error);
-			return [];
-		}
-	}
-
-	function saveFriendComments() {
-		if (typeof window.localStorage === 'undefined') {
-			return false;
-		}
-		try {
-			window.localStorage.setItem(FRIEND_COMMENTS_KEY, JSON.stringify(friendComments));
-			return true;
-		} catch (error) {
-			console.warn('无法保存好友留言', error);
-			return false;
-		}
-	}
-
 	function normalizeFriendCommentEntry(entry) {
 		if (!entry || typeof entry !== 'object') {
 			return null;
@@ -1846,15 +1855,11 @@ function normalizeMomentsData() {
 		var author = typeof entry.author === 'string' ? entry.author.trim() : '';
 		var submittedAt = entry.submittedAt && typeof entry.submittedAt === 'string' ? entry.submittedAt : new Date().toISOString();
 		return {
-			id: entry.id || generateFriendCommentId(),
+			id: entry.id || ('fc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8)),
 			author: author,
 			message: message,
 			submittedAt: submittedAt
 		};
-	}
-
-	function generateFriendCommentId() {
-		return 'fc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
 	}
 
 	function formatFriendCommentTimestamp(value) {
@@ -2403,120 +2408,157 @@ function bindStoryManagerPaginationControls() {
 	function bindForms() {
 		$('#form-milestones').on('submit', function (event) {
 			event.preventDefault();
-			var $form = $(this);
-			var dateValue = $.trim($form.find('[name="milestone-date"]').val());
-			var title = $.trim($form.find('[name="milestone-title"]').val());
-			var location = $.trim($form.find('[name="milestone-location"]').val());
-			var detail = $.trim($form.find('[name="milestone-detail"]').val());
-			if (!dateValue || !title) { return; }
-			var occurredAt = normalizeMilestoneDateInput(dateValue) || dateValue;
-			var entry = upgradeMilestoneEntry({
-				id: generateId('ms'),
+		var $form = $(this);
+		var $submitButton = $form.find('[type=\"submit\"]');
+		var dateValue = $.trim($form.find('[name=\"milestone-date\"]').val());
+		var title = $.trim($form.find('[name=\"milestone-title\"]').val());
+		var location = $.trim($form.find('[name=\"milestone-location\"]').val());
+		var detail = $.trim($form.find('[name=\"milestone-detail\"]').val());
+		if (!dateValue || !title) { return; }
+		var occurredAt = normalizeMilestoneDateInput(dateValue) || dateValue;
+		$submitButton.prop('disabled', true);
+		window.QQStoryApiClient.createMilestone({
+			title: title,
+			occurredAt: occurredAt,
+			location: location,
+			detail: detail
+		}).then(function () {
+			if ($form.length && $form[0] && typeof $form[0].reset === 'function') {
+				$form[0].reset();
+			} else {
+				$form.trigger('reset');
+			}
+			refreshStoryData();
+		}).catch(function (error) {
+			console.error('保存里程碑失败', error);
+			alert(error && error.message ? error.message : '保存里程碑失败，请稍后再试');
+		}).finally(function () {
+			$submitButton.prop('disabled', false);
+		});
+	});
+
+		$('#form-moments').on('submit', function (event) {
+			event.preventDefault();
+		var $form = $(this);
+		var $submitButton = $form.find('[type=\"submit\"]');
+		var title = $.trim($form.find('[name=\"moment-title\"]').val());
+		var dateValue = $.trim($form.find('[name=\"moment-date\"]').val());
+		if (!title || !dateValue) {
+			return;
+		}
+		var tags = $form.find('[name=\"moment-tags\"]:checked').map(function () {
+			return $.trim($(this).val());
+		}).get();
+		var fileInput = $form.find('[name=\"moment-media\"]')[0];
+		var files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
+		$submitButton.prop('disabled', true);
+		readMomentFiles(files).then(function (mediaItems) {
+			var occurredAt = normalizeMomentDateInput(dateValue) || dateValue;
+			return window.QQStoryApiClient.createMoment({
 				title: title,
 				occurredAt: occurredAt,
-				location: location,
-				detail: detail,
-				createdAt: new Date().toISOString()
+				description: '',
+				tags: tags,
+				media: mediaItems.map(function (item) {
+					return {
+						id: item.id,
+						type: item.type,
+						name: item.name,
+						size: item.size,
+						mimeType: item.mimeType,
+						src: item.src
+					};
+				})
 			});
-			if (!entry) { return; }
-			if (entry && entry.__forceSave) {
-				delete entry.__forceSave;
-			}
-			storyData.milestones.unshift(entry);
-			saveData();
-			renderAllSections();
+		}).then(function () {
 			if ($form.length && $form[0]) {
 				$form[0].reset();
 			} else {
 				$form.trigger('reset');
 			}
+			refreshStoryData();
+		}).catch(function (error) {
+			console.error('保存瞬间失败', error);
+			alert(error && error.message ? error.message : '保存瞬间失败，请稍后再试');
+		}).finally(function () {
+			$submitButton.prop('disabled', false);
 		});
-
-		$('#form-moments').on('submit', function (event) {
-			event.preventDefault();
-			var $form = $(this);
-			var title = $.trim($form.find('[name="moment-title"]').val());
-			var dateValue = $.trim($form.find('[name="moment-date"]').val());
-			if (!title || !dateValue) {
-				return;
-			}
-			var tags = $form.find('[name="moment-tags"]:checked').map(function () {
-				return $.trim($(this).val());
-			}).get();
-			var fileInput = $form.find('[name="moment-media"]')[0];
-			var files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
-			readMomentFiles(files).then(function (mediaItems) {
-				var newEntry = buildMomentEntryFromForm({
-					title: title,
-					dateValue: dateValue,
-					mediaItems: mediaItems,
-					tags: tags
-				});
-				storyData.moments.unshift(newEntry);
-				saveData();
-				renderAllSections();
-				if ($form.length && $form[0]) {
-					$form[0].reset();
-				} else {
-					$form.trigger('reset');
-				}
-			}).catch(function (error) {
-				console.error(error);
-				alert(error && error.message ? error.message : '保存瞬间失败，请稍后再试');
-			});
-		});
+	});
 
 		$('#form-loveNotes').on('submit', function (event) {
 			event.preventDefault();
-			var $form = $(this);
-			var writer = $form.find('[name="letter-writer"]').val();
-			var date = $form.find('[name="letter-date"]').val();
-			if (!writer || !date) { return; }
-			initLetterUpload();
-			if (!letterUploadState.data) {
-				setLetterUploadStatus('请先上传一份 PDF 信件', 'error');
-				return;
-			}
-			var normalizedDate = normalizeLetterDateInput(date);
-			var config = LETTER_WRITER_CONFIG[writer] || LETTER_WRITER_CONFIG.doudou;
-			var pdfBundle = letterUploadState.data;
-			var entryDate = normalizedDate || date;
-			var newEntry = {
-				id: generateId('ln'),
-				writer: writer,
-				recipient: config.recipientName,
-				date: entryDate,
-				title: generateAutoLetterTitle(config, entryDate, pdfBundle.name),
-				excerpt: '',
-				pdfUrl: '',
-				pdfName: pdfBundle.name,
-				pdfSize: pdfBundle.size,
-				pdfData: pdfBundle.dataUrl,
-				createdAt: new Date().toISOString()
-			};
-			storyData.loveNotes.push(newEntry);
+		var $form = $(this);
+		var $submitButton = $form.find('[type=\"submit\"]');
+		var writer = $form.find('[name=\"letter-writer\"]').val();
+		var date = $form.find('[name=\"letter-date\"]').val();
+		if (!writer || !date) { return; }
+		initLetterUpload();
+		if (!letterUploadState.data) {
+			setLetterUploadStatus('请先上传一份 PDF 信件', 'error');
+			return;
+		}
+		var normalizedDate = normalizeLetterDateInput(date);
+		var config = LETTER_WRITER_CONFIG[writer] || LETTER_WRITER_CONFIG.doudou;
+		var pdfBundle = letterUploadState.data;
+		var entryDate = normalizedDate || date;
+		$submitButton.prop('disabled', true);
+		window.QQStoryApiClient.createLoveNote({
+			writer: writer,
+			recipient: config.recipientName,
+			date: entryDate,
+			title: generateAutoLetterTitle(config, entryDate, pdfBundle.name),
+			excerpt: '',
+			pdfName: pdfBundle.name,
+			pdfData: pdfBundle.dataUrl
+		}).then(function () {
 			letterPaginationState[writer] = 0;
-			saveData();
-			renderAllSections();
-			initLetterUpload();
 			resetLetterUploadState('信件已保存，可以继续上传新的 PDF', 'success');
 			if ($form.length && $form[0] && typeof $form[0].reset === 'function') {
 				$form[0].reset();
 			} else {
 				$form.trigger('reset');
 			}
+			refreshStoryData();
+		}).catch(function (error) {
+			console.error('保存信件失败', error);
+			setLetterUploadStatus(error && error.message ? error.message : '保存信件失败，请稍后再试', 'error');
+		}).finally(function () {
+			$submitButton.prop('disabled', false);
+			initLetterUpload();
 		});
+	});
 
 	}
 
 	function bindDeletion() {
 		$(document).on('click', '.story-delete', function () {
-			var category = $(this).data('category');
-			var id = $(this).data('id');
+			var $button = $(this);
+			var category = $button.data('category');
+			var id = $button.data('id');
 			if (!category || !id) { return; }
-			storyData[category] = storyData[category].filter(function (item) { return item.id !== id; });
-			saveData();
-			renderAllSections();
+			if (!window.confirm('确定要删除这条记录吗？删除后将无法恢复。')) {
+				return;
+			}
+			var request;
+			if (category === 'milestones') {
+				request = window.QQStoryApiClient.deleteMilestone(id);
+			} else if (category === 'moments') {
+				request = window.QQStoryApiClient.deleteMoment(id);
+			} else if (category === 'loveNotes') {
+				request = window.QQStoryApiClient.deleteLoveNote(id);
+			} else {
+				console.warn('未知删除分类', category);
+				return;
+			}
+			$button.prop('disabled', true);
+			request.then(function () {
+				refreshStoryData();
+			}).catch(function (error) {
+				console.error('删除失败', error);
+				alert(error && error.message ? error.message : '删除失败，请稍后再试');
+			}).finally(function () {
+				$button.prop('disabled', false);
+			});
 		});
 
 	}
