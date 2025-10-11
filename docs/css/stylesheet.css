@@ -4316,8 +4316,7 @@ body.moment-viewer-open {
 }
 
 .letters-pagination .letters-page-indicator {
-  margin-left: 0.75rem;
-  margin-right: 0.75rem;
+  margin: 0;
 }
 
 .letter-card {

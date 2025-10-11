@@ -2081,7 +2081,7 @@ function updateLetterPaginationControls(side, page, totalPages) {
 			if (!totalPages) {
 				$indicator.text('暂无信件');
 			} else {
-				$indicator.text('第 ' + page + ' / ' + totalPages + ' 页');
+				$indicator.text('第 ' + page + ' 页 / 共 ' + totalPages + ' 页');
 			}
 		}
 	}
