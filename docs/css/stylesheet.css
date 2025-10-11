@@ -4166,26 +4166,26 @@ body.moment-viewer-open {
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 1.75rem;
   box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.08);
-  padding: clamp(1.75rem, 3.5vw, 3rem);
+  padding: clamp(2.5rem, 4vw, 4rem);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: stretch;
 }
 
 .letters-block-inner,
 .memory-block-inner {
   width: 100%;
-  max-width: 640px;
+  max-width: 960px;
   margin: 0 auto;
 }
 
 @media (max-width: 575.98px) {
   .letters-block,
   .memory-block {
-    padding: 1.5rem;
+    padding: 2rem;
   }
 }
 
