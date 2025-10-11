@@ -2903,6 +2903,27 @@ html[dir="rtl"] #footer .nav .nav-item:last-child .nav-link {
   color: #aab1b8;
 }
 
+.social-icons .notion-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 0.35em;
+  border: 2px solid currentColor;
+  font-weight: 700;
+  font-size: 0.85em;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.social-icons li:hover .notion-icon,
+.social-icons.social-icons-colored li.social-icons-notion .notion-icon {
+  transform: translateY(-1px);
+  background-color: rgba(15, 118, 110, 0.08);
+}
+
 .social-icons li:hover a {
   color: #999;
 }
@@ -2933,6 +2954,10 @@ html[dir="rtl"] #footer .nav .nav-item:last-child .nav-link {
 
 .social-icons li:hover.social-icons-behance a, .social-icons.social-icons-colored li.social-icons-behance a {
   color: #053eff;
+}
+
+.social-icons li:hover.social-icons-notion a, .social-icons.social-icons-colored li.social-icons-notion a {
+  color: #0f172a;
 }
 
 .social-icons li:hover.social-icons-google a, .social-icons.social-icons-colored li.social-icons-google a {
