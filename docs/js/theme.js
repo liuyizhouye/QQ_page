@@ -438,7 +438,7 @@ $(function () {
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
 	var FRIEND_COMMENTS_KEY = 'friendCommentsData';
 	var FRIEND_COMMENTS_LIMIT = 200;
-	var FRIEND_COMMENTS_PER_PAGE = 6;
+	var FRIEND_COMMENTS_PER_PAGE = 5;
 	var friendComments = loadFriendComments();
 	var friendCommentsPage = 0;
 	var commentFeedbackTimer = null;
