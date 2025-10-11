@@ -3818,6 +3818,33 @@ body.moment-viewer-open {
   z-index: 1;
 }
 
+.moments-section {
+  position: relative;
+  background-color: #f5f7fb;
+  z-index: 0;
+}
+
+.moments-section::before,
+.moments-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.moments-section::before {
+  background-image: url('../images/moments-bg.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(12px);
+  transform: scale(1.08);
+}
+
+.moments-section::after {
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.55);
+}
+
 .ourstory-panel {
   display: flex;
   flex-direction: column;
