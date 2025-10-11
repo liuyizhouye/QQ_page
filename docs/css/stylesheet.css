@@ -4151,6 +4151,87 @@ body.moment-viewer-open {
 .memory-hidden * {
   pointer-events: none !important;
 }
+.letters-panel,
+.memory-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  padding-bottom: 3.5rem;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.letters-block,
+.memory-block {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 1.75rem;
+  box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.08);
+  padding: clamp(1.75rem, 3.5vw, 3rem);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.letters-block-inner,
+.memory-block-inner {
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+@media (max-width: 575.98px) {
+  .letters-block,
+  .memory-block {
+    padding: 1.5rem;
+  }
+}
+
+.letters-block .card,
+.memory-block .card {
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.letters-column {
+  background: rgba(255, 255, 255, 0.83);
+  border: 1px solid rgba(13, 110, 253, 0.12);
+  border-radius: 1.5rem;
+  box-shadow: 0 1.25rem 2.5rem -1.5rem rgba(13, 110, 253, 0.35);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  height: 100%;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.memory-subblock {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 1.5rem;
+  box-shadow: 0 1.25rem 2.5rem -1.5rem rgba(15, 23, 42, 0.25);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: 100%;
+}
+
+.memory-tabs {
+  gap: 0.75rem;
+}
+
+.memory-subblock .memory-tabs {
+  margin-bottom: 1.5rem;
+}
+
 .letters-column-header {
   width: 100%;
 }
