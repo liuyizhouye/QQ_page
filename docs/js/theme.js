@@ -1938,9 +1938,9 @@ function normalizeMomentsData() {
 		var dateLabel = formatLetterDateForDisplay(entry.date);
 		var pdfHref = getLetterPdfHref(entry);
 		var displayName = getLetterDisplayName(entry);
-		var $card = $('<article/>', { 'class': 'letter-card border rounded-4 bg-light p-4 shadow-sm d-flex flex-column gap-3' });
-		$card.append($('<span/>', { 'class': 'badge letter-date-badge align-self-start' }).text(dateLabel || '日期待补充'));
-		var $content = $('<div/>', { 'class': 'd-flex flex-column gap-1' });
+		var $card = $('<article/>', { 'class': 'letter-card border rounded-4 bg-light p-4 shadow-sm d-flex flex-column gap-3 align-items-center text-center' });
+		$card.append($('<span/>', { 'class': 'badge letter-date-badge align-self-center' }).text(dateLabel || '日期待补充'));
+		var $content = $('<div/>', { 'class': 'd-flex flex-column gap-1 align-items-center text-center letter-card-content' });
 		if (isSafePdfHref(pdfHref)) {
 			var $link = $('<a/>', {
 				'href': pdfHref,

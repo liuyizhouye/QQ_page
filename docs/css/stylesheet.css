@@ -4151,3 +4151,72 @@ body.moment-viewer-open {
 .memory-hidden * {
   pointer-events: none !important;
 }
+.letters-column-header {
+  width: 100%;
+}
+
+.letters-column-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.letters-pagination {
+  display: inline-flex;
+  justify-content: center !important;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+.letters-pagination .btn {
+  min-width: 5rem;
+}
+
+.letters-pagination .letters-page-indicator {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+.letter-card {
+  background: rgba(248, 249, 250, 0.95);
+  border: 1px solid rgba(13, 110, 253, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.letter-card:hover,
+.letter-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: 0 1.5rem 3rem -1.5rem rgba(13, 110, 253, 0.35);
+}
+
+.letter-card-content {
+  width: 100%;
+}
+
+.letter-date-badge {
+  background: rgba(13, 110, 253, 0.12);
+  color: #0d6efd;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.45rem 1.25rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.letters-item-date {
+  text-align: center;
+  font-weight: 600;
+  color: #0d6efd;
+  margin-bottom: 0.5rem;
+}
+
+.letters-item-title {
+  text-align: center;
+  font-weight: 600;
+  color: #252b33;
+}
