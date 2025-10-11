@@ -920,6 +920,41 @@ hr {
   position: relative;
 }
 
+.side-header .primary-menu .navbar-nav .nav-link {
+  position: relative;
+  z-index: 0;
+  padding: 0.6rem 1.25rem;
+  border-radius: 999px;
+  color: #64748b;
+  transition: color 0.25s ease;
+}
+
+.side-header .primary-menu .navbar-nav .nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(32, 201, 151, 0.28);
+  transform: scaleX(0.65) scaleY(0.7);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  z-index: -1;
+}
+
+.side-header .primary-menu .navbar-nav li:hover > .nav-link,
+.side-header .primary-menu .navbar-nav .nav-link.active,
+.side-header .primary-menu .navbar-nav .nav-link:focus-visible {
+  color: #0f766e;
+}
+
+.side-header .primary-menu .navbar-nav li:hover > .nav-link::before,
+.side-header .primary-menu .navbar-nav .nav-link.active::before,
+.side-header .primary-menu .navbar-nav .nav-link:focus-visible::before {
+  opacity: 1;
+  transform: scaleX(1) scaleY(1);
+}
+
 .side-header.side-header-right #main-wrapper {
   margin-right: 260px;
   margin-left: auto;
