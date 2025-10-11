@@ -4103,6 +4103,34 @@ body.moment-viewer-open {
   transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
+.letters-bg {
+  position: relative;
+  background-image: url('../images/letters-bg.png');
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #f5f7fb;
+}
+
+.letters-bg > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.memory-bg {
+  position: relative;
+  background-image: url('../images/memory-bg.png');
+  background-size: contain;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-color: #f5f7fb;
+}
+
+.memory-bg > .container {
+  position: relative;
+  z-index: 1;
+}
+
 .ourstory-hidden,
 .timeline-hidden,
 .moments-hidden,
