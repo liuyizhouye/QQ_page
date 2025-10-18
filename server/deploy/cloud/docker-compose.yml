@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    environment:
+      - CADDY_ADMIN_EMAIL=${CADDY_ADMIN_EMAIL:?set a contact email for ACME}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./logs:/var/log/caddy
+    depends_on:
+      - frps
+
+  frps:
+    image: fatedier/frps:0.53.2
+    restart: unless-stopped
+    command: ["-c", "/etc/frp/frps.ini"]
+    ports:
+      - "7000:7000"       # 控制信道，供 frpc 连接
+    volumes:
+      - ./frps.ini:/etc/frp/frps.ini:ro
+      - ./logs:/var/log/frp
+
+volumes:
+  caddy_data:
+  caddy_config:
