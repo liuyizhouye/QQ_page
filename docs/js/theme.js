@@ -9,6 +9,8 @@
 (function ($) {
 	"use strict";
 
+	var setSideNavActive = function () {};
+
 // Preloader
 $(window).on('load', function () {
 	$('.lds-ellipsis').fadeOut(); // will first fade out the loading animation
@@ -42,21 +44,22 @@ $(window).on('scroll',function() {
 });
 
 // Sections Scroll
-if($("body").hasClass("side-header")){
-$('.smooth-scroll').on('click', function() {
+var isSideHeaderLayout = $('body').hasClass('side-header');
+$('.smooth-scroll').on('click', function (event) {
+	var targetSelector = $(this).attr('href');
+	if (!targetSelector || targetSelector.charAt(0) !== '#') {
+		return;
+	}
+	var $target = $(targetSelector);
+	if (!$target.length) {
+		return;
+	}
 	event.preventDefault();
-    var sectionTo = $(this).attr('href');
-	$('html, body').stop().animate({
-      scrollTop: $(sectionTo).offset().top}, 1500, 'easeInOutExpo');
+	var offsetAdjustment = isSideHeaderLayout ? 0 : 50;
+	var destination = Math.max($target.offset().top - offsetAdjustment, 0);
+	$('html, body').stop().animate({ scrollTop: destination }, 1500, 'easeInOutExpo');
+	setSideNavActive(targetSelector);
 });
-   }else {
-$('.smooth-scroll').on('click', function() {
-	event.preventDefault();
-    var sectionTo = $(this).attr('href');
-	$('html, body').stop().animate({
-      scrollTop: $(sectionTo).offset().top - 50}, 1500, 'easeInOutExpo');
-});
-}
 
 // Mobile Menu
 $('.navbar-toggler').on('click', function() {
@@ -65,6 +68,103 @@ $('.navbar-toggler').on('click', function() {
 $(".navbar-nav a").on('click', function() {
     $(".navbar-collapse, .navbar-toggler").removeClass("show");
 });
+
+function initSideHeaderScrollSpy() {
+	if (!$('body').hasClass('side-header')) {
+		setSideNavActive = function () {};
+		return;
+	}
+	var headerNav = document.getElementById('header-nav');
+	if (!headerNav) {
+		setSideNavActive = function () {};
+		return;
+	}
+	var navLinks = Array.prototype.slice.call(headerNav.querySelectorAll('.nav-link[href^="#"]'));
+	var sectionMap = navLinks.reduce(function (acc, link) {
+		var selector = link.getAttribute('href');
+		if (!selector || selector.charAt(0) !== '#') {
+			return acc;
+		}
+		var section = document.querySelector(selector);
+		if (!section) {
+			return acc;
+		}
+		acc.push({ link: link, selector: selector, section: section });
+		return acc;
+	}, []);
+	if (!sectionMap.length) {
+		setSideNavActive = function () {};
+		return;
+	}
+
+	var activeSelector = '';
+	function applyActive(selector) {
+		if (!selector || selector === activeSelector) {
+			return;
+		}
+		activeSelector = selector;
+		navLinks.forEach(function (link) {
+			var matches = link.getAttribute('href') === selector;
+			link.classList.toggle('active', matches);
+			if (matches) {
+				link.setAttribute('aria-current', 'page');
+			} else {
+				link.removeAttribute('aria-current');
+			}
+		});
+	}
+
+	setSideNavActive = function (selector) {
+		if (!selector || selector.charAt(0) !== '#') {
+			return;
+		}
+		var exists = sectionMap.some(function (entry) {
+			return entry.selector === selector;
+		});
+		if (exists) {
+			applyActive(selector);
+		}
+	};
+
+	var ticking = false;
+	function updateActiveOnScroll() {
+		ticking = false;
+		var viewportHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+		var offsetThreshold = Math.max(Math.min(viewportHeight * 0.35, 360), 140);
+		var current = sectionMap[0];
+		for (var i = 0; i < sectionMap.length; i += 1) {
+			var entry = sectionMap[i];
+			var rect = entry.section.getBoundingClientRect();
+			if (rect.top - offsetThreshold <= 0) {
+				current = entry;
+			} else {
+				break;
+			}
+		}
+		if (current) {
+			applyActive(current.selector);
+		}
+	}
+
+	function onScroll() {
+		if (ticking) {
+			return;
+		}
+		ticking = true;
+		var schedule = window.requestAnimationFrame || function (cb) {
+			return setTimeout(cb, 16);
+		};
+		schedule(function () {
+			updateActiveOnScroll();
+		});
+	}
+
+	window.addEventListener('scroll', onScroll, { passive: true });
+	window.addEventListener('resize', updateActiveOnScroll);
+	updateActiveOnScroll();
+}
+
+$(initSideHeaderScrollSpy);
 
 // Overlay Menu & Side Open Menu
 $('.navbar-side-open .collapse, .navbar-overlay .collapse').on('show.bs.collapse hide.bs.collapse', function(e) {
