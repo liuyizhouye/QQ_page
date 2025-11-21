@@ -5,7 +5,7 @@ window.QQStoryApi = window.QQStoryApi || {};
   var host = (window.location && window.location.hostname) || '';
   var defaultBaseUrl = 'https://api.hanbaodoudou.com/api';
   if (!host || /^(localhost|127(?:\.\d{1,3}){3})$/i.test(host)) {
-    defaultBaseUrl = 'http://localhost:8080/api';
+    defaultBaseUrl = 'http://47.115.72.187:8080/api';
   }
 
   window.QQStoryApi.baseUrl = window.QQStoryApi.baseUrl || defaultBaseUrl;
