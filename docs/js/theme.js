@@ -1880,11 +1880,9 @@ function normalizeMomentsData() {
 		if ($commentEmpty && $commentEmpty.length) {
 			$commentEmpty.addClass('d-none');
 		}
-		var currentPage = Math.min(Math.max(friendCommentsState.page || 1, 1), friendCommentsState.totalPages || 1);
-		var startIndex = (currentPage - 1) * FRIEND_COMMENTS_PER_PAGE;
-		var pageItems = friendComments.slice(startIndex, startIndex + FRIEND_COMMENTS_PER_PAGE);
+		// API 已经返回了当前页的数据，直接渲染，不需要再切片
 		$commentList.empty();
-		pageItems.forEach(function (entry) {
+		friendComments.forEach(function (entry) {
 			var displayName = entry.author || '匿名好友';
 			var displayTime = formatFriendCommentTimestamp(entry.submittedAt);
 			var $card = $('<div/>', { 'class': 'card border-0 shadow-sm' });
