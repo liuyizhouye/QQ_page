@@ -3,9 +3,10 @@ window.QQStoryApi = window.QQStoryApi || {};
 
 (function () {
   var host = (window.location && window.location.hostname) || '';
-  // 使用 HTTPS API
   var defaultBaseUrl = 'https://api.hanbaodoudou.com/api';
-  if (!host || /^(localhost|127(?:\.\d{1,3}){3})$/i.test(host)) {
+  
+  // 只有明确是 localhost 或 127.x.x.x 时才使用本地 API
+  if (host && /^(localhost|127(?:\.\d{1,3}){3})$/i.test(host)) {
     defaultBaseUrl = 'http://localhost:8080/api';
   }
 
