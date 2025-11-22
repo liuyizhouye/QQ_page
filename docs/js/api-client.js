@@ -20,10 +20,9 @@
         })
         .map(function (key) {
           return encodeURIComponent(key) + '=' + encodeURIComponent(query[key]);
-        })
-        .join('&');
-      if (params) {
-        url += '?' + params;
+        });
+      if (params.length > 0) {
+        url += '?' + params.join('&');
       }
     }
     return url;
@@ -42,10 +41,28 @@
     }
     // 对于 GET 请求，禁用缓存以确保获取最新数据
     var method = (options.method || 'GET').toUpperCase();
-    if (method === 'GET' && options.cache === undefined) {
-      options.cache = 'no-cache';
+    var addTimestamp = false;
+    if (method === 'GET') {
+      if (options.cache === undefined) {
+        options.cache = 'no-cache';
+      }
+      // 对于所有数据相关的 GET 请求，添加时间戳参数以确保绕过缓存
+      // 包括 comments, moments, milestones, letters
+      if (path.indexOf('/comments') !== -1 || 
+          path.indexOf('/moments') !== -1 || 
+          path.indexOf('/milestones') !== -1 || 
+          path.indexOf('/letters') !== -1) {
+        addTimestamp = true;
+      }
     }
-    return fetch(path, Object.assign({}, options, { headers: headers }))
+    // 如果 path 是完整 URL，需要解析并添加时间戳
+    var finalPath = path;
+    if (addTimestamp) {
+      // 添加时间戳参数以确保绕过缓存
+      var separator = path.indexOf('?') === -1 ? '?' : '&';
+      finalPath = path + separator + '_t=' + encodeURIComponent(Date.now());
+    }
+    return fetch(finalPath, Object.assign({}, options, { headers: headers }))
       .then(handleResponse)
       .catch(function (error) {
         console.error('API request failed', error);

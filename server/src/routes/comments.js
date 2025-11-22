@@ -22,6 +22,11 @@ const commentLimiter = rateLimit({
 router.get(
   '/',
   asyncHandler(async (req, res) => {
+    // 设置响应头，防止缓存，确保所有用户都能看到最新评论
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    
     const page = Math.max(parseInt(req.query.page || '1', 10), 1);
     const pageSize = Math.min(Math.max(parseInt(req.query.pageSize || '5', 10), 1), 100);
     const offset = (page - 1) * pageSize;

@@ -12,6 +12,11 @@ const router = Router();
 router.get(
   '/',
   asyncHandler(async (req, res) => {
+    // 设置响应头，防止缓存，确保所有用户都能看到最新数据
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    
     const writer = sanitizeText(req.query.writer, 50);
     let query = 'SELECT * FROM love_notes';
     const params = {};
