@@ -923,6 +923,26 @@ function normalizeMomentsData() {
 		return upgraded;
 	}
 
+	// 将相对路径转换为完整的 API URL
+	function resolveMediaUrl(url) {
+		if (!url || typeof url !== 'string') {
+			return url;
+		}
+		url = url.trim();
+		// 如果已经是完整 URL（http/https/data），直接返回
+		if (/^(https?:|data:)/i.test(url)) {
+			return url;
+		}
+		// 如果是相对路径（以 /uploads/ 开头），转换为 API 域名
+		if (url.startsWith('/uploads/')) {
+			var apiBaseUrl = (window.QQStoryApi && window.QQStoryApi.baseUrl) || 'https://api.hanbaodoudou.com/api';
+			// 移除 /api 后缀（如果有），因为 /uploads 是直接挂载在域名下的
+			apiBaseUrl = apiBaseUrl.replace(/\/api\/?$/, '');
+			return apiBaseUrl + url;
+		}
+		return url;
+	}
+
 	function normalizeMomentMediaItem(item) {
 		if (!item || typeof item !== 'object') {
 			return null;
@@ -937,6 +957,8 @@ function normalizeMomentsData() {
 			return null;
 		}
 		src = src.trim();
+		// 将相对路径转换为完整 URL
+		src = resolveMediaUrl(src);
 		var mime = item.mimeType || item.type || '';
 		var type = item.type || '';
 		if (!type) {
@@ -954,6 +976,9 @@ function normalizeMomentsData() {
 		} else if (!poster && type === 'video') {
 			poster = DEFAULT_MOMENT_COVER;
 			changed = true;
+		} else if (poster) {
+			// 将 poster 的相对路径也转换为完整 URL
+			poster = resolveMediaUrl(poster);
 		}
 		var size = item.size;
 		if (typeof size === 'string') {
@@ -1380,6 +1405,10 @@ function normalizeMomentsData() {
 		var pdfUrl = (entry.pdfUrl || entry.pdf || '').trim();
 		if (!entry.pdfUrl && entry.pdf) {
 			changed = true;
+		}
+		// 将 PDF URL 的相对路径转换为完整 URL
+		if (pdfUrl) {
+			pdfUrl = resolveMediaUrl(pdfUrl);
 		}
 		var pdfName = entry.pdfName || extractFileNameFromPath(pdfUrl);
 		if (!entry.pdfName && pdfName) {
