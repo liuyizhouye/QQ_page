@@ -40,6 +40,11 @@
     if (options.auth && config.adminKey) {
       headers['x-api-key'] = config.adminKey;
     }
+    // 对于 GET 请求，禁用缓存以确保获取最新数据
+    var method = (options.method || 'GET').toUpperCase();
+    if (method === 'GET' && options.cache === undefined) {
+      options.cache = 'no-cache';
+    }
     return fetch(path, Object.assign({}, options, { headers: headers }))
       .then(handleResponse)
       .catch(function (error) {
