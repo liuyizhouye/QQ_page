@@ -418,7 +418,7 @@
                         </div>
                         <h3 class="text-5 fw-600 mb-3">新增里程碑</h3>
                         <form id="form-milestones" class="row g-3 story-form" novalidate>
-                          <div class="col-md-6"><input type="datetime-local" class="form-control" name="milestone-date" placeholder="日期或时间节点（例如 2024-02-14T20:30）" required></div>
+                          <div class="col-md-6"><input type="date" class="form-control" name="milestone-date" placeholder="日期（例如 2024-02-14）" required></div>
                           <div class="col-md-6"><input type="text" class="form-control" name="milestone-title" placeholder="标题（例如 首次遇见）" required></div>
                           <div class="col-md-6"><input type="text" class="form-control" name="milestone-location" placeholder="地点（可选，例如 校园旧图书馆）"></div>
                           <div class="col-12"><textarea class="form-control" rows="3" name="milestone-detail" placeholder="细节或想说的话（可选）"></textarea></div>
@@ -441,7 +441,7 @@
                           <input type="text" class="form-control" name="moment-title" placeholder="标题（例如 海边日落）" required>
                         </div>
                         <div class="col-md-6">
-                          <input type="datetime-local" class="form-control" name="moment-date" required aria-label="发生时间">
+                          <input type="date" class="form-control" name="moment-date" required aria-label="发生日期">
                         </div>
                         <div class="col-12">
                           <span class="form-label small text-muted d-block mb-2">选择标签</span>
@@ -493,7 +493,7 @@
                             <option value="hamburger">汉堡</option>
                           </select>
                         </div>
-                        <div class="col-md-6"><input type="datetime-local" class="form-control" name="letter-date" required aria-label="写信时间"></div>
+                        <div class="col-md-6"><input type="date" class="form-control" name="letter-date" required aria-label="写信日期"></div>
                         <div class="col-12">
                           <label for="letter-file" class="form-label fw-600">上传 PDF 信件</label>
                           <input id="letter-file" class="form-control" type="file" name="letter-file" accept="application/pdf" aria-label="上传 PDF 信件" required>
