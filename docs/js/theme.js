@@ -1639,7 +1639,7 @@ function normalizeMomentsData() {
 			var filterClasses = filters.map(function (descriptor) {
 				return descriptor.slug ? 'cat-' + descriptor.slug : '';
 			}).filter(Boolean);
-			var colClasses = ['col-sm-6', 'col-lg-4', 'moment-item'].concat(filterClasses).join(' ').trim();
+			var colClasses = ['col-sm-6', 'col-lg-6', 'moment-item'].concat(filterClasses).join(' ').trim();
 			var $col = $('<div/>', { 'class': colClasses });
 			var $box = $('<article/>', { 'class': 'portfolio-box moment-card rounded position-relative overflow-hidden h-100' });
 			var $mediaWrap = $('<div/>', { 'class': 'portfolio-img moment-card-media rounded' });

@@ -34,7 +34,9 @@ if (config.ALLOWED_ORIGINS.length === 1 && config.ALLOWED_ORIGINS[0] === '*') {
 }
 
 app.use(cors(corsOptions));
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' }
+}));
 app.use(
   express.json({
     limit: `${config.MAX_UPLOAD_SIZE_MB}mb`,
