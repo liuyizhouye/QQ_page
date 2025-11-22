@@ -93,8 +93,9 @@
     deleteMoment: function (id) {
       return jsonRequest(buildUrl('/moments/' + encodeURIComponent(id)), { method: 'DELETE', auth: true });
     },
-    getComments: function (params) {
-      return jsonRequest(buildUrl('/comments', params || {}));
+    getComments: function (params, options) {
+      var opts = options || {};
+      return jsonRequest(buildUrl('/comments', params || {}), { auth: opts.auth });
     },
     createComment: function (payload) {
       return jsonRequest(buildUrl('/comments'), { method: 'POST', body: payload });

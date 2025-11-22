@@ -1488,10 +1488,10 @@ function normalizeMomentsData() {
 				console.error('无法获取信件', error);
 				return { data: [] };
 			}),
-			window.QQStoryApiClient.getComments().catch(function (error) {
-				console.error('无法获取留言', error);
-				return { data: [] };
-			})
+		window.QQStoryApiClient.getComments({ pageSize: 100 }, { auth: true }).catch(function (error) {
+			console.error('无法获取留言', error);
+			return { data: [] };
+		})
 		]).then(function (results) {
 			storyData.milestones = ensureArray(unwrapApiData(results[0], []));
 			storyData.moments = ensureArray(unwrapApiData(results[1], []));

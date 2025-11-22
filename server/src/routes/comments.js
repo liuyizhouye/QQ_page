@@ -23,13 +23,19 @@ router.get(
   '/',
   asyncHandler(async (req, res) => {
     const page = Math.max(parseInt(req.query.page || '1', 10), 1);
-    const pageSize = Math.min(Math.max(parseInt(req.query.pageSize || '5', 10), 1), 20);
+    const pageSize = Math.min(Math.max(parseInt(req.query.pageSize || '5', 10), 1), 100);
     const offset = (page - 1) * pageSize;
-    const total = db.prepare('SELECT COUNT(*) as count FROM comments WHERE is_public = 1').get().count;
+    
+    // 检查是否有管理员权限（通过 x-api-key header）
+    const hasAdminKey = req.headers['x-api-key'] === config.ADMIN_API_KEY && config.ADMIN_API_KEY;
+    
+    // 管理员可以看到所有留言（包括隐藏的），访客只能看到公开的
+    const whereClause = hasAdminKey ? '' : 'WHERE is_public = 1';
+    const total = db.prepare(`SELECT COUNT(*) as count FROM comments ${whereClause}`).get().count;
     const rows = db
       .prepare(
         `SELECT * FROM comments
-         WHERE is_public = 1
+         ${whereClause}
          ORDER BY created_at DESC
          LIMIT @limit OFFSET @offset`
       )
