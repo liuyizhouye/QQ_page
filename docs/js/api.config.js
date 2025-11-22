@@ -3,10 +3,10 @@ window.QQStoryApi = window.QQStoryApi || {};
 
 (function () {
   var host = (window.location && window.location.hostname) || '';
-  // 临时使用 ECS 的 API（注意：HTTPS 网站访问 HTTP API 会有混合内容警告）
-  var defaultBaseUrl = 'http://47.115.72.187:8080/api';
+  // 使用 HTTPS API
+  var defaultBaseUrl = 'https://api.hanbaodoudou.com/api';
   if (!host || /^(localhost|127(?:\.\d{1,3}){3})$/i.test(host)) {
-    defaultBaseUrl = 'http://47.115.72.187:8080/api';
+    defaultBaseUrl = 'http://localhost:8080/api';
   }
 
   window.QQStoryApi.baseUrl = window.QQStoryApi.baseUrl || defaultBaseUrl;
