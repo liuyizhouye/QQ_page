@@ -751,8 +751,32 @@
         return;
       }
       if (value === PASSWORD) {
+        // 解锁当前区域
         unlocked[key] = true;
         showContent();
+        
+        // 同时解锁所有其他受保护区域
+        sections.forEach(function (otherSection) {
+          var otherKey = otherSection.getAttribute('data-protected-key');
+          if (otherKey && otherKey !== key && !unlocked[otherKey]) {
+            unlocked[otherKey] = true;
+            var otherCover = otherSection.querySelector('[data-protected-cover]');
+            var otherContent = otherSection.querySelector('[data-protected-content]');
+            var otherInput = otherSection.querySelector('[data-protected-input]');
+            var otherError = otherSection.querySelector('[data-protected-error]');
+            
+            if (otherCover && otherContent) {
+              otherCover.classList.add('d-none');
+              otherContent.classList.remove('d-none');
+            }
+            if (otherInput) {
+              otherInput.value = '';
+            }
+            if (otherError) {
+              otherError.classList.add('d-none');
+            }
+          }
+        });
       } else {
         if (errorHint) {
           errorHint.classList.remove('d-none');
