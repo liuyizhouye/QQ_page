@@ -566,7 +566,7 @@ var LETTER_WRITER_CONFIG = {
 	hamburger: { writerName: '汉堡', recipientName: '兜兜', listSelector: '#letters-hamburger-list', pageSelector: '#letters-hamburger-page', emptyText: '汉堡还没有写新的信件。' }
 };
 var letterPaginationState = { doudou: 0, hamburger: 0 };
-var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0 };
+var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, comments: 0 };
 	var letterUploadState = { initialized: false, data: null, $input: null, $status: null };
 	var FRIEND_COMMENTS_PER_PAGE = 5;
 	var friendComments = [];
