@@ -1448,12 +1448,14 @@ function normalizeMomentsData() {
 		$('#story-count-milestones').text(storyData.milestones.length);
 		$('#story-count-moments').text(storyData.moments.length);
 		$('#story-count-loveNotes').text(storyData.loveNotes.length);
+		$('#story-count-comments').text(storyData.comments ? storyData.comments.length : 0);
 	}
 
 	function renderAllSections() {
 		renderMilestones();
 		renderMoments();
 	renderLoveNotes();
+	renderCommentsManager();
 	updateCounts();
 	rebindPopupGalleries();
 	initLetterUpload();
@@ -1485,11 +1487,16 @@ function normalizeMomentsData() {
 			window.QQStoryApiClient.getLoveNotes().catch(function (error) {
 				console.error('无法获取信件', error);
 				return { data: [] };
+			}),
+			window.QQStoryApiClient.getComments().catch(function (error) {
+				console.error('无法获取留言', error);
+				return { data: [] };
 			})
 		]).then(function (results) {
 			storyData.milestones = ensureArray(unwrapApiData(results[0], []));
 			storyData.moments = ensureArray(unwrapApiData(results[1], []));
 			storyData.loveNotes = ensureArray(unwrapApiData(results[2], []));
+			storyData.comments = ensureArray(unwrapApiData(results[3], []));
 			storyData.memories = [];
 			mergeMemoriesIntoMilestones();
 			normalizeMilestonesData();
@@ -2131,6 +2138,55 @@ function normalizeMomentsData() {
 		}
 	}
 
+	function renderCommentsManager() {
+		var $managerList = $('#manager-comments-list');
+		var $managerEmpty = $('#manager-comments-empty');
+
+		$managerList.empty();
+
+		if (!storyData.comments || !storyData.comments.length) {
+			$managerEmpty.removeClass('d-none');
+			storyManagerPaginationState.comments = 0;
+			updateStoryManagerPaginationControls('comments', 0, 0);
+			return;
+		}
+
+		$managerEmpty.addClass('d-none');
+
+		var sorted = storyData.comments.slice().sort(function (a, b) {
+			var dateA = new Date(a.createdAt || 0).getTime();
+			var dateB = new Date(b.createdAt || 0).getTime();
+			return dateB - dateA;
+		});
+
+		var managerItems = sorted.map(function (entry) {
+			var $item = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
+			var $body = $('<div/>', { 'class': 'flex-grow-1' });
+			
+			var author = entry.author ? entry.author : '匿名';
+			var dateLabel = formatDateTimeOrDateForDisplay(entry.createdAt);
+			var heading = author + (dateLabel ? ' · ' + dateLabel : '');
+			
+			$body.append($('<h5/>', { 'class': 'mb-1' }).text(heading));
+			if (entry.message) {
+				$body.append($('<p/>', { 'class': 'mb-0 small' }).text(entry.message));
+			}
+			
+			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
+			$actions.append($('<button/>', { 
+				'type': 'button', 
+				'class': 'btn btn-sm btn-outline-danger story-delete', 
+				'data-category': 'comments', 
+				'data-id': entry.id 
+			}).text('删除'));
+			
+			$item.append($body, $actions);
+			return $item;
+		});
+
+		renderStoryManagerPagedList('comments', $managerList, managerItems);
+	}
+
 	function getLetterDisplayName(entry) {
 		if (!entry) { return '信件.pdf'; }
 		if (entry.pdfName && String(entry.pdfName).trim()) {
@@ -2294,6 +2350,8 @@ function changeStoryManagerPage(category, delta) {
 		renderMoments();
 	} else if (category === 'loveNotes') {
 		renderLoveNotes();
+	} else if (category === 'comments') {
+		renderCommentsManager();
 	}
 }
 
@@ -2646,6 +2704,8 @@ function bindStoryManagerPaginationControls() {
 				request = window.QQStoryApiClient.deleteMoment(id);
 			} else if (category === 'loveNotes') {
 				request = window.QQStoryApiClient.deleteLoveNote(id);
+			} else if (category === 'comments') {
+				request = window.QQStoryApiClient.deleteComment(id);
 			} else {
 				console.warn('未知删除分类', category);
 				return;

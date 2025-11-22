@@ -392,9 +392,10 @@
                   <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。所有数据都会安全保存在云端服务器。</p>
                   <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
                   <ul class="list-unstyled text-3 lh-lg mb-4">
-                    <li><i class="fas fa-flag text-primary me-2"></i>里程碑 <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
-                    <li><i class="fas fa-camera text-primary me-2"></i>瞬间 <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
-                    <li><i class="fas fa-envelope text-primary me-2"></i>书信 <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
+                    <li><i class="fas fa-flag text-primary me-2"></i>QQ Footprint <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
+                    <li><i class="fas fa-camera text-primary me-2"></i>Moments <span class="badge bg-light text-muted" id="story-count-moments">0</span></li>
+                    <li><i class="fas fa-envelope text-primary me-2"></i>Letters <span class="badge bg-light text-muted" id="story-count-loveNotes">0</span></li>
+                    <li><i class="fas fa-comments text-primary me-2"></i>Comments <span class="badge bg-light text-muted" id="story-count-comments">0</span></li>
                   </ul>
                   <div class="alert alert-info small" role="note">数据安全保存在云端服务器，图片和视频存储在私有 NAS 中，可随时访问。</div>
                 </div>
@@ -402,9 +403,10 @@
               <div class="col-md-8 col-xl-9 order-0 order-md-1">
                 <div class="memory-subblock h-100">
                   <ul class="nav nav-pills story-tabs flex-wrap memory-tabs" id="storyTabs" role="tablist">
-                    <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">里程碑</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">瞬间</button></li>
-                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">书信</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link active" id="tab-link-milestones" data-bs-toggle="pill" data-bs-target="#story-pane-milestones" type="button" role="tab" aria-controls="story-pane-milestones" aria-selected="true">QQ Footprint</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-moments" data-bs-toggle="pill" data-bs-target="#story-pane-moments" type="button" role="tab" aria-controls="story-pane-moments" aria-selected="false">Moments</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-loveNotes" data-bs-toggle="pill" data-bs-target="#story-pane-loveNotes" type="button" role="tab" aria-controls="story-pane-loveNotes" aria-selected="false">Letters</button></li>
+                    <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-comments" data-bs-toggle="pill" data-bs-target="#story-pane-comments" type="button" role="tab" aria-controls="story-pane-comments" aria-selected="false">Comments</button></li>
                   </ul>
                   <div class="tab-content" id="storyTabContent">
                     <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
@@ -502,6 +504,17 @@
                         </div>
                         <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存信件</button></div>
                       </form>
+                    </div>
+                  </div>
+                  <div class="tab-pane fade" id="story-pane-comments" role="tabpanel" aria-labelledby="tab-link-comments">
+                    <div class="story-manager-section">
+                      <div id="manager-comments-empty" class="alert alert-light border text-muted" role="status">还没有留言，访客可以在 Comments 区域留言。</div>
+                      <div id="manager-comments-list" class="list-group list-group-flush mb-3"></div>
+                      <div id="manager-comments-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="留言翻页">
+                        <button type="button" class="btn btn-outline-primary btn-sm story-page-prev" data-category="comments" disabled>上一页</button>
+                        <span class="small text-muted" id="manager-comments-page">第 1 页 / 共 1 页</span>
+                        <button type="button" class="btn btn-outline-primary btn-sm story-page-next" data-category="comments" disabled>下一页</button>
+                      </div>
                     </div>
                   </div>
                 </div>
