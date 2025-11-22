@@ -37,7 +37,7 @@ window.QQStoryApi = window.QQStoryApi || {};
     var value = key || '';
     window.QQStoryApi.adminKey = value;
 
-    var persist = (options && options.persist) || 'session';
+    var persist = (options && options.persist) || 'local';
     try {
       if (persist === 'local') {
         if (value) {
