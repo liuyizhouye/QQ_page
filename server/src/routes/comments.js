@@ -3,7 +3,7 @@ import rateLimit from 'express-rate-limit';
 import { v4 as uuid } from 'uuid';
 import db from '../db.js';
 import asyncHandler from '../middleware/asyncHandler.js';
-import requireApiKey from '../middleware/apiKey.js';
+import requireApiKey, { requestHasValidApiKey } from '../middleware/apiKey.js';
 import { sanitizeText, clampToPositive } from '../utils/validators.js';
 import { mapCommentRow } from '../transformers.js';
 import config from '../config.js';
@@ -32,7 +32,7 @@ router.get(
     const offset = (page - 1) * pageSize;
     
     // 检查是否有管理员权限（通过 x-api-key header）
-    const hasAdminKey = req.headers['x-api-key'] === config.ADMIN_API_KEY && config.ADMIN_API_KEY;
+    const hasAdminKey = requestHasValidApiKey(req);
     
     // 管理员可以看到所有留言（包括隐藏的），访客只能看到公开的
     const whereClause = hasAdminKey ? '' : 'WHERE is_public = 1';

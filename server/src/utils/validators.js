@@ -1,10 +1,20 @@
 const ISO_REGEX = /^\d{4}-\d{2}-\d{2}([T\s]\d{2}:\d{2}(:\d{2})?(\.\d+)?(Z|[+-]\d{2}:\d{2})?)?$/;
 
+export function escapeHtml(value) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export function sanitizeText(value, maxLength = 5000) {
   if (typeof value !== 'string') {
     return '';
   }
-  return value.trim().slice(0, maxLength);
+  const trimmed = value.trim().slice(0, maxLength);
+  return escapeHtml(trimmed);
 }
 
 export function ensureArray(value) {
