@@ -49,14 +49,14 @@ NODE_ENV=production
 DATABASE_FILE=/app/database/qq_story.db
 UPLOAD_DIR=/app/uploads
 LOG_DIR=/app/logs
-ADMIN_API_KEY=请替换为长度≥32的随机字符串
+ADMIN_API_KEYS=请替换为长度≥32的随机字符串,如需轮换可追加新值
 ALLOWED_ORIGINS=https://hanbaodoudou.com,https://www.hanbaodoudou.com,https://hanbaodoudou.github.io,http://localhost:4173
 MAX_UPLOAD_SIZE_MB=20
 RATE_LIMIT_WINDOW_MINUTES=15
 RATE_LIMIT_MAX_REQUESTS=100
 ```
 
-> ⚠️ `ADMIN_API_KEY` 只用于管理员写入操作，请妥善保密；仅允许来自前端域名的跨域请求。
+> ⚠️ `ADMIN_API_KEYS` 只用于管理员写入操作，请妥善保密；仅允许来自前端域名的跨域请求，并定期轮换密钥。
 
 ---
 

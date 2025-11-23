@@ -35,6 +35,7 @@ if (config.ALLOWED_ORIGINS.length === 1 && config.ALLOWED_ORIGINS[0] === '*') {
 }
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
@@ -65,11 +66,9 @@ app.use(morgan('combined', { stream: accessLogStream }));
 app.use(morgan('dev'));
 app.use(
   '/uploads',
+  cors(corsOptions),
   express.static(config.UPLOAD_DIR, {
     maxAge: '7d',
-    setHeaders: (res) => {
-      res.setHeader('Access-Control-Allow-Origin', '*');
-    },
   })
 );
 

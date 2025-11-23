@@ -767,11 +767,6 @@
         return;
       }
       if (value === PASSWORD) {
-        // 自动设置 Admin Key（用于 API 请求）
-        if (window.QQStoryApi && window.QQStoryApi.setAdminKey) {
-          window.QQStoryApi.setAdminKey('1029384756Ab', { persist: 'local' });
-        }
-        
         // 解锁当前区域
         unlocked[key] = true;
         showContent();
