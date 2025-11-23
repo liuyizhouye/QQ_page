@@ -163,6 +163,7 @@ RATE_LIMIT_MAX_REQUESTS=100
 - **日志与监控**：
   - Caddy 日志保存于云服务器 `server/deploy/cloud/logs/`。
   - Express 访问日志写入 NAS `server/logs/access.log`。
+- **请求限流**：后端内置 `express-rate-limit`，默认在 `RATE_LIMIT_WINDOW_MINUTES` 时间窗内仅允许每 IP 发起 `RATE_LIMIT_MAX_REQUESTS` 次 `/api` 与 `/health` 请求，防止公网暴力刷接口。根据 ECS 实际流量需求在 `.env` 调整阈值。
 - **备份策略**：
   - 定期备份 `server/database/qq_story.db` 与整个 `uploads/`。
   - 建议使用 NAS 自带快照或 `rclone` 同步到对象存储。
