@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import fs from 'fs';
+import rateLimit from 'express-rate-limit';
 import config from './config.js';
 import './migrate.js';
 import { ensureUploadSubdirs } from './services/fileService.js';
@@ -37,6 +38,18 @@ app.use(cors(corsOptions));
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
+
+const rateLimiter = rateLimit({
+  windowMs: config.RATE_LIMIT_WINDOW_MINUTES * 60 * 1000,
+  max: config.RATE_LIMIT_MAX_REQUESTS,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+
+app.use('/health', rateLimiter);
+app.use('/api', rateLimiter);
+
 app.use(
   express.json({
     limit: `${config.MAX_UPLOAD_SIZE_MB}mb`,
