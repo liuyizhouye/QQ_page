@@ -23,7 +23,7 @@ api.hanbaodoudou.com {
 		X-Frame-Options "DENY"
 	}
 
-	reverse_proxy 127.0.0.1:18080 {
+	reverse_proxy 127.0.0.1:8080 {
 		health_uri /health
 		health_interval 30s
 		health_timeout 5s

@@ -27,7 +27,7 @@ const RATE_LIMIT_MAX_REQUESTS = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || 
 const MEDIA_BASE_URL = (process.env.MEDIA_BASE_URL || (NODE_ENV === 'production' ? 'https://api.hanbaodoudou.com' : '')).replace(/\/$/, '');
 
 const DEFAULT_ALLOWED_ORIGINS = NODE_ENV === 'production'
-  ? ['https://hanbaodoudou.com', 'https://api.hanbaodoudou.com']
+  ? ['https://hanbaodoudou.com', 'https://www.hanbaodoudou.com', 'https://api.hanbaodoudou.com']
   : ['*'];
 
 const ALLOWED_ORIGINS = (() => {
