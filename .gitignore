@@ -1,0 +1,30 @@
+# 环境变量文件（包含密钥，绝不提交）
+.env
+.env.local
+.env.*.local
+
+# 数据库文件
+*.db
+*.sqlite
+
+# 日志
+logs/
+*.log
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 上传文件（可选，如果不想提交用户上传的文件）
+# server/uploads/
+
