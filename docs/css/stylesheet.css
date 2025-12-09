@@ -4291,8 +4291,19 @@ body.moment-viewer-open {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     max-height: calc(100vh - 56px);
+    max-height: calc(100dvh - 56px); /* 动态视口高度，iOS 友好 */
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding: 0.5rem 0;
+    padding-bottom: env(safe-area-inset-bottom, 0.5rem); /* iOS 安全区域 */
+  }
+
+  /* iOS Safari 特殊处理 */
+  @supports (-webkit-touch-callout: none) {
+    .primary-menu .navbar-collapse {
+      max-height: calc(100svh - 56px);
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+    }
   }
 
   /* 导航列表 */
