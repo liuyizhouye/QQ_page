@@ -4208,164 +4208,165 @@ body.moment-viewer-open {
   }
 }
 
-/* Mobile-first polish */
+/* =================================== */
+/*  Mobile Navigation - 简约移动端导航
+/* =================================== */
 @media (max-width: 991.98px) {
+  /* 顶部导航栏 - 简洁一行布局 */
   .primary-menu.navbar {
-    background: rgba(15, 23, 42, 0.95);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
-    border-radius: 0;
-    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.25);
+    background: rgba(17, 20, 24, 0.98);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1050;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
   }
 
+  /* 容器 - 强制一行显示 */
   .primary-menu .container-fluid {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
     padding: 0.65rem 1rem;
+    height: auto;
+    min-height: 56px;
   }
 
-  /* 导航菜单展开后的样式 */
+  /* Logo 区域 - 简化 */
+  .primary-menu a[href="index.html"] {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  .primary-menu a[href="index.html"] h1 {
+    font-size: 1rem !important;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  /* 隐藏顶部栏的社交图标 */
+  .primary-menu > .container-fluid > .social-icons {
+    display: none !important;
+  }
+
+  /* 汉堡按钮 */
+  .primary-menu .navbar-toggler {
+    order: 2;
+    margin: 0;
+    padding: 8px;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .primary-menu .navbar-toggler span {
+    background: rgba(255, 255, 255, 0.9);
+    height: 2px;
+    width: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .primary-menu .navbar-toggler:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* 展开的菜单 - 简约下拉式 */
   .primary-menu .navbar-collapse {
-    position: fixed;
-    top: 60px;
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
-    bottom: 0;
-    padding: 1.5rem 1.25rem 2rem;
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.98) 100%);
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    max-height: none;
+    background: rgba(17, 20, 24, 0.98);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-height: calc(100vh - 56px);
     overflow-y: auto;
-    transform: translateY(-100%);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
-                opacity 0.3s ease,
-                visibility 0.3s ease;
-  }
-
-  .primary-menu .navbar-collapse.show {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .primary-menu .navbar-nav {
-    gap: 0.35rem;
     padding: 0.5rem 0;
   }
 
-  .primary-menu .navbar-nav .nav-link {
-    text-align: center;
-    padding: 1rem 1.25rem;
-    border-radius: 1rem;
-    font-size: 1.05rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.85);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    transition: all 0.25s ease;
-    position: relative;
-    overflow: hidden;
+  /* 导航列表 */
+  .primary-menu .navbar-nav {
+    padding: 0.5rem 1rem;
+    gap: 0;
   }
 
-  .primary-menu .navbar-nav .nav-link::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(32, 201, 151, 0.15) 0%, rgba(32, 201, 151, 0.05) 100%);
-    opacity: 0;
-    transition: opacity 0.25s ease;
+  .primary-menu .navbar-nav .nav-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .primary-menu .navbar-nav .nav-item:last-child {
+    border-bottom: none;
+  }
+
+  /* 导航链接 - 简洁列表式 */
+  .primary-menu .navbar-nav .nav-link {
+    display: block;
+    padding: 0.9rem 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
+    text-align: left;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    transition: color 0.2s ease, background 0.2s ease;
   }
 
   .primary-menu .navbar-nav .nav-link:hover,
-  .primary-menu .navbar-nav .nav-link:focus,
-  .primary-menu .navbar-nav .nav-link.active {
+  .primary-menu .navbar-nav .nav-link:focus {
     color: #fff;
-    background: rgba(32, 201, 151, 0.12);
-    border-color: rgba(32, 201, 151, 0.25);
-    transform: scale(1.02);
-  }
-
-  .primary-menu .navbar-nav .nav-link:hover::before,
-  .primary-menu .navbar-nav .nav-link:focus::before,
-  .primary-menu .navbar-nav .nav-link.active::before {
-    opacity: 1;
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .primary-menu .navbar-nav .nav-link.active {
     color: #20c997;
-    font-weight: 600;
+    font-weight: 500;
   }
 
-  /* 汉堡菜单按钮优化 */
-  .primary-menu .navbar-toggler {
-    padding: 0.5rem 0.65rem;
-    border-radius: 0.65rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
-    transition: all 0.25s ease;
+  .primary-menu .navbar-nav .nav-link::before {
+    display: none;
   }
 
-  .primary-menu .navbar-toggler:hover,
-  .primary-menu .navbar-toggler:focus {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.35);
+  /* 菜单内的社交图标 */
+  .primary-menu .navbar-collapse .social-icons {
+    padding: 0.75rem 1rem;
+    margin: 0;
+    gap: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
   }
 
-  .primary-menu .navbar-toggler.show {
-    background: rgba(32, 201, 151, 0.2);
-    border-color: rgba(32, 201, 151, 0.4);
-  }
-
-  .primary-menu .navbar-toggler span {
-    background: #fff;
-    height: 2px;
-    transition: all 0.3s ease;
-  }
-
-  /* 社交图标优化 */
-  .primary-menu .social-icons {
-    justify-content: center;
-    margin: 1.5rem auto 0.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .primary-menu .social-icons li a {
-    width: 42px;
-    height: 42px;
-    line-height: 42px;
-    font-size: 1.1rem;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 50%;
-    transition: all 0.25s ease;
-  }
-
-  .primary-menu .social-icons li a:hover {
-    background: rgba(32, 201, 151, 0.2);
-    transform: translateY(-2px);
-  }
-
-  /* Logo 区域优化 */
-  .primary-menu a[href="index.html"] h1 {
-    font-size: 1.1rem !important;
+  .primary-menu .navbar-collapse .social-icons li {
     margin: 0;
   }
 
-  /* 内容区域偏移，防止被固定导航遮挡 */
+  .primary-menu .navbar-collapse .social-icons li a {
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.5);
+    background: transparent;
+    transition: color 0.2s ease;
+  }
+
+  .primary-menu .navbar-collapse .social-icons li a:hover {
+    color: #20c997;
+  }
+
+  /* 内容区域偏移 */
   #main-wrapper {
-    margin-top: 60px;
+    margin-top: 56px;
   }
 }
 
