@@ -1,139 +1,133 @@
-# QQ Story - 静态站点与后端服务
+# 兜兜 & 汉堡 の 大冒险 🎀
 
-## 概述
+一个记录爱情故事的个人网站，包含时间线、照片墙、留言板和私密信件等功能。
 
-本仓库包含两部分：
-- `docs/`：静态站点（部署到 GitHub Pages，域名由 `CNAME` 指向）
-- `server/`：Node.js/Express 后端服务（SQLite 持久化，支持媒体/PDF 上传，提供 REST API）
+## 📸 预览
 
-## 目录结构
+访问地址：[https://hanbaodoudou.com](https://hanbaodoudou.com)
+
+## 🏗️ 项目架构
+
+```
+浏览器 ─HTTPS─> hanbaodoudou.com (GitHub Pages)
+                      │
+                      └──> api.hanbaodoudou.com (阿里云 ECS + Caddy)
+                                    │
+                                    └──> Node.js Express (PM2)
+                                              ├── SQLite 数据库
+                                              └── uploads/ 文件存储
+```
+
+### 技术栈
+
+| 层级 | 技术 |
+|------|------|
+| 前端 | HTML5 + CSS3 + jQuery + Bootstrap 5 |
+| 后端 | Node.js + Express + SQLite |
+| 部署 | GitHub Pages (前端) + 阿里云 ECS (后端) |
+| 反向代理 | Caddy (自动 HTTPS) |
+| 进程管理 | PM2 |
+
+## 📁 目录结构
 
 ```
 .
-├── CNAME                 # GitHub Pages 自定义域配置
-├── docs/                 # 前端静态资源（HTML/CSS/JS/图片等）
-│   ├── index.html        # 主页
+├── docs/                    # 前端静态资源（GitHub Pages）
+│   ├── index.html           # 主页
+│   ├── css/                 # 样式文件
 │   ├── js/
-│   │   ├── api.config.js # 前端 API 端点配置
-│   │   └── ...
-│   └── ...
-├── server/               # 后端（Express + SQLite）
-│   ├── src/              # 业务代码与路由
-│   ├── uploads/          # 上传文件存储目录
-│   ├── database/         # SQLite 数据库存储目录
-│   ├── deploy/           # 部署配置参考
-│   └── README.md         # 后端部署与运维的详细说明
-└── DEPLOY_NAS.md         # NAS 存储配置指南（可选）
+│   │   ├── api.config.js    # API 端点配置
+│   │   ├── api-client.js    # API 客户端
+│   │   └── theme.js         # 主题和交互逻辑
+│   ├── images/              # 图片资源
+│   └── vendor/              # 第三方库
+├── server/                  # 后端服务
+│   ├── src/                 # Express 源码
+│   ├── database/            # SQLite 数据库
+│   ├── uploads/             # 上传文件存储
+│   └── deploy/              # 部署配置
+├── CNAME                    # GitHub Pages 域名配置
+└── DEPLOY_NAS.md            # NAS 存储配置指南（可选）
 ```
 
-## 快速开始（本地开发）
+## 🚀 快速开始
 
-### 后端 API（必需）
+### 本地开发
 
-1. 进入后端目录并安装依赖：
+1. **启动后端服务**
 ```bash
 cd server
 npm install
-```
-
-2. 初始化数据库并启动开发服务（默认端口 8080）：
-```bash
-npm run migrate
 npm run dev
 ```
 
-3. 健康检查：
+2. **预览前端**
+- 直接用浏览器打开 `docs/index.html`
+- 或使用 VSCode Live Server 等静态服务器
+
+3. **健康检查**
 ```bash
 curl http://localhost:8080/health
 ```
 
-### 前端静态站点（可选）
+### 管理员操作
 
-- 直接用浏览器打开 `docs/index.html` 进行本地预览，或使用任意静态文件服务器（如 VSCode Live Server）
-- `docs/js/api.config.js` 会自动在本地使用 `http://localhost:8080/api`，线上使用 `https://api.hanbaodoudou.com/api`
-- 如需在浏览器内进行写操作，需先在控制台注入管理员密钥：
+在浏览器控制台注入 API 密钥后可进行写操作：
 ```javascript
-window.QQStoryApi.setAdminKey('你的 ADMIN_API_KEY', { persist: 'session' });
+QQStoryApi.setAdminKey('你的密钥', { persist: 'session' });
 ```
 
-## 常用命令
+## 🌐 部署
 
-在 `server/` 目录下：
-```bash
-npm run migrate   # 初始化/迁移数据库
-npm run dev       # 开发模式（nodemon）
-npm start         # 生产模式启动
-```
+### 前端部署（GitHub Pages）
 
-## 部署架构
+1. 将代码 push 到 GitHub
+2. 在仓库设置中启用 GitHub Pages，选择 `docs/` 目录
+3. 配置自定义域名（CNAME 文件）
 
-### 当前生产环境
+### 后端部署（阿里云 ECS）
 
-- **前端**：`docs/` 静态站点托管在 GitHub Pages（`https://hanbaodoudou.com`）
-- **后端**：运行在阿里云 ECS（Ubuntu 22.04）
-  - 使用 PM2 进程管理，开机自启动
-  - 通过 Caddy 反向代理提供 HTTPS（`https://api.hanbaodoudou.com`）
-  - Let's Encrypt 自动证书管理
-  - 文件存储：ECS 本地 `uploads/` 目录（可选配置 NAS 远程挂载）
-
-### 数据流
-
-```
-浏览器 ─HTTPS─> api.hanbaodoudou.com (Caddy) ─> localhost:8080 (PM2 + Express)
-                                                      └─> SQLite DB
-                                                      └─> uploads/ 或 NAS
-```
-
-## 环境变量（后端）
-
-在 `server/.env` 中配置：
-```ini
-PORT=8080
-ADMIN_API_KEY=请替换为长度≥32的随机字符串
-DATABASE_FILE=database/qq_story.db
-UPLOAD_DIR=uploads  # 或 /mnt/nas_uploads（如配置 NAS）
-MEDIA_BASE_URL=     # 可选：CDN 或 NAS 直连地址
-ALLOWED_ORIGINS=*
-MAX_UPLOAD_SIZE_MB=100
-RATE_LIMIT_WINDOW_MINUTES=15
-RATE_LIMIT_MAX_REQUESTS=300
-```
-
-> ⚠️ `ADMIN_API_KEY` 只用于管理员写入操作，请妥善保密；仅允许来自前端域名的跨域请求。
-
-## 注意事项
-
-- 请妥善保管 `ADMIN_API_KEY`，仅在需要写操作时短暂注入浏览器，并在完成后执行 `window.QQStoryApi.clearStoredAdminKey()` 或关闭窗口
-- 生产环境通过 Caddy 提供 HTTPS，确保安全访问
-- 定期备份 `server/database/qq_story.db` 与整个 `server/uploads/`
-
-## 高级配置
-
-### NAS 存储（可选）
-
-如需将文件存储到私有 NAS，请参考 `DEPLOY_NAS.md` 配置指南。
+详见 [server/README.md](server/README.md)
 
 主要步骤：
-1. 在 ECS 和 NAS 上安装 Tailscale 组网
-2. 通过 NFS 将 NAS 目录挂载到 ECS
-3. 修改 `.env` 中的 `UPLOAD_DIR` 指向挂载点
+1. 在 ECS 上安装 Node.js 和 PM2
+2. 配置 `.env` 环境变量
+3. 使用 PM2 启动服务
+4. 配置 Caddy 反向代理提供 HTTPS
 
-### 自动部署
+## ⚙️ 环境变量
 
-后端使用 PM2 管理：
-```bash
-pm2 start src/app.js --name qq-story
-pm2 startup  # 配置开机自启动
-pm2 save
-```
+后端环境变量配置（`server/.env`）：
 
-查看状态和日志：
-```bash
-pm2 status
-pm2 logs qq-story
-pm2 restart qq-story
-```
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `PORT` | 服务端口 | `8080` |
+| `NODE_ENV` | 运行环境 | `production` |
+| `ADMIN_API_KEYS` | 管理员 API 密钥 | - |
+| `DATABASE_FILE` | 数据库路径 | `database/qq_story.db` |
+| `UPLOAD_DIR` | 上传目录 | `uploads` |
+| `ALLOWED_ORIGINS` | 允许的跨域来源 | `https://hanbaodoudou.com` |
+| `MAX_UPLOAD_SIZE_MB` | 最大上传大小 | `100` |
 
-## 许可证
+## 📱 功能特性
 
-未显式声明许可证。如需开源/闭源分发，请根据实际需求补充 LICENSE 文件与声明。
+- **QQ Footprint**：时间线记录重要里程碑
+- **Moments**：照片墙展示精彩瞬间
+- **Comments**：公开留言板，朋友可以留言祝福
+- **Letters**：私密信件，需密码解锁
+- **Story Manager**：管理员后台，统一管理所有内容
+- **Liuyizhouye**：特别纪念页面
+
+## 🔒 安全说明
+
+- `ADMIN_API_KEYS` 仅用于管理员写操作，请妥善保密
+- 前端密码保护仅作 UI 防护，真正的安全由后端 API 密钥保障
+- 定期备份 `database/` 和 `uploads/` 目录
+
+## 📄 许可证
+
+私人项目，仅供个人使用。
+
+---
+
+Made with ❤️ by 兜兜 & 汉堡
