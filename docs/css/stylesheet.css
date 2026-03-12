@@ -50,7 +50,7 @@ body, html {
 body {
   background: #dddddd;
   color: #4c4d4d;
-  font-family: "Poppins", sans-serif;
+  font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", system-ui, -apple-system, "Segoe UI", sans-serif;
   overflow-x: hidden;
 }
 

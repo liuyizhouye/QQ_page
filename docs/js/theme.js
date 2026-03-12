@@ -10,11 +10,24 @@
 	"use strict";
 
 	var setSideNavActive = function () {};
+	var preloaderHidden = false;
+
+	function hidePreloader() {
+		if (preloaderHidden) {
+			return;
+		}
+		preloaderHidden = true;
+		$('.lds-ellipsis').fadeOut();
+		$('.preloader').delay(150).fadeOut('slow');
+	}
 
 // Preloader
+$(function () {
+	setTimeout(hidePreloader, 1200);
+});
+
 $(window).on('load', function () {
-	$('.lds-ellipsis').fadeOut(); // will first fade out the loading animation
-	$('.preloader').delay(333).fadeOut('slow'); // will fade out the white DIV that covers the website.
+	hidePreloader(); // avoid blocking on slow third-party resources
 	$('body').delay(333);
 });
 
