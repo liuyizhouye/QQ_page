@@ -3809,7 +3809,7 @@ body.moment-viewer-open {
 --------------------------------------------- */
 .ourstory-bg {
   position: relative;
-  background-image: url('../images/ourstory-bg.png');
+  background-image: var(--section-bg-image, none);
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
@@ -3823,7 +3823,7 @@ body.moment-viewer-open {
 
 .comments-bg {
   position: relative;
-  background-image: url('../images/comments-bg.png');
+  background-image: var(--section-bg-image, none);
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
@@ -3850,7 +3850,7 @@ body.moment-viewer-open {
 }
 
 .moments-section::before {
-  background-image: url('../images/moments-bg.png');
+  background-image: var(--section-bg-image-before, none);
   background-size: cover;
   background-position: center;
   filter: blur(12px);
@@ -3886,7 +3886,7 @@ body.moment-viewer-open {
 
 .liuyizhouye-bg-timeline {
   position: relative;
-  background-image: url('../images/liuyizhouye-bg.png');
+  background-image: var(--section-bg-image, none);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -4456,7 +4456,7 @@ body.moment-viewer-open {
 
 .letters-bg {
   position: relative;
-  background-image: url('../images/letters-bg.png');
+  background-image: var(--section-bg-image, none);
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
@@ -4470,7 +4470,7 @@ body.moment-viewer-open {
 
 .memory-bg {
   position: relative;
-  background-image: url('../images/memory-bg.png');
+  background-image: var(--section-bg-image, none);
   background-size: contain;
   background-position: top center;
   background-repeat: no-repeat;
