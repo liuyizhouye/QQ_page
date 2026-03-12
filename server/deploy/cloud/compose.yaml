@@ -1,0 +1,22 @@
+services:
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      CADDY_ADMIN_EMAIL: contact@hanbaodoudou.com
+    volumes:
+      - cloud_caddy_data:/data
+      - cloud_caddy_config:/config
+      - /root/server/deploy/cloud/logs:/var/log/caddy
+      - /root/server/deploy/cloud/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /srv/www/hanbaodoudou.com:/srv/www/hanbaodoudou.com:ro
+
+volumes:
+  cloud_caddy_data:
+    external: true
+  cloud_caddy_config:
+    external: true

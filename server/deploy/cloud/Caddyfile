@@ -1,7 +1,16 @@
 {
 	email {$CADDY_ADMIN_EMAIL}
-	auto_https on
 	order reverse_proxy first
+}
+
+hanbaodoudou.com {
+	encode zstd gzip
+	root * /srv/www/hanbaodoudou.com
+	file_server
+}
+
+www.hanbaodoudou.com {
+	redir https://hanbaodoudou.com{uri} permanent
 }
 
 api.hanbaodoudou.com {
@@ -23,7 +32,7 @@ api.hanbaodoudou.com {
 		X-Frame-Options "DENY"
 	}
 
-	reverse_proxy 127.0.0.1:8080 {
+	reverse_proxy 172.17.0.1:8080 {
 		health_uri /health
 		health_interval 30s
 		health_timeout 5s

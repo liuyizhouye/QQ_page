@@ -1,133 +1,55 @@
-# 兜兜 & 汉堡 の 大冒险 🎀
+# 兜兜 & 汉堡 の 大冒险
 
-一个记录爱情故事的个人网站，包含时间线、照片墙、留言板和私密信件等功能。
+一个前后端分离的个人纪念网站，记录时间线、照片/视频、公开留言和私密信件。
 
-## 📸 预览
+## 当前线上架构
 
-访问地址：[https://hanbaodoudou.com](https://hanbaodoudou.com)
-
-## 🏗️ 项目架构
-
-```
-浏览器 ─HTTPS─> hanbaodoudou.com (GitHub Pages)
-                      │
-                      └──> api.hanbaodoudou.com (阿里云 ECS + Caddy)
-                                    │
-                                    └──> Node.js Express (PM2)
-                                              ├── SQLite 数据库
-                                              └── uploads/ 文件存储
+```text
+浏览器
+  ├─ https://hanbaodoudou.com           -> ECS 上的 Caddy -> /srv/www/hanbaodoudou.com
+  ├─ https://www.hanbaodoudou.com       -> 301 跳转到主域名
+  └─ https://api.hanbaodoudou.com       -> ECS 上的 Caddy -> PM2 Node.js -> /srv/qq-story
+                                                          ├─ data/qq_story.db
+                                                          └─ uploads/
 ```
 
-### 技术栈
+- 域名已转入阿里云，ICP 备案已完成。
+- 主站和 API 都已收口到同一台阿里云 ECS。
+- NAS 规划为下一阶段的数据归档/备份节点，不作为当前线上实时依赖。
 
-| 层级 | 技术 |
-|------|------|
-| 前端 | HTML5 + CSS3 + jQuery + Bootstrap 5 |
-| 后端 | Node.js + Express + SQLite |
-| 部署 | GitHub Pages (前端) + 阿里云 ECS (后端) |
-| 反向代理 | Caddy (自动 HTTPS) |
-| 进程管理 | PM2 |
+## 目录说明
 
-## 📁 目录结构
-
-```
+```text
 .
-├── docs/                    # 前端静态资源（GitHub Pages）
-│   ├── index.html           # 主页
-│   ├── css/                 # 样式文件
-│   ├── js/
-│   │   ├── api.config.js    # API 端点配置
-│   │   ├── api-client.js    # API 客户端
-│   │   └── theme.js         # 主题和交互逻辑
-│   ├── images/              # 图片资源
-│   └── vendor/              # 第三方库
-├── server/                  # 后端服务
-│   ├── src/                 # Express 源码
-│   ├── database/            # SQLite 数据库
-│   ├── uploads/             # 上传文件存储
-│   └── deploy/              # 部署配置
-├── CNAME                    # GitHub Pages 域名配置
-└── DEPLOY_NAS.md            # NAS 存储配置指南（可选）
+├── AGENTS.md                  # 当前项目总览、部署现状、后续待办
+├── README.md                  # 项目入口说明
+├── DEPLOY_NAS.md              # NAS 接入方案（推荐同步备份）
+├── docs/                      # 前端静态站源码
+└── server/                    # Node.js + Express API
 ```
 
-## 🚀 快速开始
+## 本地开发
 
-### 本地开发
-
-1. **启动后端服务**
 ```bash
 cd server
 npm install
+cp env.example .env
 npm run dev
 ```
 
-2. **预览前端**
-- 直接用浏览器打开 `docs/index.html`
-- 或使用 VSCode Live Server 等静态服务器
+前端可直接打开 `docs/index.html`，或使用任意静态服务器预览。
 
-3. **健康检查**
-```bash
-curl http://localhost:8080/health
-```
+## 线上部署入口
 
-### 管理员操作
+- 静态站目录：`/srv/www/hanbaodoudou.com`
+- API 数据目录：`/srv/qq-story`
+- API 代码目录：`/root/QQ_page/server`
+- Caddy 配置：`server/deploy/cloud/Caddyfile`
+- Caddy Compose：`server/deploy/cloud/compose.yaml`
 
-在浏览器控制台注入 API 密钥后可进行写操作：
-```javascript
-QQStoryApi.setAdminKey('你的密钥', { persist: 'session' });
-```
+## 相关文档
 
-## 🌐 部署
-
-### 前端部署（GitHub Pages）
-
-1. 将代码 push 到 GitHub
-2. 在仓库设置中启用 GitHub Pages，选择 `docs/` 目录
-3. 配置自定义域名（CNAME 文件）
-
-### 后端部署（阿里云 ECS）
-
-详见 [server/README.md](server/README.md)
-
-主要步骤：
-1. 在 ECS 上安装 Node.js 和 PM2
-2. 配置 `.env` 环境变量
-3. 使用 PM2 启动服务
-4. 配置 Caddy 反向代理提供 HTTPS
-
-## ⚙️ 环境变量
-
-后端环境变量配置（`server/.env`）：
-
-| 变量名 | 说明 | 默认值 |
-|--------|------|--------|
-| `PORT` | 服务端口 | `8080` |
-| `NODE_ENV` | 运行环境 | `production` |
-| `ADMIN_API_KEYS` | 管理员 API 密钥 | - |
-| `DATABASE_FILE` | 数据库路径 | `database/qq_story.db` |
-| `UPLOAD_DIR` | 上传目录 | `uploads` |
-| `ALLOWED_ORIGINS` | 允许的跨域来源 | `https://hanbaodoudou.com` |
-| `MAX_UPLOAD_SIZE_MB` | 最大上传大小 | `100` |
-
-## 📱 功能特性
-
-- **QQ Footprint**：时间线记录重要里程碑
-- **Moments**：照片墙展示精彩瞬间
-- **Comments**：公开留言板，朋友可以留言祝福
-- **Letters**：私密信件，需密码解锁
-- **Story Manager**：管理员后台，统一管理所有内容
-- **Liuyizhouye**：特别纪念页面
-
-## 🔒 安全说明
-
-- `ADMIN_API_KEYS` 仅用于管理员写操作，请妥善保密
-- 前端密码保护仅作 UI 防护，真正的安全由后端 API 密钥保障
-- 定期备份 `database/` 和 `uploads/` 目录
-
-## 📄 许可证
-
-私人项目，仅供个人使用。
-
----
-
-Made with ❤️ by 兜兜 & 汉堡
+- [AGENTS.md](AGENTS.md)：当前真实架构、部署流程、下一步计划
+- [server/README.md](server/README.md)：后端运行与 ECS 部署说明
+- [DEPLOY_NAS.md](DEPLOY_NAS.md)：NAS 同步/备份方案
+- [docs/ops-handover-2026-02-20.md](docs/ops-handover-2026-02-20.md)：2026-02-20 历史交接记录，已归档

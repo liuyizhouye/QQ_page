@@ -12,8 +12,7 @@ window.QQStoryApi = window.QQStoryApi || {};
 
   window.QQStoryApi.baseUrl = window.QQStoryApi.baseUrl || defaultBaseUrl;
   
-  // 调试信息：显示当前使用的 API 地址
-  if (window.console && window.console.log) {
+  if (window.console && window.console.log && host && /^(localhost|127(?:\.\d{1,3}){3})$/i.test(host)) {
     console.log('[QQ Story API] 当前 API 地址:', window.QQStoryApi.baseUrl);
     console.log('[QQ Story API] 访问域名:', host || '(file:// 或未知)');
   }
