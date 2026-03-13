@@ -21,47 +21,6 @@
 		$('.preloader').delay(150).fadeOut('slow');
 	}
 
-	function hydrateDeferredBackground(section) {
-		if (!section) {
-			return;
-		}
-		var bg = section.getAttribute('data-section-bg');
-		var bgBefore = section.getAttribute('data-section-bg-before');
-		if (bg) {
-			section.style.setProperty('--section-bg-image', "url('" + bg + "')");
-			section.removeAttribute('data-section-bg');
-		}
-		if (bgBefore) {
-			section.style.setProperty('--section-bg-image-before', "url('" + bgBefore + "')");
-			section.removeAttribute('data-section-bg-before');
-		}
-	}
-
-	function initializeDeferredSectionBackgrounds() {
-		var sections = Array.prototype.slice.call(document.querySelectorAll('[data-section-bg], [data-section-bg-before]'));
-		if (!sections.length) {
-			return;
-		}
-		if (!('IntersectionObserver' in window)) {
-			sections.forEach(hydrateDeferredBackground);
-			return;
-		}
-		var observer = new IntersectionObserver(function (entries) {
-			entries.forEach(function (entry) {
-				if (!entry.isIntersecting) {
-					return;
-				}
-				hydrateDeferredBackground(entry.target);
-				observer.unobserve(entry.target);
-			});
-		}, {
-			rootMargin: '400px 0px'
-		});
-		sections.forEach(function (section) {
-			observer.observe(section);
-		});
-	}
-
 	function scheduleInitialStoryHydration() {
 		var run = function () {
 			initializeFriendComments();
@@ -76,7 +35,6 @@
 
 // Preloader
 $(function () {
-	initializeDeferredSectionBackgrounds();
 	setTimeout(hidePreloader, 1200);
 });
 

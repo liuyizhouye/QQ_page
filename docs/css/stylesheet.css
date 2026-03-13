@@ -646,7 +646,7 @@ hr {
   .scroll-down-arrow {
     display: none;
   }
-  .liuyizhouye-bg-timeline > .container {
+  .timeline-section-bg > .container {
     min-height: auto;
     align-items: stretch;
     justify-content: flex-start;
@@ -3807,59 +3807,66 @@ body.moment-viewer-open {
 
 /* Custom Section Backgrounds
 --------------------------------------------- */
-.ourstory-bg {
+.story-section-bg,
+.timeline-section-bg,
+.moments-section-bg,
+.comments-section-bg,
+.letters-section-bg,
+.manager-section-bg {
   position: relative;
-  background-image: var(--section-bg-image, none);
-  background-size: contain;
-  background-position: top center;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   background-color: #f5f7fb;
+  overflow: hidden;
 }
 
-.ourstory-bg > .container {
-  position: relative;
-  z-index: 1;
+.story-section-bg {
+  background-image: url("../images/story-section-bg.webp");
 }
 
-.comments-bg {
-  position: relative;
-  background-image: var(--section-bg-image, none);
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-color: #f5f7fb;
+.timeline-section-bg {
+  background-image: url("../images/timeline-section-bg.webp");
 }
 
-.comments-bg > .container {
-  position: relative;
-  z-index: 1;
+.moments-section-bg {
+  background-image: url("../images/moments-section-bg.webp");
 }
 
-.moments-section {
-  position: relative;
-  background-color: #f5f7fb;
-  z-index: 0;
+.comments-section-bg {
+  background-image: url("../images/comments-section-bg.webp");
 }
 
-.moments-section::before,
-.moments-section::after {
+.letters-section-bg {
+  background-image: url("../images/letters-section-bg.webp");
+}
+
+.manager-section-bg {
+  background-image: url("../images/manager-section-bg.webp");
+}
+
+.story-section-bg::before,
+.timeline-section-bg::before,
+.moments-section-bg::before,
+.comments-section-bg::before,
+.letters-section-bg::before,
+.manager-section-bg::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -2;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.46) 0%, rgba(255, 255, 255, 0.22) 32%, rgba(255, 255, 255, 0.42) 100%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.moments-section::before {
-  background-image: var(--section-bg-image-before, none);
-  background-size: cover;
-  background-position: center;
-  filter: blur(12px);
-  transform: scale(1.08);
-}
-
-.moments-section::after {
-  z-index: -1;
-  background: rgba(255, 255, 255, 0.55);
+.story-section-bg > .container,
+.timeline-section-bg > .container,
+.moments-section-bg > .container,
+.comments-section-bg > .container,
+.letters-section-bg > .container,
+.manager-section-bg > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .ourstory-panel {
@@ -3884,24 +3891,13 @@ body.moment-viewer-open {
   }
 }
 
-.liuyizhouye-bg-timeline {
+.timeline-section-bg {
   position: relative;
-  background-image: var(--section-bg-image, none);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
 }
 
-.liuyizhouye-bg-timeline::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.liuyizhouye-bg-timeline > .container {
+.timeline-section-bg > .container {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -3911,7 +3907,7 @@ body.moment-viewer-open {
   justify-content: center;
 }
 
-.liuyizhouye-bg-timeline > .container > .row {
+.timeline-section-bg > .container > .row {
   width: 100%;
 }
 
@@ -4194,7 +4190,7 @@ body.moment-viewer-open {
   z-index: 10;
 }
 
-.ourstory-bg .section-toggle-btn {
+.story-section-bg .section-toggle-btn {
   bottom: 1.5rem;
 }
 
@@ -4452,34 +4448,6 @@ body.moment-viewer-open {
 #memory-content,
 #liuyizhouye-content {
   transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-.letters-bg {
-  position: relative;
-  background-image: var(--section-bg-image, none);
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-color: #f5f7fb;
-}
-
-.letters-bg > .container {
-  position: relative;
-  z-index: 1;
-}
-
-.memory-bg {
-  position: relative;
-  background-image: var(--section-bg-image, none);
-  background-size: contain;
-  background-position: top center;
-  background-repeat: no-repeat;
-  background-color: #f5f7fb;
-}
-
-.memory-bg > .container {
-  position: relative;
-  z-index: 1;
 }
 
 .ourstory-hidden,
