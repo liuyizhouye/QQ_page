@@ -500,7 +500,7 @@ $(function () {
 				occurredAt: '2020-12-25T06:30:00+08:00',
 				tags: ['旅行', '照片'],
 				media: [
-					{ id: 'mm-1', type: 'image', src: 'images/projects/project-1.jpg' }
+					{ id: 'mm-1', type: 'image', src: 'images/profile_new.webp' }
 				]
 			},
 			{
@@ -509,7 +509,7 @@ $(function () {
 				occurredAt: '2020-12-31T23:58:00+08:00',
 				tags: ['纪念日', '照片'],
 				media: [
-					{ id: 'mm-2', type: 'image', src: 'images/projects/project-2.jpg' }
+					{ id: 'mm-2', type: 'image', src: 'images/us.webp' }
 				]
 			},
 			{
@@ -518,7 +518,7 @@ $(function () {
 				occurredAt: '2021-03-20T15:20:00+08:00',
 				tags: ['日常', '照片'],
 				media: [
-					{ id: 'mm-3', type: 'image', src: 'images/projects/project-3.jpg' }
+					{ id: 'mm-3', type: 'image', src: 'images/nvnvnv.webp' }
 				]
 			},
 			{
@@ -527,7 +527,7 @@ $(function () {
 				occurredAt: '2022-07-14T18:45:00+08:00',
 				tags: ['旅行', '纪念日'],
 				media: [
-					{ id: 'mm-4', type: 'video', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', poster: 'images/projects/project-4.jpg' }
+					{ id: 'mm-4', type: 'video', src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', poster: 'images/story-section-bg.webp' }
 				]
 			},
 			{
@@ -536,7 +536,7 @@ $(function () {
 				occurredAt: '2022-09-18T14:10:00+08:00',
 				tags: ['日常', '照片'],
 				media: [
-					{ id: 'mm-5', type: 'image', src: 'images/projects/project-5.jpg' }
+					{ id: 'mm-5', type: 'image', src: 'images/timeline-section-bg.webp' }
 				]
 			},
 			{
@@ -545,7 +545,7 @@ $(function () {
 				occurredAt: '2023-05-12T19:00:00+08:00',
 				tags: ['纪念日', '照片'],
 				media: [
-					{ id: 'mm-6', type: 'image', src: 'images/projects/project-6.jpg' }
+					{ id: 'mm-6', type: 'image', src: 'images/moments-section-bg.webp' }
 				]
 			},
 			{
@@ -554,7 +554,7 @@ $(function () {
 				occurredAt: '2023-09-01T17:30:00+08:00',
 				tags: ['旅行', '照片'],
 				media: [
-					{ id: 'mm-7', type: 'image', src: 'images/projects/project-7.jpg' }
+					{ id: 'mm-7', type: 'image', src: 'images/manager-section-bg.webp' }
 				]
 			}
 		],
@@ -589,7 +589,7 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var $commentPrev = null;
 	var $commentNext = null;
 	var $commentPageIndicator = null;
-	var DEFAULT_MOMENT_COVER = 'images/projects/project-1.jpg';
+	var DEFAULT_MOMENT_COVER = 'images/profile_new.webp';
 	var MAX_MOMENT_FILE_SIZE = 20 * 1024 * 1024;
 	var momentsIsotope = null;
 	var $momentsGrid = null;

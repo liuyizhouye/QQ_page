@@ -1,10 +1,11 @@
 # QQ_page Agent Notes
 
-本文件是当前项目的运维与架构总览。后续继续维护时，优先以这里为准，不再以旧的 GitHub Pages / GoDaddy 流程文档为准。
+本文件是当前项目的真实架构与维护约束。后续继续维护时，以这里为准，不再参考旧的 GitHub Pages / GoDaddy 流程。
 
 ## 1. 项目定位
 
-- 这是一个个人纪念网站，前端为静态页面，后端提供内容管理 API。
+- 这是一个个人纪念网站。
+- 前端是静态页面，后端负责内容查询、写入和文件上传。
 - 主要功能：
   - `QQ Footprint`：里程碑时间线
   - `Moments`：照片/视频内容展示
@@ -51,8 +52,25 @@ Internet
 ## 4. 仓库结构与职责
 
 - `docs/`
-  - 前端静态站源码
-  - 线上同步目标：`/srv/www/hanbaodoudou.com`
+  - 公开静态站根目录
+  - 线上镜像同步到 `/srv/www/hanbaodoudou.com` 和 `/root/QQ_page/docs`
+  - 这里只能放前端运行必需内容，不要再放内部文档、设计稿或审查记录
+- `design/`
+  - 设计源文件归档
+  - 当前保存 6 份背景设计 PDF：
+    - `story.pdf`
+    - `timeline.pdf`
+    - `moments.pdf`
+    - `comments.pdf`
+    - `letters.pdf`
+    - `manager.pdf`
+  - 不参与公开部署
+- `notes/`
+  - 内部文档与历史记录
+  - 当前包括：
+    - `ops-handover-2026-02-20.md`
+    - `security-review.md`
+  - 不参与公开部署
 - `server/`
   - Express API、SQLite、上传逻辑
   - 线上代码目录：`/root/QQ_page/server`
@@ -70,19 +88,26 @@ Internet
 - 运行时数据迁移到 `/srv/qq-story`，避免与代码目录耦合。
 - 静态站迁移到 `/srv/www/hanbaodoudou.com`。
 - DNS 已切换到阿里云云解析。
-- 已做首屏性能优化：
+- 已做首屏性能与资源清理：
   - 去掉 Google Fonts 外链
   - 背景音频改为 `preload="none"`
   - 大背景图改为 `.webp`
-  - 部分区块改为接近视口时再加载背景
-  - 初始故事数据拉取改为延后触发
+  - 六个主要 section 改为语义化背景资源并直接由 CSS 绑定
+- 已完成仓库收敛：
+  - 设计稿移到 `design/`
+  - 内部文档移到 `notes/`
+  - 删除未使用的 `docs/vendor/jquery.mb.YTPlayer/`
+  - 删除历史 Sass 源码目录 `docs/sass/`
+  - 删除已跟踪的 `server/node_modules/`
+  - 删除未引用的旧背景和原始大图副本
 
 ## 6. 当前已知实现细节
 
 - 前端固定请求 `https://api.hanbaodoudou.com/api`，本地开发时才走 `http://localhost:8080/api`。
-- `Letters` 和 `Story Manager` 的解锁密码仍然在前端代码里，属于“展示层门禁”，不是真正安全边界。
+- `Letters` 和 `Story Manager` 的解锁密码仍然在前端代码里，属于展示层门禁，不是真正安全边界。
 - 真正需要保护的写操作依赖后端 `x-api-key`。
-- 数据库当前是 SQLite，适合放在 ECS 本地磁盘，不适合直接放在 NAS/NFS 上作为在线主库。
+- 数据库当前是 SQLite，适合放在 ECS 本地磁盘，不适合直接放在 NAS / NFS 上作为在线主库。
+- 当前网页 section 背景直接由 `docs/css/stylesheet.css` 引用 `docs/images/*-section-bg.webp`，不要再改回依赖 HTML 内联 CSS 变量的写法。
 
 ## 7. 后续建议顺序
 
@@ -105,9 +130,11 @@ Internet
 
 ### 前端静态站
 
+使用镜像同步，不要再用追加式 `scp`：
+
 ```bash
-scp -r docs/* root@47.115.72.187:/srv/www/hanbaodoudou.com/
-ssh root@47.115.72.187 "rm -f /srv/www/hanbaodoudou.com/CNAME /srv/www/hanbaodoudou.com/.DS_Store"
+rsync -av --delete docs/ root@47.115.72.187:/srv/www/hanbaodoudou.com/
+rsync -av --delete docs/ root@47.115.72.187:/root/QQ_page/docs/
 ```
 
 ### Caddy 配置
@@ -128,6 +155,7 @@ curl https://api.hanbaodoudou.com/health
 
 ## 9. 不要再做的事
 
+- 不要把内部文档、设计稿、审查记录重新放回 `docs/`。
 - 不要恢复 GitHub Pages 的 `CNAME` 流程。
 - 不要把 SQLite 主库直接放到 NAS / NFS。
 - 不要把家里 NAS 直接暴露为线上主服务入口。

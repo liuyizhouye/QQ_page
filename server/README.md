@@ -32,6 +32,12 @@ server/
 └── package.json
 ```
 
+说明：
+
+- `server/node_modules/` 不提交，依赖通过 `npm install` 恢复。
+- 前端公开静态资源位于仓库根目录 `docs/`，镜像同步到 ECS。
+- 设计稿与内部文档已移到仓库根目录 `design/`、`notes/`，不参与公开部署。
+
 ## 环境变量
 
 基于 `env.example` 创建 `.env`：
@@ -108,6 +114,12 @@ pm2 save
 ```bash
 cd /root/server/deploy/cloud
 docker compose up -d
+```
+
+### 6. 同步最新静态站
+
+```bash
+rsync -av --delete /root/QQ_page/docs/ /srv/www/hanbaodoudou.com/
 ```
 
 ## 当前线上验证命令
