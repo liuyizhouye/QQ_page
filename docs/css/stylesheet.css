@@ -4393,7 +4393,7 @@ body.moment-viewer-open {
 
   /* 内容区域偏移 */
   #main-wrapper {
-    margin-top: 56px;
+    margin-top: 0;
   }
 }
 
