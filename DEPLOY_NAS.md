@@ -100,7 +100,28 @@ ssh -i ~/.ssh/qq_story_nas backup@<NAS_TAILSCALE_IP>
 /usr/local/bin/qq-story-sync-to-nas.sh
 ```
 
-示例脚本：
+仓库里已经提供了模板脚本：
+
+```text
+scripts/sync-to-nas.sh
+```
+
+可直接复制到 ECS：
+
+```bash
+install -m 755 /root/QQ_page/scripts/sync-to-nas.sh /usr/local/bin/qq-story-sync-to-nas.sh
+```
+
+执行前设置环境变量，例如：
+
+```bash
+export NAS_HOST="<NAS_TAILSCALE_IP>"
+export NAS_USER="backup"
+export NAS_ROOT="/volume1/web_backup/qq_story"
+export SSH_KEY="/root/.ssh/qq_story_nas"
+```
+
+如果你想在 ECS 上临时手写，也可以参考下面这个等价示例：
 
 ```bash
 #!/usr/bin/env bash
