@@ -5242,6 +5242,255 @@ body.moment-viewer-open {
 }
 
 /* =================================== */
+/*  Celebration Layer
+/* =================================== */
+
+.celebration-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.celebration-layer.is-persistent .celebration-canvas {
+  opacity: 0;
+}
+
+.celebration-canvas,
+.celebration-glow,
+.celebration-sparkles {
+  position: absolute;
+  inset: 0;
+}
+
+.celebration-canvas {
+  width: 100%;
+  height: 100%;
+  opacity: 0.96;
+  transition: opacity 0.8s ease;
+}
+
+.celebration-glow {
+  inset: 0 0 auto;
+  height: min(60vh, 38rem);
+  opacity: 0.68;
+  background:
+    radial-gradient(circle at 22% 18%, rgba(255, 213, 128, 0.3), transparent 36%),
+    radial-gradient(circle at 78% 14%, rgba(255, 145, 199, 0.26), transparent 34%),
+    radial-gradient(circle at 50% 8%, rgba(180, 219, 255, 0.2), transparent 40%);
+  mix-blend-mode: screen;
+  filter: blur(18px);
+}
+
+.celebration-sparkles span {
+  position: absolute;
+  left: var(--sparkle-left);
+  top: var(--sparkle-top);
+  width: var(--sparkle-size);
+  height: var(--sparkle-size);
+  border-radius: 999px;
+  opacity: var(--sparkle-opacity);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(255, 235, 186, 0.72) 45%, rgba(255, 235, 186, 0) 100%);
+  box-shadow: 0 0 0.85rem rgba(255, 226, 177, 0.48);
+  animation: celebrationSparkle var(--sparkle-duration) ease-in-out infinite;
+  animation-delay: var(--sparkle-delay);
+}
+
+.celebration-banner {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0px) + 1rem);
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: min(30rem, calc(100vw - 2rem));
+  padding: 0.9rem 0.95rem 0.9rem 1rem;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(17, 17, 22, 0.78);
+  box-shadow: 0 1.5rem 3rem -1.8rem rgba(5, 7, 14, 0.8);
+  backdrop-filter: blur(18px);
+  color: #fff;
+  pointer-events: auto;
+  animation: celebrationBannerIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.celebration-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: 2rem;
+  padding: 0.28rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 244, 230, 0.9);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.celebration-copy {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.celebration-title {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.celebration-note {
+  display: block;
+  color: rgba(255, 245, 236, 0.78);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.celebration-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-width: 3rem;
+  min-height: 2.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 250, 246, 0.92);
+  font-size: 0.82rem;
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: auto;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.celebration-close:hover,
+.celebration-close:focus-visible {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+body.celebration-active .primary-menu.navbar {
+  box-shadow: 0 1rem 2.4rem -1.85rem rgba(255, 188, 149, 0.62);
+}
+
+body.celebration-major .primary-menu.navbar {
+  background: linear-gradient(135deg, rgba(38, 30, 40, 0.9) 0%, rgba(67, 35, 36, 0.86) 48%, rgba(95, 58, 33, 0.88) 100%) !important;
+}
+
+body.celebration-monthly .primary-menu.navbar {
+  background: linear-gradient(135deg, rgba(25, 31, 41, 0.88) 0%, rgba(57, 43, 59, 0.84) 100%) !important;
+}
+
+body.celebration-major #home .hero-mask {
+  background: linear-gradient(180deg, rgba(28, 20, 25, 0.24) 0%, rgba(62, 33, 42, 0.34) 34%, rgba(30, 23, 26, 0.76) 100%);
+}
+
+body.celebration-monthly #home .hero-mask {
+  background: linear-gradient(180deg, rgba(23, 25, 31, 0.22) 0%, rgba(49, 39, 48, 0.3) 32%, rgba(24, 21, 24, 0.74) 100%);
+}
+
+body.celebration-active #link-start-button {
+  border-color: rgba(255, 237, 222, 0.56);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+body.celebration-major #link-start-button {
+  box-shadow: 0 1.3rem 2.8rem -1.7rem rgba(255, 181, 118, 0.78);
+}
+
+body.celebration-monthly #link-start-button {
+  box-shadow: 0 1.1rem 2.4rem -1.8rem rgba(186, 166, 255, 0.72);
+}
+
+body.celebration-major .celebration-badge {
+  background: linear-gradient(135deg, rgba(255, 210, 128, 0.26) 0%, rgba(255, 145, 199, 0.22) 100%);
+}
+
+body.celebration-monthly .celebration-badge {
+  background: linear-gradient(135deg, rgba(255, 214, 165, 0.22) 0%, rgba(160, 196, 255, 0.22) 100%);
+}
+
+@keyframes celebrationSparkle {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(0.8);
+    opacity: calc(var(--sparkle-opacity) * 0.55);
+  }
+  50% {
+    transform: translate3d(0, -0.55rem, 0) scale(1.18);
+    opacity: var(--sparkle-opacity);
+  }
+}
+
+@keyframes celebrationBannerIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .celebration-sparkles span,
+  .celebration-banner {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .celebration-glow {
+    height: min(48vh, 30rem);
+    opacity: 0.6;
+  }
+
+  .celebration-banner {
+    top: calc(env(safe-area-inset-top, 0px) + 4.75rem);
+    right: auto;
+    left: 50%;
+    width: min(24rem, calc(100vw - 1rem));
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .celebration-banner {
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.88rem 0.85rem 0.88rem 0.9rem;
+  }
+
+  .celebration-badge {
+    min-height: 1.85rem;
+    padding-inline: 0.6rem;
+    font-size: 0.68rem;
+  }
+
+  .celebration-title {
+    font-size: 0.96rem;
+  }
+
+  .celebration-note {
+    font-size: 0.82rem;
+  }
+
+  .celebration-close {
+    min-width: 2.6rem;
+    min-height: 2.15rem;
+    padding-inline: 0.65rem;
+  }
+}
+
+/* =================================== */
 /*  Mobile Storybook Redesign
 /* =================================== */
 

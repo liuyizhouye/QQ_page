@@ -12,6 +12,36 @@
 	var setSideNavActive = function () {};
 	var preloaderHidden = false;
 	var isSideHeaderLayout = $('body').hasClass('side-header');
+	var celebrationState = null;
+	var celebrationInitScheduled = false;
+	var CELEBRATION_RULES = {
+		major: {
+			'08-05': {
+				badge: '重大纪念日',
+				title: '生日快乐，汉堡',
+				note: '把今天最盛大的烟花都留给你。',
+				palette: ['#ffd166', '#ff8fab', '#f7b267', '#9ad1ff', '#fff4d6']
+			},
+			'11-18': {
+				badge: '重大纪念日',
+				title: '生日快乐，兜兜',
+				note: '把今天最热烈的祝福都送给你。',
+				palette: ['#ffafcc', '#ffd6a5', '#cdb4db', '#fef3c7', '#bde0fe']
+			},
+			'02-20': {
+				badge: '重大纪念日',
+				title: '纪念日快乐',
+				note: '今天值得用一整场烟花认真纪念。',
+				palette: ['#f6bd60', '#f28482', '#f5cac3', '#84a59d', '#f7ede2']
+			}
+		},
+		monthly: {
+			badge: '每月 20 日',
+			title: '本月的小纪念日',
+			note: '每个月的 20 号，都值得小小庆祝一下。',
+			palette: ['#ffd6a5', '#fdffb6', '#a0c4ff', '#cdb4db', '#ffc6ff']
+		}
+	};
 
 	function isMobileViewport() {
 		return window.matchMedia('(max-width: 767.98px)').matches;
@@ -84,6 +114,412 @@
 		});
 	}
 
+	function parseCelebrationPreviewDate() {
+		var params;
+		var raw;
+		var match;
+		var year;
+		var month;
+		var day;
+		var previewDate;
+		try {
+			params = new URLSearchParams(window.location.search);
+			raw = params.get('celebrationDate');
+		} catch (error) {
+			return null;
+		}
+		if (!raw) {
+			return null;
+		}
+		match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(raw);
+		if (!match) {
+			return null;
+		}
+		year = Number(match[1]);
+		month = Number(match[2]);
+		day = Number(match[3]);
+		previewDate = new Date(year, month - 1, day, 12, 0, 0, 0);
+		if (previewDate.getFullYear() !== year || previewDate.getMonth() !== month - 1 || previewDate.getDate() !== day) {
+			return null;
+		}
+		return previewDate;
+	}
+
+	function formatCelebrationDateKey(date) {
+		var year = date.getFullYear();
+		var month = String(date.getMonth() + 1).padStart(2, '0');
+		var day = String(date.getDate()).padStart(2, '0');
+		return year + '-' + month + '-' + day;
+	}
+
+	function readCelebrationSessionFlag(key) {
+		try {
+			return window.sessionStorage.getItem(key);
+		} catch (error) {
+			return null;
+		}
+	}
+
+	function writeCelebrationSessionFlag(key, value) {
+		try {
+			window.sessionStorage.setItem(key, value);
+		} catch (error) {
+			// Ignore storage write failures in private mode or restricted contexts.
+		}
+	}
+
+	function prefersReducedCelebrationMotion() {
+		return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+	}
+
+	function resolveCelebrationContext() {
+		var previewDate = parseCelebrationPreviewDate();
+		var currentDate = previewDate || new Date();
+		var dateKey = formatCelebrationDateKey(currentDate);
+		var monthDay = dateKey.slice(5);
+		var definition = CELEBRATION_RULES.major[monthDay];
+		if (definition) {
+			return {
+				level: 'major',
+				badge: definition.badge,
+				title: definition.title,
+				note: definition.note,
+				palette: definition.palette,
+				dateKey: dateKey,
+				isPreview: !!previewDate
+			};
+		}
+		if (currentDate.getDate() === 20) {
+			return {
+				level: 'monthly',
+				badge: CELEBRATION_RULES.monthly.badge,
+				title: CELEBRATION_RULES.monthly.title,
+				note: CELEBRATION_RULES.monthly.note,
+				palette: CELEBRATION_RULES.monthly.palette,
+				dateKey: dateKey,
+				isPreview: !!previewDate
+			};
+		}
+		return null;
+	}
+
+	function populateCelebrationSparkles(container, context, reducedMotion) {
+		var sparkleCount = reducedMotion ? 6 : (context.level === 'major' ? 16 : 11);
+		var fragment = document.createDocumentFragment();
+		var index;
+		for (index = 0; index < sparkleCount; index += 1) {
+			var sparkle = document.createElement('span');
+			sparkle.style.setProperty('--sparkle-left', (8 + Math.random() * 84).toFixed(2) + '%');
+			sparkle.style.setProperty('--sparkle-top', (4 + Math.random() * 58).toFixed(2) + '%');
+			sparkle.style.setProperty('--sparkle-size', (reducedMotion ? 0.32 : 0.36 + Math.random() * 0.38).toFixed(2) + 'rem');
+			sparkle.style.setProperty('--sparkle-delay', (Math.random() * 4.5).toFixed(2) + 's');
+			sparkle.style.setProperty('--sparkle-duration', (4.6 + Math.random() * 4.1).toFixed(2) + 's');
+			sparkle.style.setProperty('--sparkle-opacity', reducedMotion ? '0.4' : (0.38 + Math.random() * 0.42).toFixed(2));
+			fragment.appendChild(sparkle);
+		}
+		container.appendChild(fragment);
+	}
+
+	function setCelebrationPersistentState() {
+		if (!celebrationState || !celebrationState.layer) {
+			return;
+		}
+		celebrationState.layer.classList.remove('is-opening');
+		celebrationState.layer.classList.add('is-persistent');
+	}
+
+	function destroyCelebration(persistDismissal) {
+		if (!celebrationState) {
+			return;
+		}
+		if (celebrationState.rafId) {
+			window.cancelAnimationFrame(celebrationState.rafId);
+			celebrationState.rafId = null;
+		}
+		if (celebrationState.timeouts && celebrationState.timeouts.length) {
+			celebrationState.timeouts.forEach(function (timeoutId) {
+				window.clearTimeout(timeoutId);
+			});
+		}
+		if (celebrationState.resizeHandler) {
+			window.removeEventListener('resize', celebrationState.resizeHandler);
+		}
+		if (persistDismissal && !celebrationState.context.isPreview) {
+			writeCelebrationSessionFlag(celebrationState.dismissedKey, '1');
+		}
+		document.body.classList.remove('celebration-active', 'celebration-major', 'celebration-monthly');
+		if (celebrationState.layer && celebrationState.layer.parentNode) {
+			celebrationState.layer.parentNode.removeChild(celebrationState.layer);
+		}
+		celebrationState = null;
+	}
+
+	function createCelebrationParticle(x, y, velocityX, velocityY, color, level) {
+		var life = level === 'major' ? 64 + Math.random() * 24 : 42 + Math.random() * 18;
+		return {
+			x: x,
+			y: y,
+			vx: velocityX,
+			vy: velocityY,
+			gravity: level === 'major' ? 0.044 : 0.05,
+			drag: level === 'major' ? 0.986 : 0.982,
+			life: life,
+			initialLife: life,
+			size: level === 'major' ? 1.8 + Math.random() * 2.8 : 1.4 + Math.random() * 2,
+			color: color,
+			shape: Math.random() > 0.72 ? 'rect' : 'circle',
+			rotation: Math.random() * Math.PI * 2,
+			rotationSpeed: (Math.random() - 0.5) * 0.24
+		};
+	}
+
+	function launchCelebrationAnimation(state) {
+		var canvas = state.canvas;
+		var ctx = canvas && canvas.getContext ? canvas.getContext('2d') : null;
+		var devicePixelRatio = Math.max(window.devicePixelRatio || 1, 1);
+		var particles = [];
+		var launchCount = state.context.level === 'major' ? (isMobileViewport() ? 5 : 8) : (isMobileViewport() ? 3 : 4);
+		var launchGap = state.context.level === 'major' ? 780 : 920;
+		var finishDelay = state.context.level === 'major' ? 1800 : 1200;
+		var launchIndex;
+
+		if (!ctx) {
+			setCelebrationPersistentState();
+			return;
+		}
+
+		function resizeCelebrationCanvas() {
+			var width = window.innerWidth || document.documentElement.clientWidth || 0;
+			var height = window.innerHeight || document.documentElement.clientHeight || 0;
+			canvas.width = Math.max(Math.floor(width * devicePixelRatio), 1);
+			canvas.height = Math.max(Math.floor(height * devicePixelRatio), 1);
+			canvas.style.width = width + 'px';
+			canvas.style.height = height + 'px';
+			ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+		}
+
+		function spawnCelebrationBurst(originX, originY, intensity) {
+			var particleTotal = state.context.level === 'major' ? (isMobileViewport() ? 30 : 48) : (isMobileViewport() ? 18 : 26);
+			var index;
+			for (index = 0; index < particleTotal * intensity; index += 1) {
+				var angle = Math.random() * Math.PI * 2;
+				var speedBase = state.context.level === 'major' ? (1.35 + Math.random() * 2.9) : (1.05 + Math.random() * 1.9);
+				var color = state.context.palette[Math.floor(Math.random() * state.context.palette.length)];
+				particles.push(
+					createCelebrationParticle(
+						originX,
+						originY,
+						Math.cos(angle) * speedBase,
+						Math.sin(angle) * speedBase - (state.context.level === 'major' ? 0.35 : 0.2),
+						color,
+						state.context.level
+					)
+				);
+			}
+		}
+
+		function queueCelebrationLaunch(delay, intensity) {
+			var timeoutId = window.setTimeout(function () {
+				var width = canvas.clientWidth || window.innerWidth || 0;
+				var height = canvas.clientHeight || window.innerHeight || 0;
+				var originX = width * (0.16 + Math.random() * 0.68);
+				var originY = height * (state.context.level === 'major' ? (0.18 + Math.random() * 0.26) : (0.22 + Math.random() * 0.18));
+				spawnCelebrationBurst(originX, originY, intensity);
+				if (state.context.level === 'major' && !isMobileViewport() && Math.random() > 0.48) {
+					spawnCelebrationBurst(originX + (Math.random() - 0.5) * 80, originY + (Math.random() - 0.5) * 50, 0.58);
+				}
+			}, delay);
+			state.timeouts.push(timeoutId);
+		}
+
+		function drawCelebrationFrame() {
+			var nextParticles = [];
+			var width = canvas.clientWidth || window.innerWidth || 0;
+			var height = canvas.clientHeight || window.innerHeight || 0;
+			ctx.clearRect(0, 0, width, height);
+			ctx.save();
+			ctx.globalCompositeOperation = 'lighter';
+			particles.forEach(function (particle) {
+				var alpha;
+				particle.x += particle.vx;
+				particle.y += particle.vy;
+				particle.vx *= particle.drag;
+				particle.vy = particle.vy * particle.drag + particle.gravity;
+				particle.rotation += particle.rotationSpeed;
+				particle.life -= 1;
+				if (particle.life <= 0) {
+					return;
+				}
+				alpha = Math.max(particle.life / particle.initialLife, 0);
+				ctx.globalAlpha = alpha;
+				ctx.fillStyle = particle.color;
+				if (particle.shape === 'rect') {
+					ctx.save();
+					ctx.translate(particle.x, particle.y);
+					ctx.rotate(particle.rotation);
+					ctx.fillRect(-particle.size * 0.7, -particle.size * 0.35, particle.size * 1.4, particle.size * 0.7);
+					ctx.restore();
+				} else {
+					ctx.beginPath();
+					ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+					ctx.fill();
+				}
+				if (particle.x > -40 && particle.x < width + 40 && particle.y > -40 && particle.y < height + 80) {
+					nextParticles.push(particle);
+				}
+			});
+			ctx.restore();
+			particles = nextParticles;
+			if (particles.length || !state.animationFinished) {
+				state.rafId = window.requestAnimationFrame(drawCelebrationFrame);
+			} else {
+				ctx.clearRect(0, 0, width, height);
+				state.rafId = null;
+			}
+		}
+
+		state.resizeHandler = resizeCelebrationCanvas;
+		window.addEventListener('resize', state.resizeHandler);
+		resizeCelebrationCanvas();
+
+		for (launchIndex = 0; launchIndex < launchCount; launchIndex += 1) {
+			queueCelebrationLaunch(180 + launchIndex * launchGap, launchIndex === 0 ? 1.12 : 1);
+		}
+		state.timeouts.push(window.setTimeout(function () {
+			state.animationFinished = true;
+			setCelebrationPersistentState();
+		}, 180 + launchCount * launchGap + finishDelay));
+
+		drawCelebrationFrame();
+	}
+
+	function createCelebrationLayer(context, reducedMotion) {
+		var layer = document.createElement('div');
+		var glow = document.createElement('div');
+		var canvas = document.createElement('canvas');
+		var sparkles = document.createElement('div');
+		var banner = document.createElement('div');
+		var badge = document.createElement('span');
+		var copy = document.createElement('div');
+		var title = document.createElement('strong');
+		var note = document.createElement('span');
+		var closeButton = document.createElement('button');
+
+		layer.className = 'celebration-layer celebration-' + context.level + (reducedMotion ? ' celebration-reduced' : '');
+		layer.setAttribute('data-celebration-level', context.level);
+
+		glow.className = 'celebration-glow';
+		glow.setAttribute('aria-hidden', 'true');
+
+		canvas.className = 'celebration-canvas';
+		canvas.setAttribute('aria-hidden', 'true');
+
+		sparkles.className = 'celebration-sparkles';
+		sparkles.setAttribute('aria-hidden', 'true');
+		populateCelebrationSparkles(sparkles, context, reducedMotion);
+
+		banner.className = 'celebration-banner';
+		banner.setAttribute('role', 'status');
+		banner.setAttribute('aria-live', 'polite');
+
+		badge.className = 'celebration-badge';
+		badge.textContent = context.badge;
+
+		copy.className = 'celebration-copy';
+
+		title.className = 'celebration-title';
+		title.textContent = context.title;
+
+		note.className = 'celebration-note';
+		note.textContent = context.note;
+
+		closeButton.className = 'celebration-close';
+		closeButton.type = 'button';
+		closeButton.setAttribute('aria-label', '收起庆祝效果');
+		closeButton.textContent = '收起';
+
+		copy.appendChild(title);
+		copy.appendChild(note);
+		banner.appendChild(badge);
+		banner.appendChild(copy);
+		banner.appendChild(closeButton);
+		layer.appendChild(glow);
+		layer.appendChild(canvas);
+		layer.appendChild(sparkles);
+		layer.appendChild(banner);
+
+		closeButton.addEventListener('click', function () {
+			destroyCelebration(true);
+		});
+
+		document.body.appendChild(layer);
+		document.body.classList.add('celebration-active', 'celebration-' + context.level);
+
+		return {
+			context: context,
+			layer: layer,
+			canvas: canvas,
+			closeButton: closeButton,
+			reducedMotion: reducedMotion,
+			timeouts: [],
+			rafId: null,
+			resizeHandler: null,
+			animationFinished: reducedMotion
+		};
+	}
+
+	function initCelebrationIfNeeded() {
+		var context = resolveCelebrationContext();
+		var playedKey;
+		var dismissedKey;
+		var hasPlayed;
+		var dismissed;
+		var reducedMotion;
+
+		if (!context || celebrationState) {
+			return;
+		}
+
+		playedKey = 'qq-story-celebration:' + context.dateKey;
+		dismissedKey = 'qq-story-celebration:dismissed:' + context.dateKey;
+		hasPlayed = !context.isPreview && readCelebrationSessionFlag(playedKey) === '1';
+		dismissed = !context.isPreview && readCelebrationSessionFlag(dismissedKey) === '1';
+		if (dismissed) {
+			return;
+		}
+
+		reducedMotion = prefersReducedCelebrationMotion();
+		celebrationState = createCelebrationLayer(context, reducedMotion);
+		celebrationState.playedKey = playedKey;
+		celebrationState.dismissedKey = dismissedKey;
+
+		if (!context.isPreview && !hasPlayed) {
+			writeCelebrationSessionFlag(playedKey, '1');
+		}
+
+		if (reducedMotion || hasPlayed) {
+			setCelebrationPersistentState();
+			return;
+		}
+
+		celebrationState.layer.classList.add('is-opening');
+		launchCelebrationAnimation(celebrationState);
+	}
+
+	function scheduleCelebrationInitialization() {
+		if (celebrationInitScheduled) {
+			return;
+		}
+		celebrationInitScheduled = true;
+		if (document.readyState === 'complete') {
+			window.setTimeout(initCelebrationIfNeeded, 420);
+			return;
+		}
+		window.addEventListener('load', function () {
+			window.setTimeout(initCelebrationIfNeeded, 420);
+		}, { once: true });
+	}
+
 // Preloader
 $(function () {
 	setTimeout(hidePreloader, 1200);
@@ -95,6 +531,7 @@ $(window).on('load', function () {
 });
 
 document.addEventListener('DOMContentLoaded', syncChapterCoverCopy);
+document.addEventListener('DOMContentLoaded', scheduleCelebrationInitialization);
 
 
 // Header Sticky
