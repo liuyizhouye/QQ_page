@@ -23,7 +23,7 @@
 <!-- Magnific Popup -->
 <link rel="stylesheet" type="text/css" href="vendor/magnific-popup/magnific-popup.min.css" />
 <!-- Custom Stylesheet -->
-<link rel="stylesheet" type="text/css" href="css/stylesheet.css?v=20260314b" />
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css?v=20260314d" />
 </head>
 
 <body class="side-header" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="1">
@@ -79,17 +79,6 @@
   <!-- Content
   ============================================= -->
   <div id="content" role="main"> 
-    <nav class="mobile-chapter-rail d-md-none" aria-label="手机章节导航">
-      <div class="mobile-chapter-rail-inner">
-        <a class="mobile-chapter-link smooth-scroll active" href="#home">Home</a>
-        <a class="mobile-chapter-link smooth-scroll" href="#story">Story</a>
-        <a class="mobile-chapter-link smooth-scroll" href="#timeline">Footprint</a>
-        <a class="mobile-chapter-link smooth-scroll" href="#moments">Moments</a>
-        <a class="mobile-chapter-link smooth-scroll" href="#comments">Comments</a>
-        <a class="mobile-chapter-link smooth-scroll" href="#letters">Letters</a>
-      </div>
-    </nav>
-    
     <!-- Intro
     ============================================= -->
     <section id="home">
@@ -105,10 +94,10 @@
                   <p>ENFJ &amp; INFP の 碰撞！</p>
                   <p>每一个平凡的点滴都不平凡！</p>
                 </div>
-                <div class="mobile-home-copy d-md-none">
-                  <p class="mobile-home-kicker mb-2">Our QQ Adventure</p>
-                  <h2 class="mobile-home-title text-white mb-3">兜兜 &amp; 汉堡<br>的故事画册</h2>
-                  <p class="mobile-home-description text-light mb-4">把相遇、奇遇与普通日子，都认真收藏进同一本冒险手册。</p>
+                <div class="chapter-cover-content chapter-cover-home d-md-none">
+                  <p class="chapter-cover-kicker mobile-home-kicker mb-2">Welcome to our journey</p>
+                  <h2 class="chapter-cover-title mobile-home-title text-white mb-3">兜兜 &amp; 汉堡 の 大冒险！</h2>
+                  <p class="chapter-cover-description mobile-home-description text-light mb-4">记录每一点回忆、火花与奇遇</p>
                 </div>
                 <div class="desktop-home-copy d-none d-md-block">
                   <p class="text-7 fw-500 text-white mb-2 mb-md-3">Welcome to our journey</p>
@@ -126,19 +115,19 @@
     
     <!-- About
     ============================================= -->
-    <section id="story" class="section section-full story-section-bg">
+    <section id="story" class="section section-full story-section-bg mobile-editorial-section mobile-editorial-story">
       <div class="container px-lg-5"> 
-        <div class="mobile-section-cover mobile-section-cover-story d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-story d-md-none">
           <span class="mobile-section-cover-kicker">Chapter 01</span>
-          <h2 class="mobile-section-cover-title">Our Story</h2>
-          <p class="mobile-section-cover-text">从生日礼物开始，慢慢写成一整本关于我们的小传记。</p>
+          <h2 class="mobile-section-cover-title" data-sync-copy-from="#story .ourstory-block h2">我们是 兜兜 &amp; 汉堡</h2>
+          <p class="mobile-section-cover-text" data-sync-copy-from="#story .ourstory-block p">最开始想写这个网站是因为想给韩萃渊一个生日礼物！</p>
         </div>
         <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-ourstory" data-target="#ourstory-content">仅看背景</button>
         <!-- Heading -->
-        <div id="ourstory-content" class="ourstory-panel">
+        <div id="ourstory-content" class="ourstory-panel chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
           <!-- Heading end-->
           
-          <div class="row gy-4">
+          <div class="row gy-4 mobile-story-grid">
             <div class="col-lg-7 col-xl-8 text-center text-lg-start">
               <div class="ourstory-block h-100">
                 <h2 class="text-7 fw-600 mb-3">我们是 <span class="text-primary">兜兜 &amp; 汉堡</span></h2>
@@ -158,7 +147,7 @@
               </div>
             </div>
           </div>
-          <div class="ourstory-block">
+          <div class="ourstory-block mobile-story-metrics">
             <div class="brands-grid separator-border">
               <div class="row g-4">
                 <div class="col-6 col-md-3">
@@ -198,19 +187,19 @@
     
     <!-- Services
     ============================================= -->
-    <section id="timeline" class="section section-full timeline-section-bg">
+    <section id="timeline" class="section section-full timeline-section-bg mobile-editorial-section mobile-editorial-timeline">
       <div class="container px-lg-5">
-        <div class="mobile-section-cover mobile-section-cover-timeline d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-timeline d-md-none">
           <span class="mobile-section-cover-kicker">Chapter 02</span>
           <h2 class="mobile-section-cover-title">QQ Footprint</h2>
-          <p class="mobile-section-cover-text">把那些重要和不那么重要的时刻，串成一条会发光的时间线。</p>
+          <p class="mobile-section-cover-text">QQ Footprint记录了每一个重大（当然也可以是非重大）事件</p>
         </div>
       </div>
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-timeline" data-target="#timeline-content">仅看背景</button>
-      <div class="container px-lg-5"> 
+      <div class="container px-lg-5 mobile-editorial-body-wrap"> 
         <div class="row">
           <div class="col-lg-11 mx-auto">
-            <div id="timeline-content">
+            <div id="timeline-content" class="chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
               <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
               <div id="milestones-list" class="milestone-timeline"></div>
             </div>
@@ -225,15 +214,15 @@
     
     <!-- Portfolio
     ============================================= -->
-    <section id="moments" class="section section-full moments-section-bg">
+    <section id="moments" class="section section-full moments-section-bg mobile-editorial-section mobile-editorial-moments">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-moments" data-target="#moments-content">仅看背景</button>
       <div class="container px-lg-5"> 
-        <div class="mobile-section-cover mobile-section-cover-moments d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-moments d-md-none">
           <span class="mobile-section-cover-kicker">Chapter 03</span>
           <h2 class="mobile-section-cover-title">Moments</h2>
-          <p class="mobile-section-cover-text">照片、视频和被反复想起的画面，都在这里慢慢展开。</p>
+          <p class="mobile-section-cover-text">Moments会存放一些经典的照片</p>
         </div>
-        <div id="moments-content">
+        <div id="moments-content" class="chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
           <div id="moments-menu-wrapper" class="mb-5 d-none">
             <ul id="moments-menu" class="portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-0"></ul>
           </div>
@@ -280,15 +269,15 @@
     
     <!-- Resume
     ============================================= -->
-    <section id="comments" class="section section-full comments-section-bg">
+    <section id="comments" class="section section-full comments-section-bg mobile-editorial-section mobile-editorial-comments">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-comments" data-target="#comments-content">仅看背景</button>
       <div class="container px-lg-5"> 
-        <div class="mobile-section-cover mobile-section-cover-comments d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-comments d-md-none">
           <span class="mobile-section-cover-kicker">Chapter 04</span>
-          <h2 class="mobile-section-cover-title">Comments</h2>
-          <p class="mobile-section-cover-text">把朋友们留给我们的祝福，也变成这本画册的一部分。</p>
+          <h2 class="mobile-section-cover-title" data-sync-copy-from="#comments .card h3">留下留言</h2>
+          <p class="mobile-section-cover-text" data-sync-copy-from="#comments .card p">无需密码，朋友们都可以写下一句祝福或分享。</p>
         </div>
-        <div id="comments-content">
+        <div id="comments-content" class="chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
           <div class="row g-4 justify-content-center">
             <div class="col-lg-7 col-xl-6">
               <div id="comments-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有留言，邀请好友写下祝福吧。</div>
@@ -332,15 +321,15 @@
     <!-- Resume end --> 
     <!-- Letters
     ============================================= -->
-    <section id="letters" class="section section-full protected-section letters-section-bg" data-protected-key="letters">
+    <section id="letters" class="section section-full protected-section letters-section-bg mobile-editorial-section mobile-editorial-letters" data-protected-key="letters">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-letters" data-target="#letters-content">仅看背景</button>
       <div class="container px-lg-5"> 
-        <div class="mobile-section-cover mobile-section-cover-letters d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-letters d-md-none">
           <span class="mobile-section-cover-kicker">Chapter 05</span>
-          <h2 class="mobile-section-cover-title">Letters</h2>
-          <p class="mobile-section-cover-text">写给彼此的信，会在手机里以更安静的方式轻轻展开。</p>
+          <h2 class="mobile-section-cover-title" data-sync-copy-from="#letters [data-protected-cover] h3">写给对方的信</h2>
+          <p class="mobile-section-cover-text" data-sync-copy-from="#letters [data-protected-cover] p">别想偷看</p>
         </div>
-        <div id="letters-content" class="letters-panel">
+        <div id="letters-content" class="letters-panel chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
           <div class="letters-block text-center" data-protected-cover>
             <div class="letters-block-inner">
               <h3 class="text-6 fw-600 mb-3">写给对方的信</h3>
@@ -403,15 +392,15 @@
     
     <!-- Story Manager
     ============================================= -->
-    <section id="memory" class="section section-full protected-section manager-section-bg" data-protected-key="memory">
+    <section id="memory" class="section section-full protected-section manager-section-bg mobile-editorial-section mobile-editorial-manager" data-protected-key="memory">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-memory" data-target="#memory-content">仅看背景</button>
       <div class="container px-lg-5">
-        <div class="mobile-section-cover mobile-section-cover-manager d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-manager d-md-none">
           <span class="mobile-section-cover-kicker">Chapter 06</span>
-          <h2 class="mobile-section-cover-title">Story Manager</h2>
-          <p class="mobile-section-cover-text">管理员工具在手机上会先收起，只在需要的时候再轻轻展开。</p>
+          <h2 class="mobile-section-cover-title" data-sync-copy-from="#memory [data-protected-cover] h3">故事管理中心</h2>
+          <p class="mobile-section-cover-text" data-sync-copy-from="#memory [data-protected-cover] p">输入密码后即可编辑与查看。</p>
         </div>
-        <div id="memory-content" class="memory-panel">
+        <div id="memory-content" class="memory-panel chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
           <div class="memory-block text-center" data-protected-cover>
             <div class="memory-block-inner">
               <h3 class="text-6 fw-600 mb-3">故事管理中心</h3>
@@ -429,9 +418,9 @@
           </div>
           <div class="memory-block protected-content d-none" data-protected-content>
             <div class="mobile-manager-summary d-md-none">
-              <p class="mobile-manager-summary-kicker mb-2">Manager Preview</p>
-              <h3 class="text-5 fw-600 mb-2">手机端先收起，再按需展开</h3>
-              <p class="text-muted mb-4">公开故事继续优先阅读，管理功能只在你准备编辑时出现。</p>
+              <p class="mobile-manager-summary-kicker mb-2">Story Manager</p>
+              <h3 class="text-5 fw-600 mb-2" data-sync-copy-from="#memory [data-protected-cover] h3">故事管理中心</h3>
+              <p class="text-muted mb-4" data-sync-copy-from="#memory [data-protected-cover] p">输入密码后即可编辑与查看。</p>
               <button type="button" class="btn btn-primary rounded-pill mobile-manager-toggle" data-mobile-manager-toggle data-collapsed-label="展开管理工具" data-expanded-label="收起管理工具" aria-expanded="false">展开管理工具</button>
             </div>
             <div class="memory-workspace" data-mobile-manager-workspace>
@@ -459,13 +448,17 @@
                     <li class="nav-item" role="presentation"><button class="nav-link" id="tab-link-comments" data-bs-toggle="pill" data-bs-target="#story-pane-comments" type="button" role="tab" aria-controls="story-pane-comments" aria-selected="false">Comments</button></li>
                   </ul>
                   <div class="tab-content" id="storyTabContent">
-                    <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
+                    <div class="tab-pane fade show active mobile-pane-expanded" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
                       <div class="mobile-pane-heading d-md-none">
-                        <span class="mobile-pane-step">01</span>
-                        <h3 class="mobile-pane-title">QQ Footprint</h3>
-                        <p class="mobile-pane-text">查看当前时间线，并在手机端单列编辑新的里程碑。</p>
+                        <button type="button" class="mobile-pane-toggle" data-mobile-pane-toggle aria-expanded="true">
+                          <span class="mobile-pane-step">01</span>
+                          <span class="mobile-pane-copy">
+                            <span class="mobile-pane-title">QQ Footprint</span>
+                          </span>
+                          <span class="mobile-pane-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                        </button>
                       </div>
-                      <div class="story-manager-section">
+                      <div class="story-manager-section" data-mobile-pane-panel>
                         <div id="manager-milestones-empty" class="alert alert-light border text-muted" role="status">还没有里程碑，填写下方表单添加一条吧。</div>
                         <div id="manager-milestones-list" class="list-group list-group-flush mb-3"></div>
                         <div id="manager-milestones-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="里程碑翻页">
@@ -483,13 +476,17 @@
                         </form>
                       </div>
                     </div>
-                  <div class="tab-pane fade" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
+                  <div class="tab-pane fade mobile-pane-collapsed" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
                     <div class="mobile-pane-heading d-md-none">
-                      <span class="mobile-pane-step">02</span>
-                      <h3 class="mobile-pane-title">Moments</h3>
-                      <p class="mobile-pane-text">在一个单列工作台里整理瞬间内容和上传的新素材。</p>
+                      <button type="button" class="mobile-pane-toggle" data-mobile-pane-toggle aria-expanded="false">
+                        <span class="mobile-pane-step">02</span>
+                        <span class="mobile-pane-copy">
+                          <span class="mobile-pane-title">Moments</span>
+                        </span>
+                        <span class="mobile-pane-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                      </button>
                     </div>
-                    <div class="story-manager-section">
+                    <div class="story-manager-section" data-mobile-pane-panel>
                       <div id="manager-moments-empty" class="alert alert-light border text-muted" role="status">还没有瞬间，填写下方表单添加一条吧。</div>
                       <div id="manager-moments-list" class="list-group list-group-flush mb-3"></div>
                       <div id="manager-moments-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="瞬间翻页">
@@ -537,13 +534,17 @@
                       </form>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
+                  <div class="tab-pane fade mobile-pane-collapsed" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
                     <div class="mobile-pane-heading d-md-none">
-                      <span class="mobile-pane-step">03</span>
-                      <h3 class="mobile-pane-title">Letters</h3>
-                      <p class="mobile-pane-text">手机端依旧可以上传信件，但会用更安静的纵向卡片来承载。</p>
+                      <button type="button" class="mobile-pane-toggle" data-mobile-pane-toggle aria-expanded="false">
+                        <span class="mobile-pane-step">03</span>
+                        <span class="mobile-pane-copy">
+                          <span class="mobile-pane-title">Letters</span>
+                        </span>
+                        <span class="mobile-pane-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                      </button>
                     </div>
-                    <div class="story-manager-section">
+                    <div class="story-manager-section" data-mobile-pane-panel>
                       <div id="manager-loveNotes-empty" class="alert alert-light border text-muted" role="status">还没有信件，选择写信的人、日期，并上传一份 PDF 吧。</div>
                       <div id="manager-loveNotes-list" class="list-group list-group-flush mb-3"></div>
                       <div id="manager-loveNotes-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="信件翻页">
@@ -571,13 +572,17 @@
                       </form>
                     </div>
                   </div>
-                  <div class="tab-pane fade" id="story-pane-comments" role="tabpanel" aria-labelledby="tab-link-comments">
+                  <div class="tab-pane fade mobile-pane-collapsed" id="story-pane-comments" role="tabpanel" aria-labelledby="tab-link-comments">
                     <div class="mobile-pane-heading d-md-none">
-                      <span class="mobile-pane-step">04</span>
-                      <h3 class="mobile-pane-title">Comments</h3>
-                      <p class="mobile-pane-text">留言管理会单列展开，优先呈现内容本身和最必要的动作。</p>
+                      <button type="button" class="mobile-pane-toggle" data-mobile-pane-toggle aria-expanded="false">
+                        <span class="mobile-pane-step">04</span>
+                        <span class="mobile-pane-copy">
+                          <span class="mobile-pane-title">Comments</span>
+                        </span>
+                        <span class="mobile-pane-icon" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+                      </button>
                     </div>
-                    <div class="story-manager-section">
+                    <div class="story-manager-section" data-mobile-pane-panel>
                       <div id="manager-comments-empty" class="alert alert-light border text-muted" role="status">还没有留言，访客可以在 Comments 区域留言。</div>
                       <div id="manager-comments-list" class="list-group list-group-flush mb-3"></div>
                       <div id="manager-comments-pagination" class="story-pagination d-flex align-items-center justify-content-center gap-3 mt-2 mb-4 d-none" aria-label="留言翻页">
@@ -603,7 +608,7 @@
     
     <!-- Liuyizhouye Tribute
     ============================================= -->
-    <section id="liuyizhouye" class="section section-full liuyizhouye-section">
+    <section id="liuyizhouye" class="section section-full liuyizhouye-section mobile-editorial-section mobile-editorial-epilogue">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-liuyizhouye" data-target="#liuyizhouye-content">仅看背景</button>
       <div class="liuyizhouye-decor" aria-hidden="true">
         <img src="images/stars.png" class="liuyizhouye-stars" alt="">
@@ -614,12 +619,11 @@
         <img src="images/us.webp" class="liuyizhouye-us" alt="" loading="lazy" decoding="async">
       </div>
       <div class="container px-lg-5 position-relative"> 
-        <div class="mobile-section-cover mobile-section-cover-epilogue d-md-none">
+        <div class="mobile-section-cover chapter-cover mobile-chapter-poster mobile-section-cover-epilogue d-md-none">
           <span class="mobile-section-cover-kicker">Epilogue</span>
-          <h2 class="mobile-section-cover-title">Liuyizhouye</h2>
-          <p class="mobile-section-cover-text">把旧站的情绪和祝福，安静地留在故事结尾。</p>
+          <h2 class="mobile-section-cover-title">Liuyizhouye'23</h2>
         </div>
-        <div id="liuyizhouye-content" class="row g-4 align-items-start">
+        <div id="liuyizhouye-content" class="row g-4 align-items-start chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
           <div class="col-12">
             <p class="text-9 text-dark fw-600 text-center lh-base mb-5">Liuyizhouye'23<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span></p>
           </div>
@@ -757,7 +761,7 @@
 <!-- Custom Script -->
 <script src="js/api.config.js?v=20260313a"></script>
 <script src="js/api-client.js?v=20260313a"></script>
-<script src="js/theme.js?v=20260314b"></script>
+<script src="js/theme.js?v=20260314d"></script>
 <script>
 (function () {
   var audio = document.getElementById('background-audio');
