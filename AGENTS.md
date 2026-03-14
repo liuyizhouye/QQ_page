@@ -74,6 +74,14 @@ Internet
 - `server/`
   - Express API、SQLite、上传逻辑
   - 线上代码目录：`/root/QQ_page/server`
+- `scripts/`
+  - 制品部署脚本
+  - `package-release.sh`：为 CI 打包发布制品
+  - `deploy-ecs.sh`：ECS 远端部署脚本
+- `deploy.ps1`
+  - Windows 本机一键部署入口
+- `.github/workflows/deploy.yml`
+  - GitHub Actions 手动部署工作流
 - `server/deploy/cloud/Caddyfile`
   - 当前线上 Caddy 配置源码
 - `server/deploy/cloud/compose.yaml`
@@ -100,6 +108,10 @@ Internet
   - 删除历史 Sass 源码目录 `docs/sass/`
   - 删除已跟踪的 `server/node_modules/`
   - 删除未引用的旧背景和原始大图副本
+- 已补充制品部署链路：
+  - 本机 `deploy.ps1`
+  - GitHub Actions `workflow_dispatch`
+  - ECS 远端 `scripts/deploy-ecs.sh`
 
 ## 6. 当前已知实现细节
 
@@ -126,37 +138,52 @@ Internet
    - 轮换管理员 API key
    - 不把任何密钥、口令、截图中的敏感信息写入仓库
 
-## 8. 本地改动同步到 ECS 的标准流程
+## 8. 代码发布标准流程
 
-### 前端静态站
+### 推荐方式
 
-使用镜像同步，不要再用追加式 `scp`：
+- 本机发布：在仓库根目录运行 `.\deploy.ps1`
+- CI 发布：在 GitHub Actions 手动触发 `Deploy to ECS`
 
-```bash
-rsync -av --delete docs/ root@47.115.72.187:/srv/www/hanbaodoudou.com/
-rsync -av --delete docs/ root@47.115.72.187:/root/QQ_page/docs/
-```
+### 当前发布链路
 
-### Caddy 配置
+- 不让 ECS 自己 `git pull`
+- 由本机或 GitHub Actions 打包仓库制品
+- 上传到 ECS `/tmp`
+- 由 `scripts/deploy-ecs.sh` 在 ECS 上执行：
+  - 解压到临时目录
+  - 在临时目录执行 `npm ci --omit=dev` 和 `npm rebuild better-sqlite3`
+  - 镜像同步 `docs/` 到 `/srv/www/hanbaodoudou.com`
+  - 镜像同步仓库副本到 `/root/QQ_page`
+  - 保留 `server/.env`、`server/database/`、`server/uploads/`、`server/logs/`
+  - 更新 `/root/server/deploy/cloud`
+  - `pm2 restart qq-story-api`
+  - `docker compose up -d`
+  - 做健康检查
 
-```bash
-scp server/deploy/cloud/Caddyfile root@47.115.72.187:/root/server/deploy/cloud/Caddyfile
-scp server/deploy/cloud/compose.yaml root@47.115.72.187:/root/server/deploy/cloud/compose.yaml
-ssh root@47.115.72.187 "cd /root/server/deploy/cloud && docker compose up -d"
-```
+### GitHub Actions 需要的 Secrets
 
-### 验证
+- `ECS_HOST`
+- `ECS_PORT`
+- `ECS_USER`
+- `ECS_SSH_KEY`
+- `ECS_KNOWN_HOSTS`
+
+### 发布后验证
 
 ```bash
 curl -I https://hanbaodoudou.com
 curl -I https://www.hanbaodoudou.com
 curl https://api.hanbaodoudou.com/health
+ssh root@47.115.72.187 "pm2 list && docker ps"
 ```
 
 ## 9. 不要再做的事
 
 - 不要把内部文档、设计稿、审查记录重新放回 `docs/`。
 - 不要恢复 GitHub Pages 的 `CNAME` 流程。
+- 不要在 ECS 上把 `/root/QQ_page` 当成手工编辑工作区。
+- 不要把上线流程重新改回 `git pull`。
 - 不要把 SQLite 主库直接放到 NAS / NFS。
 - 不要把家里 NAS 直接暴露为线上主服务入口。
 - 不要把 `.env`、密钥、EPP、私钥、口令写入仓库。

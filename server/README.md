@@ -78,7 +78,7 @@ curl http://127.0.0.1:8080/health
 
 ## ECS 部署
 
-### 1. 依赖
+### 1. 首次初始化依赖
 
 ```bash
 sudo apt update
@@ -121,6 +121,36 @@ docker compose up -d
 ```bash
 rsync -av --delete /root/QQ_page/docs/ /srv/www/hanbaodoudou.com/
 ```
+
+## 后续发布
+
+后续代码更新不要在 ECS 上直接 `git pull`。当前标准做法是：
+
+- 本机运行仓库根目录 `.\deploy.ps1`
+- 或在 GitHub Actions 手动触发 `Deploy to ECS`
+
+发布脚本：
+
+- `scripts/package-release.sh`：打包仓库制品
+- `scripts/deploy-ecs.sh`：在 ECS 上执行正式部署
+
+这条链路会：
+
+- 在 ECS 临时目录解压新版本
+- 在临时目录执行 `npm ci --omit=dev`
+- `npm rebuild better-sqlite3`
+- 镜像同步 `docs/` 到 `/srv/www/hanbaodoudou.com`
+- 镜像同步仓库副本到 `/root/QQ_page`
+- 保留 `server/.env`、`server/database/`、`server/uploads/`、`server/logs/`
+- 更新 `/root/server/deploy/cloud`
+- `pm2 restart qq-story-api`
+- `docker compose up -d`
+- 健康检查失败时退出非零
+
+说明：
+
+- `/root/QQ_page` 现在是部署镜像副本，不是线上手工编辑工作区。
+- 运行时数据仍然在 `/srv/qq-story`，不会被发布覆盖。
 
 ## 当前线上验证命令
 

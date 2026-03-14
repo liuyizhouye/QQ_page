@@ -21,12 +21,15 @@
 
 ```text
 .
+├── .github/workflows/  # GitHub Actions 部署工作流
 ├── AGENTS.md          # 当前真实架构、运维约束、同步流程、后续待办
 ├── README.md          # 项目总入口
 ├── DEPLOY_NAS.md      # NAS 备份/同步方案
+├── deploy.ps1         # Windows 本机一键部署到 ECS
 ├── design/            # 设计源文件归档，不参与公开部署
 ├── docs/              # 公开静态站根目录，会镜像同步到 ECS
 ├── notes/             # 内部文档与归档记录，不参与公开部署
+├── scripts/           # 打包与 ECS 远端部署脚本
 └── server/            # Node.js + Express API
 ```
 
@@ -48,19 +51,44 @@ npm run dev
 
 前端可直接打开 `docs/index.html`，也可以用任意静态服务器预览。
 
-## 同步到 ECS
+## 发布到 ECS
 
-静态站目录采用镜像同步，确保本地已删除的旧资源会从 ECS 一起清掉：
+推荐使用制品部署，不再让 ECS 直接 `git pull`：
 
-```bash
-rsync -av --delete docs/ root@47.115.72.187:/srv/www/hanbaodoudou.com/
-rsync -av --delete docs/ root@47.115.72.187:/root/QQ_page/docs/
+### 本机一键发布
+
+```powershell
+.\deploy.ps1
 ```
 
-后端与 Caddy 配置见：
+如果你的 SSH 私钥不在默认位置：
 
-- `server/deploy/cloud/Caddyfile`
-- `server/deploy/cloud/compose.yaml`
+```powershell
+.\deploy.ps1 -IdentityFile C:\Users\liuyi\.ssh\id_ed25519
+```
+
+### GitHub Actions 手动发布
+
+工作流文件：`.github/workflows/deploy.yml`
+
+需要先配置仓库 Secrets：
+
+- `ECS_HOST`
+- `ECS_PORT`
+- `ECS_USER`
+- `ECS_SSH_KEY`
+- `ECS_KNOWN_HOSTS`
+
+发布时会：
+
+- 打包当前仓库制品
+- 上传到 ECS
+- 在 ECS 临时目录安装生产依赖
+- 同步静态站到 `/srv/www/hanbaodoudou.com`
+- 同步仓库副本到 `/root/QQ_page`
+- 重启 `qq-story-api`
+- 重新应用 Caddy Compose 配置
+- 自动执行健康检查
 
 ## 相关文档
 

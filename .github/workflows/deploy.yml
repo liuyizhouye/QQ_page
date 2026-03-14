@@ -1,0 +1,64 @@
+name: Deploy to ECS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build release artifact
+        shell: bash
+        run: |
+          chmod +x scripts/package-release.sh scripts/deploy-ecs.sh
+          scripts/package-release.sh "$RUNNER_TEMP/qq-page-release.tar.gz"
+
+      - name: Prepare SSH
+        shell: bash
+        env:
+          ECS_SSH_KEY: ${{ secrets.ECS_SSH_KEY }}
+          ECS_KNOWN_HOSTS: ${{ secrets.ECS_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$ECS_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$ECS_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Upload artifact and deploy
+        shell: bash
+        env:
+          ECS_HOST: ${{ secrets.ECS_HOST }}
+          ECS_PORT: ${{ secrets.ECS_PORT }}
+          ECS_USER: ${{ secrets.ECS_USER }}
+        run: |
+          RELEASE_ID="${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}"
+          REMOTE_ARTIFACT="/tmp/qq-page-release-${RELEASE_ID}.tar.gz"
+          REMOTE_SCRIPT="/tmp/deploy-ecs-${RELEASE_ID}.sh"
+
+          scp -P "${ECS_PORT}" "$RUNNER_TEMP/qq-page-release.tar.gz" "${ECS_USER}@${ECS_HOST}:${REMOTE_ARTIFACT}"
+          scp -P "${ECS_PORT}" "scripts/deploy-ecs.sh" "${ECS_USER}@${ECS_HOST}:${REMOTE_SCRIPT}"
+
+          ssh -p "${ECS_PORT}" "${ECS_USER}@${ECS_HOST}" \
+            "chmod +x '${REMOTE_SCRIPT}' && RELEASE_ID='${RELEASE_ID}' '${REMOTE_SCRIPT}' '${REMOTE_ARTIFACT}'"
+
+      - name: Clean up remote temp files
+        if: always()
+        shell: bash
+        env:
+          ECS_HOST: ${{ secrets.ECS_HOST }}
+          ECS_PORT: ${{ secrets.ECS_PORT }}
+          ECS_USER: ${{ secrets.ECS_USER }}
+        run: |
+          RELEASE_ID="${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}"
+          REMOTE_ARTIFACT="/tmp/qq-page-release-${RELEASE_ID}.tar.gz"
+          REMOTE_SCRIPT="/tmp/deploy-ecs-${RELEASE_ID}.sh"
+          ssh -p "${ECS_PORT}" "${ECS_USER}@${ECS_HOST}" "rm -f '${REMOTE_ARTIFACT}' '${REMOTE_SCRIPT}'" || true

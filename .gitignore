@@ -26,5 +26,8 @@ Thumbs.db
 *.swo
 
 # 上传文件（可选，如果不想提交用户上传的文件）
-# server/uploads/
+server/.env
+server/database/
+server/uploads/
+server/logs/
 
