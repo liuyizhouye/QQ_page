@@ -23,7 +23,7 @@
 <!-- Magnific Popup -->
 <link rel="stylesheet" type="text/css" href="vendor/magnific-popup/magnific-popup.min.css" />
 <!-- Custom Stylesheet -->
-<link rel="stylesheet" type="text/css" href="css/stylesheet.css?v=20260313b" />
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css?v=20260314b" />
 </head>
 
 <body class="side-header" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="1">
@@ -79,6 +79,16 @@
   <!-- Content
   ============================================= -->
   <div id="content" role="main"> 
+    <nav class="mobile-chapter-rail d-md-none" aria-label="手机章节导航">
+      <div class="mobile-chapter-rail-inner">
+        <a class="mobile-chapter-link smooth-scroll active" href="#home">Home</a>
+        <a class="mobile-chapter-link smooth-scroll" href="#story">Story</a>
+        <a class="mobile-chapter-link smooth-scroll" href="#timeline">Footprint</a>
+        <a class="mobile-chapter-link smooth-scroll" href="#moments">Moments</a>
+        <a class="mobile-chapter-link smooth-scroll" href="#comments">Comments</a>
+        <a class="mobile-chapter-link smooth-scroll" href="#letters">Letters</a>
+      </div>
+    </nav>
     
     <!-- Intro
     ============================================= -->
@@ -95,9 +105,16 @@
                   <p>ENFJ &amp; INFP の 碰撞！</p>
                   <p>每一个平凡的点滴都不平凡！</p>
                 </div>
-                <p class="text-7 fw-500 text-white mb-2 mb-md-3">Welcome to our journey</p>
-                <h2 class="text-16 fw-600 text-white mb-2 mb-md-3"><span class="typed"></span></h2>
-                <p class="text-5 text-light mb-4">记录每一点回忆、火花与奇遇</p>
+                <div class="mobile-home-copy d-md-none">
+                  <p class="mobile-home-kicker mb-2">Our QQ Adventure</p>
+                  <h2 class="mobile-home-title text-white mb-3">兜兜 &amp; 汉堡<br>的故事画册</h2>
+                  <p class="mobile-home-description text-light mb-4">把相遇、奇遇与普通日子，都认真收藏进同一本冒险手册。</p>
+                </div>
+                <div class="desktop-home-copy d-none d-md-block">
+                  <p class="text-7 fw-500 text-white mb-2 mb-md-3">Welcome to our journey</p>
+                  <h2 class="text-16 fw-600 text-white mb-2 mb-md-3"><span class="typed"></span></h2>
+                  <p class="text-5 text-light mb-4">记录每一点回忆、火花与奇遇</p>
+                </div>
 				<a id="link-start-button" href="#story" class="btn btn-outline-primary rounded-pill shadow-none smooth-scroll mt-2">Link Start!</a>
               </div>
             </div>
@@ -111,6 +128,11 @@
     ============================================= -->
     <section id="story" class="section section-full story-section-bg">
       <div class="container px-lg-5"> 
+        <div class="mobile-section-cover mobile-section-cover-story d-md-none">
+          <span class="mobile-section-cover-kicker">Chapter 01</span>
+          <h2 class="mobile-section-cover-title">Our Story</h2>
+          <p class="mobile-section-cover-text">从生日礼物开始，慢慢写成一整本关于我们的小传记。</p>
+        </div>
         <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-ourstory" data-target="#ourstory-content">仅看背景</button>
         <!-- Heading -->
         <div id="ourstory-content" class="ourstory-panel">
@@ -177,6 +199,13 @@
     <!-- Services
     ============================================= -->
     <section id="timeline" class="section section-full timeline-section-bg">
+      <div class="container px-lg-5">
+        <div class="mobile-section-cover mobile-section-cover-timeline d-md-none">
+          <span class="mobile-section-cover-kicker">Chapter 02</span>
+          <h2 class="mobile-section-cover-title">QQ Footprint</h2>
+          <p class="mobile-section-cover-text">把那些重要和不那么重要的时刻，串成一条会发光的时间线。</p>
+        </div>
+      </div>
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-timeline" data-target="#timeline-content">仅看背景</button>
       <div class="container px-lg-5"> 
         <div class="row">
@@ -199,6 +228,11 @@
     <section id="moments" class="section section-full moments-section-bg">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-moments" data-target="#moments-content">仅看背景</button>
       <div class="container px-lg-5"> 
+        <div class="mobile-section-cover mobile-section-cover-moments d-md-none">
+          <span class="mobile-section-cover-kicker">Chapter 03</span>
+          <h2 class="mobile-section-cover-title">Moments</h2>
+          <p class="mobile-section-cover-text">照片、视频和被反复想起的画面，都在这里慢慢展开。</p>
+        </div>
         <div id="moments-content">
           <div id="moments-menu-wrapper" class="mb-5 d-none">
             <ul id="moments-menu" class="portfolio-menu nav nav-tabs justify-content-center border-bottom-0 mb-0"></ul>
@@ -249,6 +283,11 @@
     <section id="comments" class="section section-full comments-section-bg">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-comments" data-target="#comments-content">仅看背景</button>
       <div class="container px-lg-5"> 
+        <div class="mobile-section-cover mobile-section-cover-comments d-md-none">
+          <span class="mobile-section-cover-kicker">Chapter 04</span>
+          <h2 class="mobile-section-cover-title">Comments</h2>
+          <p class="mobile-section-cover-text">把朋友们留给我们的祝福，也变成这本画册的一部分。</p>
+        </div>
         <div id="comments-content">
           <div class="row g-4 justify-content-center">
             <div class="col-lg-7 col-xl-6">
@@ -296,6 +335,11 @@
     <section id="letters" class="section section-full protected-section letters-section-bg" data-protected-key="letters">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-letters" data-target="#letters-content">仅看背景</button>
       <div class="container px-lg-5"> 
+        <div class="mobile-section-cover mobile-section-cover-letters d-md-none">
+          <span class="mobile-section-cover-kicker">Chapter 05</span>
+          <h2 class="mobile-section-cover-title">Letters</h2>
+          <p class="mobile-section-cover-text">写给彼此的信，会在手机里以更安静的方式轻轻展开。</p>
+        </div>
         <div id="letters-content" class="letters-panel">
           <div class="letters-block text-center" data-protected-cover>
             <div class="letters-block-inner">
@@ -362,6 +406,11 @@
     <section id="memory" class="section section-full protected-section manager-section-bg" data-protected-key="memory">
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-memory" data-target="#memory-content">仅看背景</button>
       <div class="container px-lg-5">
+        <div class="mobile-section-cover mobile-section-cover-manager d-md-none">
+          <span class="mobile-section-cover-kicker">Chapter 06</span>
+          <h2 class="mobile-section-cover-title">Story Manager</h2>
+          <p class="mobile-section-cover-text">管理员工具在手机上会先收起，只在需要的时候再轻轻展开。</p>
+        </div>
         <div id="memory-content" class="memory-panel">
           <div class="memory-block text-center" data-protected-cover>
             <div class="memory-block-inner">
@@ -379,6 +428,13 @@
             </div>
           </div>
           <div class="memory-block protected-content d-none" data-protected-content>
+            <div class="mobile-manager-summary d-md-none">
+              <p class="mobile-manager-summary-kicker mb-2">Manager Preview</p>
+              <h3 class="text-5 fw-600 mb-2">手机端先收起，再按需展开</h3>
+              <p class="text-muted mb-4">公开故事继续优先阅读，管理功能只在你准备编辑时出现。</p>
+              <button type="button" class="btn btn-primary rounded-pill mobile-manager-toggle" data-mobile-manager-toggle data-collapsed-label="展开管理工具" data-expanded-label="收起管理工具" aria-expanded="false">展开管理工具</button>
+            </div>
+            <div class="memory-workspace" data-mobile-manager-workspace>
             <div class="row gy-4">
               <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
                 <div class="memory-subblock h-100">
@@ -404,6 +460,11 @@
                   </ul>
                   <div class="tab-content" id="storyTabContent">
                     <div class="tab-pane fade show active" id="story-pane-milestones" role="tabpanel" aria-labelledby="tab-link-milestones">
+                      <div class="mobile-pane-heading d-md-none">
+                        <span class="mobile-pane-step">01</span>
+                        <h3 class="mobile-pane-title">QQ Footprint</h3>
+                        <p class="mobile-pane-text">查看当前时间线，并在手机端单列编辑新的里程碑。</p>
+                      </div>
                       <div class="story-manager-section">
                         <div id="manager-milestones-empty" class="alert alert-light border text-muted" role="status">还没有里程碑，填写下方表单添加一条吧。</div>
                         <div id="manager-milestones-list" class="list-group list-group-flush mb-3"></div>
@@ -423,6 +484,11 @@
                       </div>
                     </div>
                   <div class="tab-pane fade" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
+                    <div class="mobile-pane-heading d-md-none">
+                      <span class="mobile-pane-step">02</span>
+                      <h3 class="mobile-pane-title">Moments</h3>
+                      <p class="mobile-pane-text">在一个单列工作台里整理瞬间内容和上传的新素材。</p>
+                    </div>
                     <div class="story-manager-section">
                       <div id="manager-moments-empty" class="alert alert-light border text-muted" role="status">还没有瞬间，填写下方表单添加一条吧。</div>
                       <div id="manager-moments-list" class="list-group list-group-flush mb-3"></div>
@@ -472,6 +538,11 @@
                     </div>
                   </div>
                   <div class="tab-pane fade" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
+                    <div class="mobile-pane-heading d-md-none">
+                      <span class="mobile-pane-step">03</span>
+                      <h3 class="mobile-pane-title">Letters</h3>
+                      <p class="mobile-pane-text">手机端依旧可以上传信件，但会用更安静的纵向卡片来承载。</p>
+                    </div>
                     <div class="story-manager-section">
                       <div id="manager-loveNotes-empty" class="alert alert-light border text-muted" role="status">还没有信件，选择写信的人、日期，并上传一份 PDF 吧。</div>
                       <div id="manager-loveNotes-list" class="list-group list-group-flush mb-3"></div>
@@ -501,6 +572,11 @@
                     </div>
                   </div>
                   <div class="tab-pane fade" id="story-pane-comments" role="tabpanel" aria-labelledby="tab-link-comments">
+                    <div class="mobile-pane-heading d-md-none">
+                      <span class="mobile-pane-step">04</span>
+                      <h3 class="mobile-pane-title">Comments</h3>
+                      <p class="mobile-pane-text">留言管理会单列展开，优先呈现内容本身和最必要的动作。</p>
+                    </div>
                     <div class="story-manager-section">
                       <div id="manager-comments-empty" class="alert alert-light border text-muted" role="status">还没有留言，访客可以在 Comments 区域留言。</div>
                       <div id="manager-comments-list" class="list-group list-group-flush mb-3"></div>
@@ -513,6 +589,7 @@
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -537,6 +614,11 @@
         <img src="images/us.webp" class="liuyizhouye-us" alt="" loading="lazy" decoding="async">
       </div>
       <div class="container px-lg-5 position-relative"> 
+        <div class="mobile-section-cover mobile-section-cover-epilogue d-md-none">
+          <span class="mobile-section-cover-kicker">Epilogue</span>
+          <h2 class="mobile-section-cover-title">Liuyizhouye</h2>
+          <p class="mobile-section-cover-text">把旧站的情绪和祝福，安静地留在故事结尾。</p>
+        </div>
         <div id="liuyizhouye-content" class="row g-4 align-items-start">
           <div class="col-12">
             <p class="text-9 text-dark fw-600 text-center lh-base mb-5">Liuyizhouye'23<span class="heading-separator-line border-bottom border-3 border-primary d-block mx-auto"></span></p>
@@ -675,7 +757,7 @@
 <!-- Custom Script -->
 <script src="js/api.config.js?v=20260313a"></script>
 <script src="js/api-client.js?v=20260313a"></script>
-<script src="js/theme.js?v=20260314a"></script>
+<script src="js/theme.js?v=20260314b"></script>
 <script>
 (function () {
   var audio = document.getElementById('background-audio');
