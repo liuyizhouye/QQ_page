@@ -1,7 +1,7 @@
 {
   "name": "qq-story-backend",
   "version": "1.0.0",
-  "description": "Backend service for QQ Story Manager deployed on NAS",
+  "description": "Backend service for QQ Story Manager on ECS with Express and SQLite",
   "type": "module",
   "scripts": {
     "dev": "nodemon src/app.js",

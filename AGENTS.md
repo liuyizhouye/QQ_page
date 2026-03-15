@@ -86,8 +86,6 @@ Internet
   - 当前线上 Caddy 配置源码
 - `server/deploy/cloud/compose.yaml`
   - 当前线上 Caddy Docker Compose 配置
-- `DEPLOY_NAS.md`
-  - NAS 接入方案，当前推荐“同步备份”而不是“在线挂载主存”
 
 ## 5. 已完成的关键变更
 
@@ -118,22 +116,16 @@ Internet
 - 前端固定请求 `https://api.hanbaodoudou.com/api`，本地开发时才走 `http://localhost:8080/api`。
 - `Letters` 和 `Story Manager` 的解锁密码仍然在前端代码里，属于展示层门禁，不是真正安全边界。
 - 真正需要保护的写操作依赖后端 `x-api-key`。
-- 数据库当前是 SQLite，适合放在 ECS 本地磁盘，不适合直接放在 NAS / NFS 上作为在线主库。
+- 数据库当前是 SQLite，运行时主库位于 ECS 本地磁盘 `/srv/qq-story/data/qq_story.db`。
+- 上传文件当前保存在 ECS 本地目录 `/srv/qq-story/uploads`。
 - 当前网页 section 背景直接由 `docs/css/stylesheet.css` 引用 `docs/images/*-section-bg.webp`，不要再改回依赖 HTML 内联 CSS 变量的写法。
 
 ## 7. 后续建议顺序
 
-1. 完成 NAS 私网接入。
-   - 给 ECS 和家里 NAS 安装 `Tailscale`
-   - 确认两端互通
-2. 把 NAS 用作同步备份目标。
-   - 上传文件继续写入 `/srv/qq-story/uploads`
-   - 使用 `sqlite3 .backup` 备份数据库
-   - 使用 `rsync` 把数据库备份和上传目录同步到 NAS
-3. 做最小监控与恢复验证。
+1. 做最小监控与恢复验证。
    - 定时检查 `https://api.hanbaodoudou.com/health`
-   - 定期抽查 NAS 备份是否可恢复
-4. 处理安全债务。
+   - 定期抽查数据库快照与上传文件是否可恢复
+2. 处理安全债务。
    - 把前端硬编码密码迁移为服务端校验或更合理的访问控制
    - 轮换管理员 API key
    - 不把任何密钥、口令、截图中的敏感信息写入仓库
@@ -184,6 +176,5 @@ ssh root@47.115.72.187 "pm2 list && docker ps"
 - 不要恢复 GitHub Pages 的 `CNAME` 流程。
 - 不要在 ECS 上把 `/root/QQ_page` 当成手工编辑工作区。
 - 不要把上线流程重新改回 `git pull`。
-- 不要把 SQLite 主库直接放到 NAS / NFS。
-- 不要把家里 NAS 直接暴露为线上主服务入口。
+- 不要把运行时数据库和上传目录重新耦合回仓库目录。
 - 不要把 `.env`、密钥、EPP、私钥、口令写入仓库。

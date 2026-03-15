@@ -190,12 +190,12 @@ x-api-key: <ADMIN_API_KEYS 中的任意一个>
 
 ## 备份建议
 
-- 数据库：使用 `sqlite3 .backup` 导出快照
-- 上传目录：使用 `rsync`
-- NAS 方案：见项目根目录 [DEPLOY_NAS.md](../DEPLOY_NAS.md)
+- 数据库：使用 `sqlite3 .backup` 导出快照到 ECS 本地备份目录
+- 上传目录：定期复制 `/srv/qq-story/uploads`
+- 恢复验证：定期抽查数据库快照和媒体文件是否可恢复
 
 ## 注意事项
 
-- SQLite 主库保持在 ECS 本地磁盘，不要直接放到 NAS / NFS。
+- SQLite 主库保持在 ECS 本地磁盘，不要改回仓库目录。
 - 不要把 `.env` 或管理员密钥写入仓库。
 - `server/deploy/cloud/` 中的配置应与线上 Caddy 容器保持一致。

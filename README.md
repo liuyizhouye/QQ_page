@@ -15,7 +15,7 @@
 
 - 域名已转入阿里云，ICP 备案已完成。
 - 主站与 API 已全部收口到同一台阿里云 ECS。
-- NAS 仍是下一阶段的备份/归档节点，不是当前线上实时依赖。
+- 运行时数据库与上传文件当前都保存在 ECS 本地目录 `/srv/qq-story`。
 
 ## 仓库结构
 
@@ -24,7 +24,6 @@
 ├── .github/workflows/  # GitHub Actions 部署工作流
 ├── AGENTS.md          # 当前真实架构、运维约束、同步流程、后续待办
 ├── README.md          # 项目总入口
-├── DEPLOY_NAS.md      # NAS 备份/同步方案
 ├── deploy.ps1         # Windows 本机一键部署到 ECS
 ├── design/            # 设计源文件归档，不参与公开部署
 ├── docs/              # 公开静态站根目录，会镜像同步到 ECS
@@ -94,6 +93,5 @@ npm run dev
 
 - [AGENTS.md](AGENTS.md)：当前真实架构、部署流程、后续待办
 - [server/README.md](server/README.md)：后端运行与 ECS 部署说明
-- [DEPLOY_NAS.md](DEPLOY_NAS.md)：NAS 同步/备份方案
 - [notes/ops-handover-2026-02-20.md](notes/ops-handover-2026-02-20.md)：2026-02-20 历史交接记录
 - [notes/security-review.md](notes/security-review.md)：后端快速安全检查记录
