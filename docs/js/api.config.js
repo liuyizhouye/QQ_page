@@ -17,60 +17,32 @@ window.QQStoryApi = window.QQStoryApi || {};
     console.log('[QQ Story API] 访问域名:', host || '(file:// 或未知)');
   }
 
-  var storedKey = '';
-  try {
-    storedKey =
-      window.sessionStorage.getItem('qqStoryAdminKey') ||
-      window.localStorage.getItem('qqStoryAdminKey') ||
-      '';
-  } catch (error) {
-    storedKey = '';
+  function clearLegacyStoredAdminKey() {
+    try {
+      window.sessionStorage.removeItem('qqStoryAdminKey');
+      window.localStorage.removeItem('qqStoryAdminKey');
+    } catch (error) {
+      console.warn('Failed to clear legacy stored admin key.', error);
+    }
   }
-  if (!window.QQStoryApi.adminKey && storedKey) {
-    window.QQStoryApi.adminKey = storedKey;
-  } else {
-    window.QQStoryApi.adminKey = window.QQStoryApi.adminKey || '';
-  }
+
+  // 管理员 key 只保留在当前页面内存中；如浏览器里有旧版本遗留值，启动时一并清掉。
+  clearLegacyStoredAdminKey();
+  window.QQStoryApi.adminKey = window.QQStoryApi.adminKey || '';
 
   window.QQStoryApi.setAdminKey = function setAdminKey(key, options) {
     var value = key || '';
     window.QQStoryApi.adminKey = value;
+    clearLegacyStoredAdminKey();
 
-    var persist = (options && options.persist) || 'local';
-    try {
-      if (persist === 'local') {
-        if (value) {
-          window.localStorage.setItem('qqStoryAdminKey', value);
-        } else {
-          window.localStorage.removeItem('qqStoryAdminKey');
-        }
-        window.sessionStorage.removeItem('qqStoryAdminKey');
-      } else if (persist === 'memory') {
-        window.sessionStorage.removeItem('qqStoryAdminKey');
-        window.localStorage.removeItem('qqStoryAdminKey');
-      } else {
-        if (value) {
-          window.sessionStorage.setItem('qqStoryAdminKey', value);
-        } else {
-          window.sessionStorage.removeItem('qqStoryAdminKey');
-        }
-        if (persist !== 'session') {
-          window.localStorage.removeItem('qqStoryAdminKey');
-        }
-      }
-    } catch (error) {
-      console.warn('Failed to persist admin key locally.', error);
+    if (options && options.persist && options.persist !== 'memory' && window.console && window.console.warn) {
+      console.warn('Admin key persistence is disabled; the key stays in memory only.');
     }
     return value;
   };
 
   window.QQStoryApi.clearStoredAdminKey = function clearStoredAdminKey() {
     window.QQStoryApi.adminKey = '';
-    try {
-      window.sessionStorage.removeItem('qqStoryAdminKey');
-      window.localStorage.removeItem('qqStoryAdminKey');
-    } catch (error) {
-      console.warn('Failed to clear stored admin key.', error);
-    }
+    clearLegacyStoredAdminKey();
   };
 })();

@@ -117,6 +117,7 @@ Internet
 - `Letters` 和 `Story Manager` 的解锁密码已迁移为服务端校验，密码只保存在 ECS 的 `server/.env` 中。
 - `Letters` 列表接口和 `/uploads/letters/*` PDF 下载都依赖服务端校验后的 `HttpOnly` cookie 或管理员 `x-api-key`。
 - 真正需要保护的写操作依赖后端 `x-api-key`。
+- 前端管理员 `x-api-key` 当前只保存在页面内存，不再写入浏览器 `localStorage` 或 `sessionStorage`。
 - 数据库当前是 SQLite，运行时主库位于 ECS 本地磁盘 `/srv/qq-story/data/qq_story.db`。
 - 上传文件当前保存在 ECS 本地目录 `/srv/qq-story/uploads`。
 - 当前网页 section 背景直接由 `docs/css/stylesheet.css` 引用 `docs/images/*-section-bg.webp`，不要再改回依赖 HTML 内联 CSS 变量的写法。
