@@ -789,13 +789,49 @@
 </script>
 <script>
 (function () {
-  var PASSWORD = 'Lyz@Hcy19990805';
+  window.QQStoryProtectedAccess = window.QQStoryProtectedAccess || {
+    unlocked: false,
+    configured: false
+  };
   var sections = document.querySelectorAll('[data-protected-key]');
-  if (!sections.length) {
+  var apiClient = window.QQStoryApiClient;
+  if (!sections.length || !apiClient) {
     return;
   }
 
   var unlocked = {};
+  var isUnlocking = false;
+
+  function syncProtectedAccessState(nextState) {
+    window.QQStoryProtectedAccess = Object.assign({}, window.QQStoryProtectedAccess || {}, nextState || {});
+    window.dispatchEvent(new CustomEvent('qqstoryprotectedaccesschange', {
+      detail: Object.assign({}, window.QQStoryProtectedAccess)
+    }));
+  }
+
+  function showAllContent() {
+    sections.forEach(function (section) {
+      var key = section.getAttribute('data-protected-key');
+      if (!key) {
+        return;
+      }
+      unlocked[key] = true;
+      var cover = section.querySelector('[data-protected-cover]');
+      var content = section.querySelector('[data-protected-content]');
+      var input = section.querySelector('[data-protected-input]');
+      var errorHint = section.querySelector('[data-protected-error]');
+      if (cover && content) {
+        cover.classList.add('d-none');
+        content.classList.remove('d-none');
+      }
+      if (input) {
+        input.value = '';
+      }
+      if (errorHint) {
+        errorHint.classList.add('d-none');
+      }
+    });
+  }
 
   sections.forEach(function (section) {
     var key = section.getAttribute('data-protected-key');
@@ -843,40 +879,30 @@
         input.focus();
         return;
       }
-      if (value === PASSWORD) {
-        // 解锁当前区域
-        unlocked[key] = true;
-        showContent();
-        
-        // 同时解锁所有其他受保护区域
-        sections.forEach(function (otherSection) {
-          var otherKey = otherSection.getAttribute('data-protected-key');
-          if (otherKey && otherKey !== key && !unlocked[otherKey]) {
-            unlocked[otherKey] = true;
-            var otherCover = otherSection.querySelector('[data-protected-cover]');
-            var otherContent = otherSection.querySelector('[data-protected-content]');
-            var otherInput = otherSection.querySelector('[data-protected-input]');
-            var otherError = otherSection.querySelector('[data-protected-error]');
-            
-            if (otherCover && otherContent) {
-              otherCover.classList.add('d-none');
-              otherContent.classList.remove('d-none');
-            }
-            if (otherInput) {
-              otherInput.value = '';
-            }
-            if (otherError) {
-              otherError.classList.add('d-none');
-            }
-          }
-        });
-      } else {
+      if (isUnlocking) {
+        return;
+      }
+
+      isUnlocking = true;
+      if (trigger) {
+        trigger.disabled = true;
+      }
+
+      apiClient.unlockProtectedContent(value).then(function () {
+        syncProtectedAccessState({ unlocked: true, configured: true });
+        showAllContent();
+      }).catch(function (error) {
         if (errorHint) {
           errorHint.classList.remove('d-none');
         }
         input.focus();
         input.select();
-      }
+      }).finally(function () {
+        isUnlocking = false;
+        if (trigger) {
+          trigger.disabled = false;
+        }
+      });
     };
 
     if (trigger) {
@@ -904,6 +930,20 @@
     } else {
       lockContent();
     }
+  });
+
+  apiClient.getProtectedAccessStatus().then(function (response) {
+    var payload = response && response.data ? response.data : {};
+    var hasAccess = Boolean(payload.unlocked);
+    syncProtectedAccessState({
+      unlocked: hasAccess,
+      configured: Boolean(payload.configured)
+    });
+    if (hasAccess) {
+      showAllContent();
+    }
+  }).catch(function (error) {
+    console.error('Failed to get protected access status.', error);
   });
 })();
 </script>

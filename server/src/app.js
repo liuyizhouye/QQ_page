@@ -8,10 +8,12 @@ import rateLimit from 'express-rate-limit';
 import config from './config.js';
 import './migrate.js';
 import { ensureUploadSubdirs } from './services/fileService.js';
+import requireProtectedAccess from './middleware/protectedAccess.js';
 import milestonesRouter from './routes/milestones.js';
 import momentsRouter from './routes/moments.js';
 import commentsRouter from './routes/comments.js';
 import loveNotesRouter from './routes/loveNotes.js';
+import protectedAccessRouter from './routes/protectedAccess.js';
 
 const app = express();
 
@@ -33,6 +35,7 @@ if (config.ALLOWED_ORIGINS.length === 1 && config.ALLOWED_ORIGINS[0] === '*') {
     }
   };
 }
+corsOptions.credentials = true;
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
@@ -65,6 +68,10 @@ app.use(
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(morgan('dev'));
 app.use(
+  '/uploads/letters',
+  requireProtectedAccess
+);
+app.use(
   '/uploads',
   cors(corsOptions),
   express.static(config.UPLOAD_DIR, {
@@ -80,6 +87,7 @@ app.use('/api/milestones', milestonesRouter);
 app.use('/api/moments', momentsRouter);
 app.use('/api/comments', commentsRouter);
 app.use('/api/letters', loveNotesRouter);
+app.use('/api/protected-access', protectedAccessRouter);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found' });

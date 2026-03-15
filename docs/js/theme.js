@@ -84,11 +84,11 @@
 		$('.preloader').delay(150).fadeOut('slow');
 	}
 
-	function scheduleInitialStoryHydration() {
-		var run = function () {
-			initializeFriendComments();
-			refreshStoryData();
-		};
+function scheduleInitialStoryHydration() {
+	var run = function () {
+		initializeFriendComments();
+		refreshStoryData();
+	};
 		if ('requestIdleCallback' in window) {
 			window.requestIdleCallback(run, { timeout: 1500 });
 			return;
@@ -1148,6 +1148,10 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var $momentNext = $('#moment-viewer-next');
 	var $momentClose = $('#moment-viewer-close');
 
+	window.addEventListener('qqstoryprotectedaccesschange', function () {
+		refreshStoryData();
+	});
+
 	bindForms();
 bindDeletion();
 setupTabListeners();
@@ -2044,11 +2048,21 @@ function normalizeMomentsData() {
 		$container.toggleClass('story-loading', !!isLoading);
 	}
 
+	function hasProtectedContentAccess() {
+		return Boolean(window.QQStoryProtectedAccess && window.QQStoryProtectedAccess.unlocked);
+	}
+
 	function refreshStoryData() {
 		if (!window.QQStoryApiClient) {
 			console.error('QQStoryApiClient 未定义，请检查 api-client.js 是否正确加载。');
 			return Promise.resolve();
 		}
+		var loveNotesRequest = hasProtectedContentAccess()
+			? window.QQStoryApiClient.getLoveNotes().catch(function (error) {
+				console.error('无法获取信件', error);
+				return { data: [] };
+			})
+			: Promise.resolve({ data: [] });
 		setStoryLoading(true);
 		return Promise.all([
 			window.QQStoryApiClient.getMilestones().catch(function (error) {
@@ -2059,10 +2073,7 @@ function normalizeMomentsData() {
 				console.error('无法获取瞬间', error);
 				return { data: [] };
 			}),
-			window.QQStoryApiClient.getLoveNotes().catch(function (error) {
-				console.error('无法获取信件', error);
-				return { data: [] };
-			}),
+			loveNotesRequest,
 		window.QQStoryApiClient.getComments({ pageSize: 100 }, { auth: true }).catch(function (error) {
 			console.error('无法获取留言', error);
 			return { data: [] };

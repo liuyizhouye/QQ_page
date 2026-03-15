@@ -114,7 +114,8 @@ Internet
 ## 6. 当前已知实现细节
 
 - 前端固定请求 `https://api.hanbaodoudou.com/api`，本地开发时才走 `http://localhost:8080/api`。
-- `Letters` 和 `Story Manager` 的解锁密码仍然在前端代码里，属于展示层门禁，不是真正安全边界。
+- `Letters` 和 `Story Manager` 的解锁密码已迁移为服务端校验，密码只保存在 ECS 的 `server/.env` 中。
+- `Letters` 列表接口和 `/uploads/letters/*` PDF 下载都依赖服务端校验后的 `HttpOnly` cookie 或管理员 `x-api-key`。
 - 真正需要保护的写操作依赖后端 `x-api-key`。
 - 数据库当前是 SQLite，运行时主库位于 ECS 本地磁盘 `/srv/qq-story/data/qq_story.db`。
 - 上传文件当前保存在 ECS 本地目录 `/srv/qq-story/uploads`。
@@ -126,7 +127,6 @@ Internet
    - 定时检查 `https://api.hanbaodoudou.com/health`
    - 定期抽查数据库快照与上传文件是否可恢复
 2. 处理安全债务。
-   - 把前端硬编码密码迁移为服务端校验或更合理的访问控制
    - 轮换管理员 API key
    - 不把任何密钥、口令、截图中的敏感信息写入仓库
 

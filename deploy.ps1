@@ -54,8 +54,17 @@ try {
         throw "Failed to create release archive"
     }
 
-    $sshArgs = @("-p", $Port.ToString())
-    $scpArgs = @("-P", $Port.ToString())
+    $sshArgs = @(
+        "-o", "ServerAliveInterval=30",
+        "-o", "ServerAliveCountMax=6",
+        "-p", $Port.ToString()
+    )
+    $scpArgs = @(
+        "-O",
+        "-o", "ServerAliveInterval=30",
+        "-o", "ServerAliveCountMax=6",
+        "-P", $Port.ToString()
+    )
     if ($IdentityFile) {
         $sshArgs += @("-i", $IdentityFile)
         $scpArgs += @("-i", $IdentityFile)
@@ -81,7 +90,11 @@ finally {
         Remove-Item -LiteralPath $tempRoot -Recurse -Force
     }
 
-    $cleanupArgs = @("-p", $Port.ToString())
+    $cleanupArgs = @(
+        "-o", "ServerAliveInterval=30",
+        "-o", "ServerAliveCountMax=6",
+        "-p", $Port.ToString()
+    )
     if ($IdentityFile) {
         $cleanupArgs += @("-i", $IdentityFile)
     }

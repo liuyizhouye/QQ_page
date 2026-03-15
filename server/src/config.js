@@ -25,6 +25,7 @@ const MAX_UPLOAD_SIZE_MB = parseInt(process.env.MAX_UPLOAD_SIZE_MB || '20', 10);
 const RATE_LIMIT_WINDOW_MINUTES = parseInt(process.env.RATE_LIMIT_WINDOW_MINUTES || '15', 10);
 const RATE_LIMIT_MAX_REQUESTS = parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || '100', 10);
 const MEDIA_BASE_URL = (process.env.MEDIA_BASE_URL || (NODE_ENV === 'production' ? 'https://api.hanbaodoudou.com' : '')).replace(/\/$/, '');
+const PROTECTED_ACCESS_PASSWORD = (process.env.PROTECTED_ACCESS_PASSWORD || '').trim();
 
 const DEFAULT_ALLOWED_ORIGINS = NODE_ENV === 'production'
   ? ['https://hanbaodoudou.com', 'https://www.hanbaodoudou.com', 'https://api.hanbaodoudou.com']
@@ -72,4 +73,5 @@ export default {
   RATE_LIMIT_MAX_REQUESTS,
   MEDIA_BASE_URL,
   ALLOWED_ORIGINS,
+  PROTECTED_ACCESS_PASSWORD,
 };

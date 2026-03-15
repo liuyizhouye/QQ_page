@@ -3,6 +3,7 @@ import { v4 as uuid } from 'uuid';
 import db from '../db.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 import requireApiKey from '../middleware/apiKey.js';
+import requireProtectedAccess from '../middleware/protectedAccess.js';
 import { sanitizeText, validateISODate } from '../utils/validators.js';
 import { mapLoveNoteRow } from '../transformers.js';
 import { saveDataUrlToFile, deleteStoredFile } from '../services/fileService.js';
@@ -11,6 +12,7 @@ const router = Router();
 
 router.get(
   '/',
+  requireProtectedAccess,
   asyncHandler(async (req, res) => {
     // 设置响应头，防止缓存，确保所有用户都能看到最新数据
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');

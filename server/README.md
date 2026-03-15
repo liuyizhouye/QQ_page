@@ -52,6 +52,7 @@ cp env.example .env
 PORT=8080
 NODE_ENV=production
 ADMIN_API_KEYS=replace_with_secure_key
+PROTECTED_ACCESS_PASSWORD=replace_with_private_letters_password
 DATABASE_FILE=/srv/qq-story/data/qq_story.db
 UPLOAD_DIR=/srv/qq-story/uploads
 LOG_DIR=/srv/qq-story/logs
@@ -178,15 +179,23 @@ curl https://api.hanbaodoudou.com/health
 | GET | `/api/comments` | 获取留言 | 否 |
 | POST | `/api/comments` | 提交留言 | 否 |
 | DELETE | `/api/comments/:id` | 删除留言 | 是 |
-| GET | `/api/letters` | 获取信件 | 否 |
+| GET | `/api/letters` | 获取信件 | 受保护访问 |
 | POST | `/api/letters` | 创建信件 | 是 |
 | DELETE | `/api/letters/:id` | 删除信件 | 是 |
+| GET | `/api/protected-access/status` | 查询解锁状态 | 否 |
+| POST | `/api/protected-access/unlock` | 校验受保护内容密码并写入 ECS 侧 cookie 会话 | 否 |
 
 写接口需要请求头：
 
 ```text
 x-api-key: <ADMIN_API_KEYS 中的任意一个>
 ```
+
+受保护内容密码说明：
+
+- `PROTECTED_ACCESS_PASSWORD` 只保存在 ECS 的 `server/.env` 中，不再写在前端源码里。
+- `Letters` 列表与 `/uploads/letters/*` PDF 下载都需要先调用 `/api/protected-access/unlock`。
+- 解锁成功后，API 会返回一个 `HttpOnly` cookie；前端只知道“已解锁”，拿不到密码本身。
 
 ## 备份建议
 

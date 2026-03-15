@@ -62,7 +62,8 @@
       var separator = path.indexOf('?') === -1 ? '?' : '&';
       finalPath = path + separator + '_t=' + encodeURIComponent(Date.now());
     }
-    return fetch(finalPath, Object.assign({}, options, { headers: headers }))
+    var requestOptions = Object.assign({ credentials: 'include' }, options, { headers: headers });
+    return fetch(finalPath, requestOptions)
       .then(handleResponse)
       .catch(function (error) {
         console.error('API request failed', error);
@@ -90,6 +91,20 @@
   var apiClient = {
     setAdminKey: function (key) {
       config.adminKey = key || '';
+    },
+    getProtectedAccessStatus: function () {
+      return jsonRequest(buildUrl('/protected-access/status'));
+    },
+    unlockProtectedContent: function (password) {
+      return jsonRequest(buildUrl('/protected-access/unlock'), {
+        method: 'POST',
+        body: { password: password || '' }
+      });
+    },
+    clearProtectedContentAccess: function () {
+      return jsonRequest(buildUrl('/protected-access/logout'), {
+        method: 'POST'
+      });
     },
     getMilestones: function () {
       return jsonRequest(buildUrl('/milestones'));
