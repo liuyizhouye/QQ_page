@@ -86,11 +86,27 @@
 
 	function scheduleInitialStoryHydration() {
 		var run = function () {
+			if (storyDataHydratedOnce || storyRefreshInFlight) {
+				return;
+			}
 			if (typeof window.QQStoryRefreshStoryData === 'function') {
 				window.QQStoryRefreshStoryData();
+				return;
 			}
+			setTimeout(run, 50);
 		};
 		setTimeout(run, 10);
+	}
+
+	function scheduleInitialCommentsRecovery() {
+		setTimeout(function () {
+			if (friendCommentsSubmitting) {
+				return;
+			}
+			if (!friendCommentsHasFetched || !friendComments.length) {
+				initializeFriendComments({ forceFetch: true, page: friendCommentsState.page || 1 });
+			}
+		}, 450);
 	}
 
 	function syncChapterCoverCopy() {
@@ -1142,6 +1158,7 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var currentMomentMediaIndex = 0;
 	var hideMomentTimer = null;
 	var currentVisibleMomentIds = [];
+	var storyDataHydratedOnce = false;
 	var storyRefreshInFlight = null;
 	var storyRefreshQueued = false;
 	var $momentViewer = $('#moment-viewer');
@@ -1162,8 +1179,15 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 			window.QQStoryRefreshStoryData();
 		}
 	});
+	window.addEventListener('pageshow', function (event) {
+		if (event && event.persisted) {
+			scheduleInitialStoryHydration();
+			scheduleInitialCommentsRecovery();
+		}
+	});
 
 	initializeFriendComments({ forceFetch: true });
+	scheduleInitialCommentsRecovery();
 	bindForms();
 	bindDeletion();
 	setupTabListeners();
@@ -2180,6 +2204,7 @@ function normalizeMomentsData() {
 			storyData.moments = ensureArray(unwrapApiData(results[1], []));
 			storyData.loveNotes = ensureArray(unwrapApiData(results[2], []));
 			storyData.comments = ensureArray(unwrapApiData(results[3], []));
+			storyDataHydratedOnce = true;
 			storyData.memories = [];
 			mergeMemoriesIntoMilestones();
 			normalizeMilestonesData();
