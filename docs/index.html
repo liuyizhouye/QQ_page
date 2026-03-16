@@ -525,8 +525,8 @@
                         </div>
                         <div class="col-12">
                           <label for="moment-media-input" class="form-label small text-muted mb-1">添加照片或视频（可多选）</label>
-                          <input id="moment-media-input" type="file" class="form-control" name="moment-media" accept="image/*,video/*" multiple>
-                          <div class="form-text">支持 JPG、PNG、MP4 等常见格式，最大建议 20MB。</div>
+                          <input id="moment-media-input" type="file" class="form-control" name="moment-media" accept=".jpg,.jpeg,.png,.gif,.webp,.mp4,.webm,image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm" multiple>
+                          <div class="form-text">支持 JPG、JPEG、PNG、GIF、WEBP、MP4、WEBM，最大建议 20MB。</div>
                         </div>
                         <div class="col-12 text-end">
                           <button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button>
@@ -761,7 +761,7 @@
 <!-- Custom Script -->
 <script src="js/api.config.js?v=20260313a"></script>
 <script src="js/api-client.js?v=20260313a"></script>
-<script src="js/theme.js?v=20260314f"></script>
+<script src="js/theme.js?v=20260316a"></script>
 <script>
 (function () {
   var audio = document.getElementById('background-audio');

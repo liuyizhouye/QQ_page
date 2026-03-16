@@ -84,11 +84,10 @@
 		$('.preloader').delay(150).fadeOut('slow');
 	}
 
-function scheduleInitialStoryHydration() {
-	var run = function () {
-		initializeFriendComments();
-		refreshStoryData();
-	};
+	function scheduleInitialStoryHydration() {
+		var run = function () {
+			refreshStoryData();
+		};
 		if ('requestIdleCallback' in window) {
 			window.requestIdleCallback(run, { timeout: 1500 });
 			return;
@@ -1127,8 +1126,16 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var $commentPrev = null;
 	var $commentNext = null;
 	var $commentPageIndicator = null;
+	var $commentSubmitButton = null;
+	var friendCommentsInitialized = false;
+	var friendCommentsHasFetched = false;
+	var friendCommentsSubmitting = false;
+	var defaultCommentEmptyText = '暂时没有留言，邀请好友写下祝福吧。';
 	var DEFAULT_MOMENT_COVER = 'images/profile_new.webp';
 	var MAX_MOMENT_FILE_SIZE = 20 * 1024 * 1024;
+	var MOMENT_ACCEPTED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/webm'];
+	var MOMENT_ACCEPTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.mp4', '.webm'];
+	var MOMENT_ACCEPTED_FILE_LABEL = 'JPG、JPEG、PNG、GIF、WEBP、MP4、WEBM';
 	var momentsIsotope = null;
 	var $momentsGrid = null;
 	var currentMomentsFilter = '*';
@@ -1152,13 +1159,14 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 		refreshStoryData();
 	});
 
+	initializeFriendComments({ forceFetch: true });
 	bindForms();
-bindDeletion();
-setupTabListeners();
-bindLetterPaginationControls();
-bindStoryManagerPaginationControls();
-initLetterUpload();
-scheduleInitialStoryHydration();
+	bindDeletion();
+	setupTabListeners();
+	bindLetterPaginationControls();
+	bindStoryManagerPaginationControls();
+	initLetterUpload();
+	scheduleInitialStoryHydration();
 
 	if ($momentViewer.length) {
 		$momentClose.on('click', function () {
@@ -1583,6 +1591,10 @@ function normalizeMomentsData() {
 		}
 		var tasks = files.map(function (file) {
 			return new Promise(function (resolve, reject) {
+				if (!isAllowedMomentFile(file)) {
+					reject(new Error('仅支持上传 ' + MOMENT_ACCEPTED_FILE_LABEL + ' 格式的文件'));
+					return;
+				}
 				if (file.size > MAX_MOMENT_FILE_SIZE) {
 					reject(new Error('文件 "' + file.name + '" 超过 20MB， 请压缩后重新上传'));
 					return;
@@ -1613,6 +1625,24 @@ function normalizeMomentsData() {
 				}
 				return normalized;
 			}).filter(Boolean);
+		});
+	}
+
+	function isAllowedMomentFile(file) {
+		if (!file) {
+			return false;
+		}
+		var mimeType = file.type ? file.type.toLowerCase() : '';
+		if (mimeType && MOMENT_ACCEPTED_MIME_TYPES.indexOf(mimeType) !== -1) {
+			return true;
+		}
+		return hasAllowedMomentFileExtension(file.name || '');
+	}
+
+	function hasAllowedMomentFileExtension(fileName) {
+		var lowerName = (fileName || '').toLowerCase();
+		return MOMENT_ACCEPTED_EXTENSIONS.some(function (extension) {
+			return lowerName.slice(-extension.length) === extension;
 		});
 	}
 
@@ -2325,7 +2355,8 @@ function normalizeMomentsData() {
 		}
 	}
 
-	function initializeFriendComments() {
+	function initializeFriendComments(options) {
+		options = options || {};
 		$commentList = $('#comments-list');
 		$commentEmpty = $('#comments-empty');
 		$commentForm = $('#friend-comment-form');
@@ -2334,16 +2365,25 @@ function normalizeMomentsData() {
 		$commentPrev = $('#comments-prev');
 		$commentNext = $('#comments-next');
 		$commentPageIndicator = $('#comments-page-indicator');
-		friendComments = [];
-		friendCommentsState = { page: 1, totalPages: 1, total: 0 };
+		$commentSubmitButton = $commentForm.find('[type="submit"]');
 
 		if (!$commentList.length || !$commentEmpty.length) {
-			return;
+			return false;
 		}
+		defaultCommentEmptyText = $.trim($commentEmpty.text()) || defaultCommentEmptyText;
 
-		bindFriendCommentForm();
-		bindFriendCommentPaginationControls();
-		fetchFriendComments(1);
+		if (!friendCommentsInitialized) {
+			friendComments = [];
+			friendCommentsState = { page: 1, totalPages: 1, total: 0 };
+			bindFriendCommentForm();
+			bindFriendCommentPaginationControls();
+			friendCommentsInitialized = true;
+		}
+		if (options.forceFetch || !friendCommentsHasFetched) {
+			friendCommentsHasFetched = true;
+			fetchFriendComments(options.page || 1);
+		}
+		return true;
 	}
 
 	function bindFriendCommentForm() {
@@ -2360,9 +2400,12 @@ function normalizeMomentsData() {
 		if (!$commentForm || !$commentForm.length) {
 			return;
 		}
+		if (friendCommentsSubmitting) {
+			return;
+		}
 		if (!window.QQStoryApiClient) {
 			console.error('QQStoryApiClient 未定义，无法提交留言。');
-			displayFriendCommentFeedback('系统暂不可用，请稍后再试。', 'error');
+			displayFriendCommentFeedback('系统暂不可用，请稍后再试。', 'error', { autoHide: false });
 			return;
 		}
 		var $authorInput = $commentForm.find('[name="comment-author"]');
@@ -2376,7 +2419,8 @@ function normalizeMomentsData() {
 			}
 			return;
 		}
-		$commentForm.addClass('is-submitting');
+		friendCommentsSubmitting = true;
+		setFriendCommentSubmittingState(true);
 		window.QQStoryApiClient.createComment({ author: author, message: message })
 			.then(function () {
 				displayFriendCommentFeedback('感谢留言！已为你记录。', 'success');
@@ -2385,15 +2429,17 @@ function normalizeMomentsData() {
 				} else {
 					$commentForm.trigger('reset');
 				}
-				fetchFriendComments(1);
+				friendCommentsState.page = 1;
+				return fetchFriendComments(1);
 			})
 			.catch(function (error) {
 				console.error('提交留言失败', error);
 				var messageText = (error && error.message) ? error.message : '提交留言失败，请稍后再试。';
-				displayFriendCommentFeedback(messageText, 'error');
+				displayFriendCommentFeedback(messageText, 'error', { autoHide: false });
 			})
 			.finally(function () {
-				$commentForm.removeClass('is-submitting');
+				friendCommentsSubmitting = false;
+				setFriendCommentSubmittingState(false);
 			});
 	}
 
@@ -2415,16 +2461,15 @@ function normalizeMomentsData() {
 	function fetchFriendComments(page) {
 		if (!window.QQStoryApiClient) {
 			console.error('QQStoryApiClient 未定义，无法加载留言。');
-			return;
+			setFriendCommentEmptyState('系统暂不可用，请稍后刷新重试。', true);
+			return Promise.resolve();
 		}
 		var targetPage = parseInt(page, 10);
 		if (Number.isNaN(targetPage) || targetPage < 1) {
 			targetPage = 1;
 		}
-		if ($commentList) {
-			$commentList.addClass('is-loading');
-		}
-		window.QQStoryApiClient.getComments({ page: targetPage, pageSize: FRIEND_COMMENTS_PER_PAGE })
+		setFriendCommentListLoadingState(true);
+		return window.QQStoryApiClient.getComments({ page: targetPage, pageSize: FRIEND_COMMENTS_PER_PAGE })
 			.then(function (response) {
 				var items = ensureArray(unwrapApiData(response, []));
 				friendComments = items.map(normalizeFriendCommentEntry).filter(Boolean).sort(function (a, b) {
@@ -2442,12 +2487,13 @@ function normalizeMomentsData() {
 			})
 			.catch(function (error) {
 				console.error('加载留言失败', error);
-				displayFriendCommentFeedback('加载留言失败，请稍后再试。', 'error');
+				if (!friendComments.length) {
+					setFriendCommentEmptyState('留言加载失败，请稍后刷新重试。', true);
+				}
+				displayFriendCommentFeedback('加载留言失败，请稍后再试。', 'error', { autoHide: false });
 			})
 			.finally(function () {
-				if ($commentList) {
-					$commentList.removeClass('is-loading');
-				}
+				setFriendCommentListLoadingState(false);
 			});
 	}
 
@@ -2456,16 +2502,12 @@ function normalizeMomentsData() {
 			return;
 		}
 		if (!friendComments.length) {
-			if ($commentEmpty && $commentEmpty.length) {
-				$commentEmpty.removeClass('d-none');
-			}
+			setFriendCommentEmptyState(defaultCommentEmptyText, true);
 			hideFriendCommentPagination();
 			$commentList.empty();
 			return;
 		}
-		if ($commentEmpty && $commentEmpty.length) {
-			$commentEmpty.addClass('d-none');
-		}
+		setFriendCommentEmptyState(defaultCommentEmptyText, false);
 		// API 已经返回了当前页的数据，直接渲染，不需要再切片
 		$commentList.empty();
 		friendComments.forEach(function (entry) {
@@ -2535,6 +2577,36 @@ function normalizeMomentsData() {
 		}
 	}
 
+	function setFriendCommentSubmittingState(isSubmitting) {
+		if ($commentForm && $commentForm.length) {
+			$commentForm.toggleClass('is-submitting', !!isSubmitting);
+			$commentForm.attr('aria-busy', isSubmitting ? 'true' : 'false');
+		}
+		if ($commentSubmitButton && $commentSubmitButton.length) {
+			$commentSubmitButton.prop('disabled', !!isSubmitting).toggleClass('disabled', !!isSubmitting);
+		}
+	}
+
+	function setFriendCommentListLoadingState(isLoading) {
+		if ($commentList && $commentList.length) {
+			$commentList.toggleClass('is-loading', !!isLoading);
+			$commentList.attr('aria-busy', isLoading ? 'true' : 'false');
+		}
+		if (isLoading && !friendComments.length) {
+			setFriendCommentEmptyState('正在加载留言...', true);
+		}
+	}
+
+	function setFriendCommentEmptyState(message, visible) {
+		if (!$commentEmpty || !$commentEmpty.length) {
+			return;
+		}
+		if (typeof message === 'string' && message) {
+			$commentEmpty.text(message);
+		}
+		$commentEmpty.toggleClass('d-none', !visible);
+	}
+
 	function normalizeFriendCommentEntry(entry) {
 		if (!entry || typeof entry !== 'object') {
 			return null;
@@ -2544,7 +2616,13 @@ function normalizeMomentsData() {
 			return null;
 		}
 		var author = typeof entry.author === 'string' ? entry.author.trim() : '';
-		var submittedAt = entry.submittedAt && typeof entry.submittedAt === 'string' ? entry.submittedAt : new Date().toISOString();
+		var submittedAtSource = '';
+		if (entry.submittedAt && typeof entry.submittedAt === 'string') {
+			submittedAtSource = entry.submittedAt;
+		} else if (entry.createdAt && typeof entry.createdAt === 'string') {
+			submittedAtSource = entry.createdAt;
+		}
+		var submittedAt = submittedAtSource || new Date().toISOString();
 		return {
 			id: entry.id || ('fc-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8)),
 			author: author,
@@ -2557,17 +2635,29 @@ function normalizeMomentsData() {
 		return formatDisplayDateTime(value) || formatDisplayDate(value) || '刚刚';
 	}
 
-	function displayFriendCommentFeedback(message, type) {
+	function displayFriendCommentFeedback(message, type, options) {
+		options = options || {};
 		if (!$commentFeedback || !$commentFeedback.length) {
 			return;
 		}
-		var isError = type === 'error';
-		$commentFeedback.removeClass('d-none alert-success alert-danger');
-		$commentFeedback.addClass(isError ? 'alert-danger' : 'alert-success').text(message);
+		var alertClass = 'alert-success';
+		if (type === 'error') {
+			alertClass = 'alert-danger';
+		} else if (type === 'info') {
+			alertClass = 'alert-info';
+		}
+		$commentFeedback.removeClass('d-none alert-success alert-danger alert-info');
+		$commentFeedback.addClass(alertClass).text(message);
 		clearTimeout(commentFeedbackTimer);
-		commentFeedbackTimer = setTimeout(function () {
-			$commentFeedback.addClass('d-none');
-		}, 2600);
+		var shouldAutoHide = options.autoHide;
+		if (shouldAutoHide === undefined) {
+			shouldAutoHide = type === 'success';
+		}
+		if (shouldAutoHide) {
+			commentFeedbackTimer = setTimeout(function () {
+				$commentFeedback.addClass('d-none');
+			}, 2600);
+		}
 	}
 
 	function renderLoveNotes() {

@@ -41,6 +41,7 @@ export function mapCommentRow(row) {
     author: row.author || '',
     message: row.message,
     createdAt: row.created_at,
+    submittedAt: row.created_at,
   };
 }
 

@@ -27,8 +27,8 @@ router.get(
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Expires', '0');
     
-    const page = Math.max(parseInt(req.query.page || '1', 10), 1);
-    const pageSize = Math.min(Math.max(parseInt(req.query.pageSize || '5', 10), 1), 100);
+    const page = Math.max(clampToPositive(req.query.page, 1), 1);
+    const pageSize = Math.min(Math.max(clampToPositive(req.query.pageSize, 5), 1), 100);
     const offset = (page - 1) * pageSize;
     
     // 检查是否有管理员权限（通过 x-api-key header）
