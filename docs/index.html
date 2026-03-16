@@ -23,7 +23,7 @@
 <!-- Magnific Popup -->
 <link rel="stylesheet" type="text/css" href="vendor/magnific-popup/magnific-popup.min.css" />
 <!-- Custom Stylesheet -->
-<link rel="stylesheet" type="text/css" href="css/stylesheet.css?v=20260316g" />
+<link rel="stylesheet" type="text/css" href="css/stylesheet.css?v=20260316h" />
 </head>
 
 <body class="side-header" data-bs-spy="scroll" data-bs-target="#header-nav" data-bs-offset="1">
@@ -201,6 +201,7 @@
           <div class="col-lg-11 mx-auto">
             <div id="timeline-content" class="chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
               <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
+              <div id="milestones-scroll-hint" class="timeline-scroll-hint d-none" role="note">左右拖动时间线可查看更多记录</div>
               <div id="milestones-list" class="milestone-timeline"></div>
             </div>
           </div>
@@ -424,24 +425,34 @@
               <p class="text-muted mb-4" data-sync-copy-from="#memory [data-protected-cover] p">输入密码后即可查看；新增、上传和删除还需要管理员 API key。</p>
               <button type="button" class="btn btn-primary rounded-pill mobile-manager-toggle" data-mobile-manager-toggle data-collapsed-label="展开管理工具" data-expanded-label="收起管理工具" aria-expanded="false">展开管理工具</button>
             </div>
+            <div class="story-admin-auth story-admin-bar border rounded-4 bg-light p-3 p-lg-4 mb-4">
+              <div class="story-admin-bar-main">
+                <div class="story-admin-bar-copy">
+                  <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                    <span id="story-admin-key-badge" class="story-admin-badge">写入已锁定</span>
+                    <span class="small text-muted">新增、上传和删除需要管理员 API key</span>
+                  </div>
+                  <div id="story-admin-key-status" class="small text-muted">未启用写入权限。点保存或删除时，也会自动带你回到这里验证管理员 API key。</div>
+                </div>
+                <div class="story-admin-bar-actions">
+                  <button type="button" class="btn btn-primary btn-sm" id="story-admin-key-toggle" aria-expanded="false" aria-controls="story-admin-panel">启用写入</button>
+                  <button type="button" class="btn btn-outline-secondary btn-sm d-none" id="story-admin-key-clear">停用</button>
+                </div>
+              </div>
+              <div id="story-admin-panel" class="story-admin-panel d-none">
+                <div class="input-group">
+                  <input id="story-admin-key-input" type="password" class="form-control" placeholder="输入管理员 API key" aria-label="管理员 API key" autocomplete="off" spellcheck="false">
+                  <button type="button" class="btn btn-outline-primary" id="story-admin-key-apply">验证并启用</button>
+                </div>
+                <div class="form-text text-muted mt-2">key 只保存在当前页面内存，刷新后需要重新输入。点保存或删除时也会自动引导你来到这里。</div>
+              </div>
+            </div>
             <div class="memory-workspace" data-mobile-manager-workspace>
             <div class="row gy-4">
               <div class="col-md-4 col-xl-3 order-1 order-md-0 text-center text-md-start">
                 <div class="memory-subblock h-100">
                   <h2 class="mb-3 text-5 text-uppercase">使用小贴士</h2>
                   <p class="text-3 mb-4">把里程碑、精选瞬间、偏爱清单与书信统一管理。所有数据都会安全保存在云端服务器。</p>
-                  <div class="story-admin-auth border rounded-4 bg-light p-3 mb-4">
-                    <h2 class="mb-2 text-5 text-uppercase">写入权限</h2>
-                    <p class="small text-muted mb-3">解锁 Story Manager 只负责查看内容；新增、上传和删除还需要管理员 API key。key 只保存在当前页面内存，刷新后需要重新输入。</p>
-                    <div class="input-group mb-2">
-                      <input id="story-admin-key-input" type="password" class="form-control" placeholder="输入管理员 API key" aria-label="管理员 API key" autocomplete="off" spellcheck="false">
-                      <button type="button" class="btn btn-outline-primary" id="story-admin-key-apply">启用</button>
-                    </div>
-                    <div class="d-flex flex-wrap gap-2">
-                      <button type="button" class="btn btn-outline-secondary btn-sm" id="story-admin-key-clear">清空当前 key</button>
-                    </div>
-                    <div id="story-admin-key-status" class="form-text text-muted mt-2">未启用写入权限。未输入 API key 时，QQ Footprint、Moments、Letters 的新增/上传，以及 Story Manager 内的删除操作都会被服务器拒绝。</div>
-                  </div>
                   <h2 class="mb-3 text-5 text-uppercase">分类概览</h2>
                   <ul class="list-unstyled text-3 lh-lg mb-4">
                     <li><i class="fas fa-flag text-primary me-2"></i>QQ Footprint <span class="badge bg-light text-muted" id="story-count-milestones">0</span></li>
@@ -487,6 +498,7 @@
                           <div class="col-12"><textarea class="form-control" rows="3" name="milestone-detail" placeholder="细节或想说的话（可选）"></textarea></div>
                           <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存里程碑</button></div>
                         </form>
+                        <div id="milestone-form-feedback" class="story-form-feedback d-none" role="status" aria-live="polite"></div>
                       </div>
                     </div>
                   <div class="tab-pane fade mobile-pane-collapsed" id="story-pane-moments" role="tabpanel" aria-labelledby="tab-link-moments">
@@ -539,12 +551,13 @@
                         <div class="col-12">
                           <label for="moment-media-input" class="form-label small text-muted mb-1">添加照片或视频（可多选）</label>
                           <input id="moment-media-input" type="file" class="form-control" name="moment-media" accept=".jpg,.jpeg,.png,.gif,.webp,.mp4,.webm,image/jpeg,image/png,image/gif,image/webp,video/mp4,video/webm" multiple>
-                          <div class="form-text">支持 JPG、JPEG、PNG、GIF、WEBP、MP4、WEBM，最大建议 20MB。</div>
+                          <div class="form-text">支持 JPG、JPEG、PNG、GIF、WEBP、MP4、WEBM，最大建议 20MB。不上传媒体也可以先保存标题和日期。</div>
                         </div>
                         <div class="col-12 text-end">
                           <button type="submit" class="btn btn-primary rounded-pill">保存瞬间</button>
                         </div>
                       </form>
+                      <div id="moment-form-feedback" class="story-form-feedback d-none" role="status" aria-live="polite"></div>
                     </div>
                   </div>
                   <div class="tab-pane fade mobile-pane-collapsed" id="story-pane-loveNotes" role="tabpanel" aria-labelledby="tab-link-loveNotes">
@@ -583,6 +596,7 @@
                         </div>
                         <div class="col-12 text-end"><button type="submit" class="btn btn-primary rounded-pill">保存信件</button></div>
                       </form>
+                      <div id="letter-form-feedback" class="story-form-feedback d-none" role="status" aria-live="polite"></div>
                     </div>
                   </div>
                   <div class="tab-pane fade mobile-pane-collapsed" id="story-pane-comments" role="tabpanel" aria-labelledby="tab-link-comments">
@@ -774,7 +788,7 @@
 <!-- Custom Script -->
 <script src="js/api.config.js?v=20260313a"></script>
 <script src="js/api-client.js?v=20260313a"></script>
-  <script src="js/theme.js?v=20260316e"></script>
+  <script src="js/theme.js?v=20260316f"></script>
 <script>
 (function () {
   var audio = document.getElementById('background-audio');
