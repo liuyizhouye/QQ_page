@@ -16,11 +16,20 @@ export function mapMilestoneRow(row) {
 export function mapMomentRow(row) {
   if (!row) return null;
   const media = safeParseJson(row.media_json, []);
-  // Transform media URLs if MEDIA_BASE_URL is set
-  const transformedMedia = media.map(item => ({
-    ...item,
-    url: resolveUrl(item.url)
-  }));
+  const transformedMedia = media
+    .map((item) => {
+      if (!item || typeof item !== 'object') {
+        return null;
+      }
+      const rawUrl = item.url || item.publicPath || item.relativePath || '';
+      const rawPoster = item.poster || item.posterSrc || '';
+      return {
+        ...item,
+        url: resolveUrl(rawUrl),
+        poster: resolveUrl(rawPoster),
+      };
+    })
+    .filter(Boolean);
 
   return {
     id: row.id,
@@ -68,7 +77,13 @@ function safeParseJson(value, fallback) {
   }
   try {
     const parsed = JSON.parse(value);
-    return Array.isArray(parsed) || typeof parsed === 'object' ? parsed : fallback;
+    if (Array.isArray(fallback)) {
+      return Array.isArray(parsed) ? parsed : fallback;
+    }
+    if (fallback && typeof fallback === 'object') {
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : fallback;
+    }
+    return parsed;
   } catch {
     return fallback;
   }
@@ -76,11 +91,32 @@ function safeParseJson(value, fallback) {
 
 function resolveUrl(path) {
   if (!path) return '';
-  if (path.startsWith('http') || path.startsWith('data:')) return path;
-  
+  const normalizedPath = normalizePath(path);
+  if (/^(https?:|data:)/i.test(normalizedPath)) return normalizedPath;
   if (config.MEDIA_BASE_URL) {
-    const cleanPath = path.startsWith('/') ? path : '/' + path;
+    const cleanPath = normalizedPath.startsWith('/') ? normalizedPath : '/' + normalizedPath;
     return config.MEDIA_BASE_URL + cleanPath;
   }
-  return path;
+  return normalizedPath.startsWith('/') ? normalizedPath : '/' + normalizedPath;
+}
+
+function normalizePath(path) {
+  const normalized = String(path || '').trim().replace(/\\/g, '/').replace(/^\.\//, '');
+  if (!normalized) {
+    return '';
+  }
+  if (/^(https?:|data:)/i.test(normalized)) {
+    return normalized;
+  }
+  if (normalized.startsWith('/uploads/')) {
+    return normalized;
+  }
+  if (normalized.startsWith('uploads/')) {
+    return '/' + normalized;
+  }
+  const stripped = normalized.replace(/^\/+/, '');
+  if (/^(letters|moments|misc)\//i.test(stripped)) {
+    return '/uploads/' + stripped;
+  }
+  return normalized.startsWith('/') ? normalized : '/' + stripped;
 }

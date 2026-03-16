@@ -86,13 +86,11 @@
 
 	function scheduleInitialStoryHydration() {
 		var run = function () {
-			refreshStoryData();
+			if (typeof window.QQStoryRefreshStoryData === 'function') {
+				window.QQStoryRefreshStoryData();
+			}
 		};
-		if ('requestIdleCallback' in window) {
-			window.requestIdleCallback(run, { timeout: 1500 });
-			return;
-		}
-		setTimeout(run, 300);
+		setTimeout(run, 10);
 	}
 
 	function syncChapterCoverCopy() {
@@ -1141,11 +1139,15 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var currentMomentsFilter = '*';
 	var currentMomentIndex = -1;
 	var currentMomentId = null;
+	var currentMomentMediaIndex = 0;
 	var hideMomentTimer = null;
 	var currentVisibleMomentIds = [];
+	var storyRefreshInFlight = null;
+	var storyRefreshQueued = false;
 	var $momentViewer = $('#moment-viewer');
 	var $momentImage = $('#moment-viewer-image');
 	var $momentVideo = $('#moment-viewer-video');
+	var $momentMediaStrip = $('#moment-viewer-media-strip');
 	var $momentTitle = $('#moment-viewer-title');
 	var $momentDate = $('#moment-viewer-date');
 	var $momentDescription = $('#moment-viewer-description');
@@ -1156,7 +1158,9 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var $momentClose = $('#moment-viewer-close');
 
 	window.addEventListener('qqstoryprotectedaccesschange', function () {
-		refreshStoryData();
+		if (typeof window.QQStoryRefreshStoryData === 'function') {
+			window.QQStoryRefreshStoryData();
+		}
 	});
 
 	initializeFriendComments({ forceFetch: true });
@@ -1183,7 +1187,22 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 		$momentNext.on('click', function () {
 			showMomentByIndex(currentMomentIndex + 1);
 		});
+		$momentMediaStrip.on('click', '.moment-viewer-media-thumb', function () {
+			var index = parseInt($(this).data('mediaIndex'), 10);
+			if (isNaN(index)) {
+				return;
+			}
+			showCurrentMomentMedia(index);
+		});
 	}
+
+	$(document).on('click.storyMomentPreview', '.story-moment-preview', function () {
+		var id = $(this).data('momentId');
+		if (!id) {
+			return;
+		}
+		showMomentById(id);
+	});
 
 	$(document).on('keydown.storyMomentViewer', function (event) {
 		if (!isMomentViewerOpen()) {
@@ -1481,6 +1500,40 @@ function normalizeMomentsData() {
 		return upgraded;
 	}
 
+	function getApiOrigin() {
+		var apiBaseUrl = (window.QQStoryApi && window.QQStoryApi.baseUrl) || 'https://api.hanbaodoudou.com/api';
+		return apiBaseUrl.replace(/\/api\/?$/, '');
+	}
+
+	function buildUploadsUrl(relativePath) {
+		var normalizedPath = (relativePath || '').replace(/\\/g, '/').replace(/^\/+/, '');
+		if (!normalizedPath) {
+			return '';
+		}
+		return getApiOrigin() + '/uploads/' + normalizedPath;
+	}
+
+	function extractUploadsRelativePath(url) {
+		if (!url || typeof url !== 'string') {
+			return '';
+		}
+		var normalized = url.trim().replace(/\\/g, '/').replace(/^\.\//, '');
+		if (!normalized || /^(https?:|data:)/i.test(normalized)) {
+			return '';
+		}
+		if (normalized.indexOf('/uploads/') === 0) {
+			return normalized.slice('/uploads/'.length);
+		}
+		if (normalized.indexOf('uploads/') === 0) {
+			return normalized.slice('uploads/'.length);
+		}
+		normalized = normalized.replace(/^\/+/, '');
+		if (/^(letters|moments|misc)\//i.test(normalized)) {
+			return normalized;
+		}
+		return '';
+	}
+
 	// 将相对路径转换为完整的 API URL
 	function resolveMediaUrl(url) {
 		if (!url || typeof url !== 'string') {
@@ -1491,12 +1544,9 @@ function normalizeMomentsData() {
 		if (/^(https?:|data:)/i.test(url)) {
 			return url;
 		}
-		// 如果是相对路径（以 /uploads/ 开头），转换为 API 域名
-		if (url.startsWith('/uploads/')) {
-			var apiBaseUrl = (window.QQStoryApi && window.QQStoryApi.baseUrl) || 'https://api.hanbaodoudou.com/api';
-			// 移除 /api 后缀（如果有），因为 /uploads 是直接挂载在域名下的
-			apiBaseUrl = apiBaseUrl.replace(/\/api\/?$/, '');
-			return apiBaseUrl + url;
+		var relativePath = extractUploadsRelativePath(url);
+		if (relativePath) {
+			return buildUploadsUrl(relativePath);
 		}
 		return url;
 	}
@@ -1510,7 +1560,7 @@ function normalizeMomentsData() {
 		if (!item.id) {
 			changed = true;
 		}
-		var src = item.src || item.url || item.data || '';
+		var src = item.src || item.url || item.publicPath || item.relativePath || item.data || '';
 		if (!src || typeof src !== 'string') {
 			return null;
 		}
@@ -1528,7 +1578,7 @@ function normalizeMomentsData() {
 			changed = true;
 		}
 		type = type.toLowerCase().indexOf('video') === 0 ? 'video' : 'image';
-		var poster = item.poster || item.posterSrc || item.cover || '';
+		var poster = item.poster || item.posterSrc || item.posterUrl || item.cover || '';
 		if (!poster && type === 'image') {
 			poster = src;
 		} else if (!poster && type === 'video') {
@@ -1704,6 +1754,19 @@ function normalizeMomentsData() {
 			};
 		}
 		return null;
+	}
+
+	function getMomentMediaItems(entry) {
+		if (!entry) {
+			return [];
+		}
+		if (Array.isArray(entry.media) && entry.media.length) {
+			return entry.media.map(function (item) {
+				return normalizeMomentMediaItem(item);
+			}).filter(Boolean);
+		}
+		var primary = getMomentPrimaryMedia(entry);
+		return primary ? [primary] : [];
 	}
 
 	function getMomentCoverSrc(entry) {
@@ -1982,8 +2045,8 @@ function normalizeMomentsData() {
 		if (normalizedDate && entry.date && normalizedDate !== entry.date) {
 			changed = true;
 		}
-		var pdfUrl = (entry.pdfUrl || entry.pdf || '').trim();
-		if (!entry.pdfUrl && entry.pdf) {
+		var pdfUrl = (entry.pdfUrl || entry.pdf || entry.pdfPath || entry.pdf_path || '').trim();
+		if (!entry.pdfUrl && (entry.pdf || entry.pdfPath || entry.pdf_path)) {
 			changed = true;
 		}
 		// 将 PDF URL 的相对路径转换为完整 URL
@@ -2082,7 +2145,11 @@ function normalizeMomentsData() {
 		return Boolean(window.QQStoryProtectedAccess && window.QQStoryProtectedAccess.unlocked);
 	}
 
-	function refreshStoryData() {
+	var refreshStoryData = function refreshStoryData() {
+		if (storyRefreshInFlight) {
+			storyRefreshQueued = true;
+			return storyRefreshInFlight;
+		}
 		if (!window.QQStoryApiClient) {
 			console.error('QQStoryApiClient 未定义，请检查 api-client.js 是否正确加载。');
 			return Promise.resolve();
@@ -2094,7 +2161,7 @@ function normalizeMomentsData() {
 			})
 			: Promise.resolve({ data: [] });
 		setStoryLoading(true);
-		return Promise.all([
+		storyRefreshInFlight = Promise.all([
 			window.QQStoryApiClient.getMilestones().catch(function (error) {
 				console.error('无法获取里程碑', error);
 				return { data: [] };
@@ -2124,8 +2191,15 @@ function normalizeMomentsData() {
 			alert('同步故事数据失败，请稍后刷新页面重试。');
 		}).finally(function () {
 			setStoryLoading(false);
+			storyRefreshInFlight = null;
+			if (storyRefreshQueued) {
+				storyRefreshQueued = false;
+				return refreshStoryData();
+			}
 		});
-	}
+		return storyRefreshInFlight;
+	};
+	window.QQStoryRefreshStoryData = refreshStoryData;
 
 	function renderMilestones() {
 		var $mainList = $('#milestones-list');
@@ -2256,15 +2330,19 @@ function normalizeMomentsData() {
 				return descriptor.slug ? 'cat-' + descriptor.slug : '';
 			}).filter(Boolean);
 			var colClasses = ['col-sm-6', 'col-lg-6', 'moment-item'].concat(filterClasses).join(' ').trim();
-			var $col = $('<div/>', { 'class': colClasses });
+			var mediaItems = getMomentMediaItems(entry);
+			var $col = $('<div/>', { 'class': colClasses, 'data-moment-id': entry.id });
 			var $box = $('<article/>', { 'class': 'portfolio-box moment-card rounded position-relative overflow-hidden h-100' });
 			var $mediaWrap = $('<div/>', { 'class': 'portfolio-img moment-card-media rounded' });
-			var primaryMedia = getMomentPrimaryMedia(entry);
+			var primaryMedia = mediaItems[0] || null;
 			var coverSrc = getMomentCoverSrc(entry);
 			var mediaAlt = entry.title || 'moment media';
 			$mediaWrap.append($('<img/>', { 'class': 'img-fluid d-block', 'src': coverSrc, 'alt': mediaAlt }));
 			if (primaryMedia && primaryMedia.type === 'video') {
 				$mediaWrap.append($('<span/>', { 'class': 'moment-media-indicator', 'aria-hidden': 'true' }).append($('<i/>', { 'class': 'fas fa-play' })));
+			}
+			if (mediaItems.length > 1) {
+				$mediaWrap.append($('<span/>', { 'class': 'moment-media-count-badge' }).text(mediaItems.length + ' 项内容'));
 			}
 			var $overlay = $('<div/>', { 'class': 'portfolio-overlay' });
 			var $anchor = $('<a/>', {
@@ -2306,15 +2384,18 @@ function normalizeMomentsData() {
 		}
 		if (primaryMedia) {
 			metaParts.push(primaryMedia.type === 'video' ? '视频' : '照片');
+		}
+		if (mediaItems.length > 1) {
+			metaParts.push(mediaItems.length + ' 个文件');
+		}
+		if (entry.description) {
+			metaParts.push(entry.description);
+		}
+		if (primaryMedia) {
+			var mediaLabel = getMomentMediaLabel(primaryMedia);
+			if (mediaLabel) {
+				metaParts.push(mediaLabel);
 			}
-			if (entry.description) {
-				metaParts.push(entry.description);
-			}
-			if (primaryMedia) {
-				var mediaLabel = getMomentMediaLabel(primaryMedia);
-				if (mediaLabel) {
-					metaParts.push(mediaLabel);
-				}
 		}
 		if (!metaParts.length && entry.tags && entry.tags.length) {
 			metaParts.push(entry.tags.join(' / '));
@@ -2328,6 +2409,7 @@ function normalizeMomentsData() {
 			var typeBadge = primaryMedia.type === 'video' ? '视频' : '照片';
 			$actions.append($('<span/>', { 'class': 'badge bg-light text-muted' }).text(typeBadge));
 		}
+		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-primary story-moment-preview', 'data-moment-id': entry.id }).text('查看'));
 		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'moments', 'data-id': entry.id }).text('删除'));
 		$item.append($body, $actions);
 		managerItems.push($item);
@@ -2769,6 +2851,11 @@ function normalizeMomentsData() {
 		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2' });
 		var pdfStatus = isSafePdfHref(pdfHref) ? 'PDF 已保存' : 'PDF 待上传';
 		$actions.append($('<span/>', { 'class': 'badge bg-light text-muted text-nowrap' }).text(pdfStatus));
+		if (isSafePdfHref(pdfHref)) {
+			var $openLink = $('<a/>', { 'href': pdfHref, 'class': 'btn btn-sm btn-outline-primary text-nowrap' }).text('打开 PDF');
+			enrichPdfLinkAttributes($openLink, pdfHref, entry.pdfName);
+			$actions.append($openLink);
+		}
 		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'loveNotes', 'data-id': entry.id }).text('删除'));
 		$item.append($body, $actions);
 		return $item;
@@ -2786,11 +2873,11 @@ function normalizeMomentsData() {
 
 	function getLetterPdfHref(entry) {
 		if (!entry) { return ''; }
-		var href = entry.pdfData || entry.pdfUrl || '';
+		var href = entry.pdfData || entry.pdfUrl || entry.pdfPath || entry.pdf_path || '';
 		if (typeof href !== 'string') {
 			return '';
 		}
-		return href.trim();
+		return resolveMediaUrl(href.trim());
 	}
 
 	function isSafePdfHref(href) {
@@ -3613,20 +3700,26 @@ function bindStoryManagerPaginationControls() {
 
 	function showMomentByIndex(index, options) {
 		refreshVisibleMomentIds();
+		var navigationIds = currentVisibleMomentIds.slice();
+		if (options && options.id && navigationIds.indexOf(options.id) === -1) {
+			navigationIds = storyData.moments.map(function (item) {
+				return item && item.id;
+			}).filter(Boolean);
+		}
 		if (options && options.id) {
-			var recalculated = currentVisibleMomentIds.indexOf(options.id);
+			var recalculated = navigationIds.indexOf(options.id);
 			if (recalculated !== -1) {
 				index = recalculated;
 			}
 		}
-		if (!currentVisibleMomentIds.length) {
+		if (!navigationIds.length) {
 			hideMomentViewer(true);
 			return;
 		}
-		if (index < 0 || index >= currentVisibleMomentIds.length) {
+		if (index < 0 || index >= navigationIds.length) {
 			return;
 		}
-		var id = currentVisibleMomentIds[index];
+		var id = navigationIds[index];
 		var entry = storyData.moments.find(function (item) {
 			return item.id === id;
 		});
@@ -3634,11 +3727,15 @@ function bindStoryManagerPaginationControls() {
 			hideMomentViewer(true);
 			return;
 		}
+		var sameMoment = currentMomentId === id;
+		currentVisibleMomentIds = navigationIds;
+		var mediaItems = getMomentMediaItems(entry);
 		currentMomentIndex = index;
 		currentMomentId = id;
-		var primaryMedia = getMomentPrimaryMedia(entry);
-		var coverSrc = getMomentCoverSrc(entry);
-		updateMomentViewerMedia(primaryMedia, coverSrc, entry.title);
+		currentMomentMediaIndex = (options && typeof options.mediaIndex === 'number')
+			? options.mediaIndex
+			: (sameMoment ? currentMomentMediaIndex : 0);
+		var primaryMedia = mediaItems[currentMomentMediaIndex] || mediaItems[0] || null;
 
 		if (entry.title) {
 			$momentTitle.text(entry.title).removeClass('d-none');
@@ -3667,6 +3764,9 @@ function bindStoryManagerPaginationControls() {
 		if (primaryMedia) {
 			tagList.push(primaryMedia.type === 'video' ? '视频' : '照片');
 		}
+		if (mediaItems.length > 1) {
+			tagList.push(mediaItems.length + ' 个文件');
+		}
 		if (entry.tags && entry.tags.length) {
 			tagList = tagList.concat(entry.tags);
 		}
@@ -3685,21 +3785,106 @@ function bindStoryManagerPaginationControls() {
 			$momentTags.addClass('d-none');
 		}
 
-		if (entry.link) {
-			var linkAttrs = { href: entry.link, target: '_blank' };
-			if (/^https?:/i.test(entry.link)) {
-				linkAttrs.rel = 'noopener noreferrer';
-			}
-			$momentLink.removeClass('d-none').attr(linkAttrs);
-			if (!linkAttrs.rel) {
-				$momentLink.removeAttr('rel');
-			}
-		} else {
-			$momentLink.addClass('d-none').removeAttr('href target rel');
-		}
-
+		showCurrentMomentMedia(currentMomentMediaIndex);
 		updateMomentNavState();
 		showMomentViewer();
+	}
+
+	function getCurrentMomentEntry() {
+		if (!currentMomentId) {
+			return null;
+		}
+		return storyData.moments.find(function (item) {
+			return item.id === currentMomentId;
+		}) || null;
+	}
+
+	function showCurrentMomentMedia(index) {
+		var entry = getCurrentMomentEntry();
+		if (!entry) {
+			return;
+		}
+		var mediaItems = getMomentMediaItems(entry);
+		if (!mediaItems.length) {
+			currentMomentMediaIndex = 0;
+			updateMomentViewerMedia(null, getMomentCoverSrc(entry), entry.title);
+			renderMomentViewerMediaStrip(entry, mediaItems);
+			updateMomentLinkState(entry, null);
+			return;
+		}
+		if (typeof index !== 'number' || isNaN(index)) {
+			index = currentMomentMediaIndex || 0;
+		}
+		index = Math.max(0, Math.min(index, mediaItems.length - 1));
+		currentMomentMediaIndex = index;
+		var activeMedia = mediaItems[index];
+		var coverSrc = activeMedia.type === 'video'
+			? (activeMedia.poster || getMomentCoverSrc(entry))
+			: activeMedia.src;
+		updateMomentViewerMedia(activeMedia, coverSrc, entry.title);
+		renderMomentViewerMediaStrip(entry, mediaItems);
+		updateMomentLinkState(entry, activeMedia);
+	}
+
+	function renderMomentViewerMediaStrip(entry, mediaItems) {
+		if (!$momentMediaStrip.length) {
+			return;
+		}
+		var items = Array.isArray(mediaItems) ? mediaItems : getMomentMediaItems(entry);
+		$momentMediaStrip.empty();
+		if (!items.length || items.length === 1) {
+			$momentMediaStrip.addClass('d-none');
+			return;
+		}
+		items.forEach(function (mediaItem, mediaIndex) {
+			var thumbSrc = mediaItem.type === 'video'
+				? (mediaItem.poster || DEFAULT_MOMENT_COVER)
+				: mediaItem.src;
+			var isActive = mediaIndex === currentMomentMediaIndex;
+			var label = getMomentMediaLabel(mediaItem) || ('媒体 ' + (mediaIndex + 1));
+			var $button = $('<button/>', {
+				'type': 'button',
+				'class': 'moment-viewer-media-thumb' + (isActive ? ' active' : ''),
+				'data-media-index': mediaIndex,
+				'aria-label': '查看第 ' + (mediaIndex + 1) + ' 项内容：' + label,
+				'aria-pressed': isActive ? 'true' : 'false'
+			});
+			$button.append($('<img/>', {
+				'src': thumbSrc,
+				'alt': label
+			}));
+			$button.append($('<span/>', { 'class': 'moment-viewer-media-thumb-label' }).text(mediaIndex + 1));
+			if (mediaItem.type === 'video') {
+				$button.append($('<span/>', { 'class': 'moment-viewer-media-thumb-indicator', 'aria-hidden': 'true' }).append($('<i/>', { 'class': 'fas fa-play' })));
+			}
+			$momentMediaStrip.append($button);
+		});
+		$momentMediaStrip.removeClass('d-none');
+	}
+
+	function updateMomentLinkState(entry, activeMedia) {
+		var href = '';
+		var label = '';
+		var detailLink = entry && entry.link ? resolveMediaUrl(entry.link) : '';
+		if (detailLink && isSafePdfHref(detailLink)) {
+			href = detailLink;
+			label = '打开详情';
+		} else if (activeMedia && activeMedia.src && isSafePdfHref(activeMedia.src)) {
+			href = activeMedia.src;
+			label = activeMedia.type === 'video' ? '打开视频' : '打开原图';
+		}
+		if (!href) {
+			$momentLink.text('打开详情').addClass('d-none').removeAttr('href target rel download');
+			return;
+		}
+		var linkAttrs = { href: href, target: '_blank' };
+		if (/^https?:/i.test(href)) {
+			linkAttrs.rel = 'noopener noreferrer';
+		}
+		$momentLink.text(label).removeClass('d-none').attr(linkAttrs).removeAttr('download');
+		if (!linkAttrs.rel) {
+			$momentLink.removeAttr('rel');
+		}
 	}
 
 	function updateMomentViewerMedia(primaryMedia, coverSrc, title) {
@@ -3769,6 +3954,9 @@ function bindStoryManagerPaginationControls() {
 		if ($momentImage.length) {
 			$momentImage.addClass('d-none').attr({ src: '', alt: '' });
 		}
+		if ($momentMediaStrip.length) {
+			$momentMediaStrip.empty().addClass('d-none');
+		}
 	}
 
 	function showMomentViewer() {
@@ -3797,6 +3985,7 @@ function bindStoryManagerPaginationControls() {
 		$('body').removeClass('moment-viewer-open');
 		currentMomentIndex = -1;
 		currentMomentId = null;
+		currentMomentMediaIndex = 0;
 		var delay = immediate ? 0 : 250;
 		if (delay === 0) {
 			$momentViewer.addClass('d-none');
