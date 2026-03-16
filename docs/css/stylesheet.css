@@ -4655,6 +4655,15 @@ body.moment-viewer-open {
   margin-bottom: 1.5rem;
 }
 
+.story-admin-auth {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.story-admin-auth .input-group .btn {
+  white-space: nowrap;
+}
+
 .letters-column-header {
   width: 100%;
 }
@@ -6380,8 +6389,13 @@ body.celebration-monthly .celebration-badge {
   #comments .btn,
   .story-form .btn,
   .story-manager-section .btn,
+  .story-admin-auth .btn,
   [data-protected-cover] .btn {
     width: 100%;
+  }
+
+  .story-admin-auth .input-group {
+    flex-direction: column;
   }
 
   #comments-pagination {

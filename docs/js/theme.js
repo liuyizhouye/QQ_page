@@ -1173,8 +1173,21 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var $momentPrev = $('#moment-viewer-prev');
 	var $momentNext = $('#moment-viewer-next');
 	var $momentClose = $('#moment-viewer-close');
+	var $storyAdminKeyInput = null;
+	var $storyAdminKeyApply = null;
+	var $storyAdminKeyClear = null;
+	var $storyAdminKeyStatus = null;
+	var storyAdminControlsInitialized = false;
+	var storyAdminKeyVerificationInFlight = false;
+	var storyAdminKeyValidated = false;
+	var defaultStoryAdminStatusText = '未启用写入权限。未输入 API key 时，QQ Footprint、Moments、Letters 的新增/上传，以及 Story Manager 内的删除操作都会被服务器拒绝。';
+	var storyAdminEnabledStatusText = '已启用当前页面的写入权限。刷新页面后需要重新输入管理员 API key。';
 
 	window.addEventListener('qqstoryprotectedaccesschange', function () {
+		if (!hasProtectedContentAccess()) {
+			clearStoryManagerAdminKey();
+			initializeStoryManagerAdminControls();
+		}
 		if (typeof window.QQStoryRefreshStoryData === 'function') {
 			window.QQStoryRefreshStoryData();
 		}
@@ -1188,6 +1201,7 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 
 	initializeFriendComments({ forceFetch: true });
 	scheduleInitialCommentsRecovery();
+	initializeStoryManagerAdminControls();
 	bindForms();
 	bindDeletion();
 	setupTabListeners();
@@ -2155,7 +2169,213 @@ function normalizeMomentsData() {
 	updateCounts();
 	rebindPopupGalleries();
 	initLetterUpload();
+	initializeStoryManagerAdminControls();
+	updateStoryManagerWriteControls();
 }
+
+	function getCurrentStoryAdminKey() {
+		if (!window.QQStoryApi || typeof window.QQStoryApi.adminKey !== 'string') {
+			return '';
+		}
+		return $.trim(window.QQStoryApi.adminKey);
+	}
+
+	function hasStoryManagerWriteAccess() {
+		return storyAdminKeyValidated && Boolean(getCurrentStoryAdminKey());
+	}
+
+	function setStoryManagerAdminKey(key) {
+		var normalized = $.trim(key || '');
+		storyAdminKeyValidated = false;
+		if (window.QQStoryApi && typeof window.QQStoryApi.setAdminKey === 'function') {
+			window.QQStoryApi.setAdminKey(normalized, { persist: 'memory' });
+		} else if (window.QQStoryApi) {
+			window.QQStoryApi.adminKey = normalized;
+		}
+		if (window.QQStoryApiClient && typeof window.QQStoryApiClient.setAdminKey === 'function') {
+			window.QQStoryApiClient.setAdminKey(normalized);
+		}
+		return normalized;
+	}
+
+	function clearStoryManagerAdminKey() {
+		storyAdminKeyValidated = false;
+		storyAdminKeyVerificationInFlight = false;
+		if (window.QQStoryApi && typeof window.QQStoryApi.clearStoredAdminKey === 'function') {
+			window.QQStoryApi.clearStoredAdminKey();
+		} else if (window.QQStoryApi) {
+			window.QQStoryApi.adminKey = '';
+		}
+		if (window.QQStoryApiClient && typeof window.QQStoryApiClient.setAdminKey === 'function') {
+			window.QQStoryApiClient.setAdminKey('');
+		}
+	}
+
+	function setStoryManagerAdminStatus(message, type) {
+		if (!$storyAdminKeyStatus || !$storyAdminKeyStatus.length) {
+			return;
+		}
+		var text = message || defaultStoryAdminStatusText;
+		$storyAdminKeyStatus
+			.text(text)
+			.removeClass('text-muted text-danger text-success');
+		if (type === 'error') {
+			$storyAdminKeyStatus.addClass('text-danger');
+		} else if (type === 'success') {
+			$storyAdminKeyStatus.addClass('text-success');
+		} else {
+			$storyAdminKeyStatus.addClass('text-muted');
+		}
+	}
+
+	function updateStoryManagerWriteControls() {
+		var hasAccess = hasStoryManagerWriteAccess();
+		var isVerifying = storyAdminKeyVerificationInFlight;
+		if ($storyAdminKeyInput && $storyAdminKeyInput.length) {
+			$storyAdminKeyInput.prop('disabled', isVerifying);
+		}
+		if ($storyAdminKeyApply && $storyAdminKeyApply.length) {
+			$storyAdminKeyApply.prop('disabled', isVerifying);
+		}
+		if ($storyAdminKeyClear && $storyAdminKeyClear.length) {
+			$storyAdminKeyClear.prop('disabled', isVerifying);
+		}
+		$('#memory .story-form [type="submit"], #memory .story-delete').each(function () {
+			var $control = $(this);
+			var isBusy = $control.data('writeBusy') === true;
+			if (!hasAccess || isVerifying) {
+				var title = isVerifying
+					? '管理员 API key 验证中，请稍候再执行写入操作'
+					: '请输入并验证管理员 API key 后再执行写入操作';
+				$control.prop('disabled', true).attr('title', title);
+				return;
+			}
+			if (!isBusy) {
+				$control.prop('disabled', false);
+			}
+			$control.removeAttr('title');
+		});
+	}
+
+	function initializeStoryManagerAdminControls() {
+		$storyAdminKeyInput = $('#story-admin-key-input');
+		$storyAdminKeyApply = $('#story-admin-key-apply');
+		$storyAdminKeyClear = $('#story-admin-key-clear');
+		$storyAdminKeyStatus = $('#story-admin-key-status');
+		if (!$storyAdminKeyInput.length || !$storyAdminKeyStatus.length) {
+			return false;
+		}
+		defaultStoryAdminStatusText = $.trim($storyAdminKeyStatus.text()) || defaultStoryAdminStatusText;
+		if (!storyAdminControlsInitialized) {
+			if ($storyAdminKeyApply.length) {
+				$storyAdminKeyApply.on('click', function () {
+					var value = $.trim($storyAdminKeyInput.val());
+					if (storyAdminKeyVerificationInFlight) {
+						return;
+					}
+					if (!value) {
+						setStoryManagerAdminStatus('请输入管理员 API key 后再启用写入权限。', 'error');
+						$storyAdminKeyInput.trigger('focus');
+						return;
+					}
+					var originalLabel = $storyAdminKeyApply.text();
+					storyAdminKeyVerificationInFlight = true;
+					storyAdminKeyValidated = false;
+					setStoryManagerAdminKey(value);
+					setStoryManagerAdminStatus('正在验证管理员 API key ...', 'muted');
+					updateStoryManagerWriteControls();
+					$storyAdminKeyApply.text('验证中...');
+					window.QQStoryApiClient.verifyAdminKey().then(function () {
+						storyAdminKeyValidated = true;
+						if ($storyAdminKeyInput.length) {
+							$storyAdminKeyInput.val('');
+						}
+						setStoryManagerAdminStatus(storyAdminEnabledStatusText, 'success');
+						if (hasProtectedContentAccess()) {
+							refreshStoryData();
+						}
+					}).catch(function (error) {
+						var message;
+						if (error && error.status === 401) {
+							message = '管理员 API key 无效，请重新输入后再试。';
+						} else {
+							message = getStoryManagerWriteErrorMessage(error, '管理员 API key 验证失败，请稍后再试。');
+						}
+						clearStoryManagerAdminKey();
+						setStoryManagerAdminStatus(message, 'error');
+						if ($storyAdminKeyInput.length) {
+							$storyAdminKeyInput.trigger('focus').trigger('select');
+						}
+					}).finally(function () {
+						storyAdminKeyVerificationInFlight = false;
+						$storyAdminKeyApply.text(originalLabel);
+						updateStoryManagerWriteControls();
+					});
+				});
+			}
+			if ($storyAdminKeyClear.length) {
+				$storyAdminKeyClear.on('click', function () {
+					clearStoryManagerAdminKey();
+					if ($storyAdminKeyInput.length) {
+						$storyAdminKeyInput.val('');
+						$storyAdminKeyInput.trigger('focus');
+					}
+					setStoryManagerAdminStatus(defaultStoryAdminStatusText, 'muted');
+					updateStoryManagerWriteControls();
+					if (hasProtectedContentAccess()) {
+						refreshStoryData();
+					}
+				});
+			}
+			$storyAdminKeyInput.on('keydown', function (event) {
+				if (event.key === 'Enter') {
+					event.preventDefault();
+					if ($storyAdminKeyApply.length) {
+						$storyAdminKeyApply.trigger('click');
+					}
+				}
+			}).on('input', function () {
+				if (hasStoryManagerWriteAccess()) {
+					setStoryManagerAdminStatus('当前写入权限仍然有效；如需替换 key，请点击“启用”重新验证。', 'muted');
+					return;
+				}
+				if ($storyAdminKeyStatus.hasClass('text-danger')) {
+					setStoryManagerAdminStatus('输入后点击“启用”即可恢复写入权限。', 'muted');
+				}
+			});
+			storyAdminControlsInitialized = true;
+		}
+		if (hasStoryManagerWriteAccess()) {
+			setStoryManagerAdminStatus(storyAdminEnabledStatusText, 'success');
+		} else if (getCurrentStoryAdminKey()) {
+			setStoryManagerAdminStatus('已检测到待验证的管理员 API key，请点击“启用”完成校验。', 'muted');
+		} else {
+			setStoryManagerAdminStatus(defaultStoryAdminStatusText, 'muted');
+		}
+		updateStoryManagerWriteControls();
+		return true;
+	}
+
+	function requireStoryManagerWriteAccess(actionLabel) {
+		initializeStoryManagerAdminControls();
+		if (hasStoryManagerWriteAccess()) {
+			return true;
+		}
+		var message = '当前页面还没有管理员 API key，请先在 Story Manager 中启用写入权限，再' + (actionLabel || '继续操作') + '。';
+		setStoryManagerAdminStatus(message, 'error');
+		if ($storyAdminKeyInput && $storyAdminKeyInput.length) {
+			$storyAdminKeyInput.trigger('focus');
+		}
+		return false;
+	}
+
+	function getStoryManagerWriteErrorMessage(error, fallback) {
+		var message = error && error.message ? error.message : '';
+		if ((error && error.status === 401) || /unauthorized/i.test(message)) {
+			return '管理员 API key 缺失或不正确，请在 Story Manager 中重新输入后再试。';
+		}
+		return message || fallback;
+	}
 
 	function setStoryLoading(isLoading) {
 		var $container = $('#storyTabContent');
@@ -2184,6 +2404,23 @@ function normalizeMomentsData() {
 				return { data: [] };
 			})
 			: Promise.resolve({ data: [] });
+		var commentsRequest = window.QQStoryApiClient.getComments(
+			{ pageSize: 100 },
+			{ auth: hasStoryManagerWriteAccess() }
+		).catch(function (error) {
+			if (error && error.status === 401) {
+				console.warn('管理员 API key 已失效，留言管理将回退为公开视图。', error);
+				clearStoryManagerAdminKey();
+				setStoryManagerAdminStatus('管理员 API key 已失效，已自动停用写入权限，请重新输入后再试。', 'error');
+				updateStoryManagerWriteControls();
+				return window.QQStoryApiClient.getComments({ pageSize: 100 }).catch(function (fallbackError) {
+					console.error('无法获取留言', fallbackError);
+					return { data: [] };
+				});
+			}
+			console.error('无法获取留言', error);
+			return { data: [] };
+		});
 		setStoryLoading(true);
 		storyRefreshInFlight = Promise.all([
 			window.QQStoryApiClient.getMilestones().catch(function (error) {
@@ -2195,10 +2432,7 @@ function normalizeMomentsData() {
 				return { data: [] };
 			}),
 			loveNotesRequest,
-		window.QQStoryApiClient.getComments({ pageSize: 100 }, { auth: true }).catch(function (error) {
-			console.error('无法获取留言', error);
-			return { data: [] };
-		})
+			commentsRequest
 		]).then(function (results) {
 			storyData.milestones = ensureArray(unwrapApiData(results[0], []));
 			storyData.moments = ensureArray(unwrapApiData(results[1], []));
@@ -3359,8 +3593,11 @@ function bindStoryManagerPaginationControls() {
 		var location = $.trim($form.find('[name=\"milestone-location\"]').val());
 		var detail = $.trim($form.find('[name=\"milestone-detail\"]').val());
 		if (!dateValue || !title) { return; }
+		if (!requireStoryManagerWriteAccess('保存里程碑')) {
+			return;
+		}
 		var occurredAt = normalizeMilestoneDateInput(dateValue) || dateValue;
-		$submitButton.prop('disabled', true);
+		$submitButton.data('writeBusy', true).prop('disabled', true);
 		window.QQStoryApiClient.createMilestone({
 			title: title,
 			occurredAt: occurredAt,
@@ -3375,9 +3612,12 @@ function bindStoryManagerPaginationControls() {
 			refreshStoryData();
 		}).catch(function (error) {
 			console.error('保存里程碑失败', error);
-			alert(error && error.message ? error.message : '保存里程碑失败，请稍后再试');
+			var message = getStoryManagerWriteErrorMessage(error, '保存里程碑失败，请稍后再试');
+			setStoryManagerAdminStatus(message, 'error');
+			alert(message);
 		}).finally(function () {
-			$submitButton.prop('disabled', false);
+			$submitButton.data('writeBusy', false).prop('disabled', false);
+			updateStoryManagerWriteControls();
 		});
 	});
 
@@ -3390,12 +3630,15 @@ function bindStoryManagerPaginationControls() {
 		if (!title || !dateValue) {
 			return;
 		}
+		if (!requireStoryManagerWriteAccess('保存瞬间')) {
+			return;
+		}
 		var tags = $form.find('[name=\"moment-tags\"]:checked').map(function () {
 			return $.trim($(this).val());
 		}).get();
 		var fileInput = $form.find('[name=\"moment-media\"]')[0];
 		var files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
-		$submitButton.prop('disabled', true);
+		$submitButton.data('writeBusy', true).prop('disabled', true);
 		readMomentFiles(files).then(function (mediaItems) {
 			var occurredAt = normalizeMomentDateInput(dateValue) || dateValue;
 			return window.QQStoryApiClient.createMoment({
@@ -3423,9 +3666,12 @@ function bindStoryManagerPaginationControls() {
 			refreshStoryData();
 		}).catch(function (error) {
 			console.error('保存瞬间失败', error);
-			alert(error && error.message ? error.message : '保存瞬间失败，请稍后再试');
+			var message = getStoryManagerWriteErrorMessage(error, '保存瞬间失败，请稍后再试');
+			setStoryManagerAdminStatus(message, 'error');
+			alert(message);
 		}).finally(function () {
-			$submitButton.prop('disabled', false);
+			$submitButton.data('writeBusy', false).prop('disabled', false);
+			updateStoryManagerWriteControls();
 		});
 	});
 
@@ -3436,6 +3682,9 @@ function bindStoryManagerPaginationControls() {
 		var writer = $form.find('[name=\"letter-writer\"]').val();
 		var date = $form.find('[name=\"letter-date\"]').val();
 		if (!writer || !date) { return; }
+		if (!requireStoryManagerWriteAccess('保存信件')) {
+			return;
+		}
 		initLetterUpload();
 		if (!letterUploadState.data) {
 			setLetterUploadStatus('请先上传一份 PDF 信件', 'error');
@@ -3445,7 +3694,7 @@ function bindStoryManagerPaginationControls() {
 		var config = LETTER_WRITER_CONFIG[writer] || LETTER_WRITER_CONFIG.doudou;
 		var pdfBundle = letterUploadState.data;
 		var entryDate = normalizedDate || date;
-		$submitButton.prop('disabled', true);
+		$submitButton.data('writeBusy', true).prop('disabled', true);
 		window.QQStoryApiClient.createLoveNote({
 			writer: writer,
 			recipient: config.recipientName,
@@ -3465,9 +3714,12 @@ function bindStoryManagerPaginationControls() {
 			refreshStoryData();
 		}).catch(function (error) {
 			console.error('保存信件失败', error);
-			setLetterUploadStatus(error && error.message ? error.message : '保存信件失败，请稍后再试', 'error');
+			var message = getStoryManagerWriteErrorMessage(error, '保存信件失败，请稍后再试');
+			setStoryManagerAdminStatus(message, 'error');
+			setLetterUploadStatus(message, 'error');
 		}).finally(function () {
-			$submitButton.prop('disabled', false);
+			$submitButton.data('writeBusy', false).prop('disabled', false);
+			updateStoryManagerWriteControls();
 			initLetterUpload();
 		});
 	});
@@ -3480,6 +3732,9 @@ function bindStoryManagerPaginationControls() {
 			var category = $button.data('category');
 			var id = $button.data('id');
 			if (!category || !id) { return; }
+			if (!requireStoryManagerWriteAccess('删除这条记录')) {
+				return;
+			}
 			if (!window.confirm('确定要删除这条记录吗？删除后将无法恢复。')) {
 				return;
 			}
@@ -3496,14 +3751,17 @@ function bindStoryManagerPaginationControls() {
 				console.warn('未知删除分类', category);
 				return;
 			}
-			$button.prop('disabled', true);
+			$button.data('writeBusy', true).prop('disabled', true);
 			request.then(function () {
 				refreshStoryData();
 			}).catch(function (error) {
 				console.error('删除失败', error);
-				alert(error && error.message ? error.message : '删除失败，请稍后再试');
+				var message = getStoryManagerWriteErrorMessage(error, '删除失败，请稍后再试');
+				setStoryManagerAdminStatus(message, 'error');
+				alert(message);
 			}).finally(function () {
-				$button.prop('disabled', false);
+				$button.data('writeBusy', false).prop('disabled', false);
+				updateStoryManagerWriteControls();
 			});
 		});
 

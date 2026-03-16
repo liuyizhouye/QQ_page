@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
 import config from '../config.js';
+import requireApiKey from '../middleware/apiKey.js';
 import {
   clearProtectedAccessCookie,
   isProtectedAccessConfigured,
@@ -26,6 +27,15 @@ router.get('/status', (req, res) => {
     data: {
       unlocked: requestHasProtectedAccess(req),
       configured: isProtectedAccessConfigured(),
+    },
+  });
+});
+
+router.get('/admin-status', requireApiKey, (req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+  res.json({
+    data: {
+      authorized: true,
     },
   });
 });

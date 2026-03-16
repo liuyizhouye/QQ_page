@@ -95,6 +95,9 @@
     getProtectedAccessStatus: function () {
       return jsonRequest(buildUrl('/protected-access/status'));
     },
+    verifyAdminKey: function () {
+      return jsonRequest(buildUrl('/protected-access/admin-status'), { auth: true });
+    },
     unlockProtectedContent: function (password) {
       return jsonRequest(buildUrl('/protected-access/unlock'), {
         method: 'POST',
