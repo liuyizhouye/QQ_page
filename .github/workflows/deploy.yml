@@ -40,14 +40,32 @@ jobs:
           ECS_PORT: ${{ secrets.ECS_PORT }}
           ECS_USER: ${{ secrets.ECS_USER }}
         run: |
+          SSH_OPTS=(
+            -o BatchMode=yes
+            -o ConnectTimeout=15
+            -o ServerAliveInterval=30
+            -o ServerAliveCountMax=6
+            -p "${ECS_PORT}"
+          )
+          SCP_OPTS=(
+            -O
+            -o BatchMode=yes
+            -o ConnectTimeout=15
+            -o ServerAliveInterval=30
+            -o ServerAliveCountMax=6
+            -P "${ECS_PORT}"
+          )
+
+          ssh "${SSH_OPTS[@]}" "${ECS_USER}@${ECS_HOST}" "echo 'SSH connectivity OK'"
+
           RELEASE_ID="${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}"
           REMOTE_ARTIFACT="/tmp/qq-page-release-${RELEASE_ID}.tar.gz"
           REMOTE_SCRIPT="/tmp/deploy-ecs-${RELEASE_ID}.sh"
 
-          scp -P "${ECS_PORT}" "$RUNNER_TEMP/qq-page-release.tar.gz" "${ECS_USER}@${ECS_HOST}:${REMOTE_ARTIFACT}"
-          scp -P "${ECS_PORT}" "scripts/deploy-ecs.sh" "${ECS_USER}@${ECS_HOST}:${REMOTE_SCRIPT}"
+          scp "${SCP_OPTS[@]}" "$RUNNER_TEMP/qq-page-release.tar.gz" "${ECS_USER}@${ECS_HOST}:${REMOTE_ARTIFACT}"
+          scp "${SCP_OPTS[@]}" "scripts/deploy-ecs.sh" "${ECS_USER}@${ECS_HOST}:${REMOTE_SCRIPT}"
 
-          ssh -p "${ECS_PORT}" "${ECS_USER}@${ECS_HOST}" \
+          ssh "${SSH_OPTS[@]}" "${ECS_USER}@${ECS_HOST}" \
             "chmod +x '${REMOTE_SCRIPT}' && RELEASE_ID='${RELEASE_ID}' '${REMOTE_SCRIPT}' '${REMOTE_ARTIFACT}'"
 
       - name: Clean up remote temp files
@@ -58,7 +76,14 @@ jobs:
           ECS_PORT: ${{ secrets.ECS_PORT }}
           ECS_USER: ${{ secrets.ECS_USER }}
         run: |
+          SSH_OPTS=(
+            -o BatchMode=yes
+            -o ConnectTimeout=15
+            -o ServerAliveInterval=30
+            -o ServerAliveCountMax=6
+            -p "${ECS_PORT}"
+          )
           RELEASE_ID="${GITHUB_SHA::7}-${GITHUB_RUN_NUMBER}"
           REMOTE_ARTIFACT="/tmp/qq-page-release-${RELEASE_ID}.tar.gz"
           REMOTE_SCRIPT="/tmp/deploy-ecs-${RELEASE_ID}.sh"
-          ssh -p "${ECS_PORT}" "${ECS_USER}@${ECS_HOST}" "rm -f '${REMOTE_ARTIFACT}' '${REMOTE_SCRIPT}'" || true
+          ssh "${SSH_OPTS[@]}" "${ECS_USER}@${ECS_HOST}" "rm -f '${REMOTE_ARTIFACT}' '${REMOTE_SCRIPT}'" || true
