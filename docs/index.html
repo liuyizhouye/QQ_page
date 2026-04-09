@@ -40,8 +40,8 @@
         
         <!-- Logo --> 
         <a href="index.html" class="mb-lg-auto mt-lg-4">
-			<span class="bg-dark-2 rounded-pill p-2 mb-lg-1 d-none d-lg-inline-block">
-				<img class="img-fluid rounded-pill d-block" src="images/profile_new.webp" title="兜兜 & 汉堡" alt="">
+			<span class="sidebar-portrait-shell bg-dark-2 p-2 mb-lg-1 d-none d-lg-inline-flex">
+				<img class="img-fluid d-block sidebar-portrait-image" src="images/profile_new.webp" title="兜兜 & 汉堡" alt="">
 			</span>
 			<h1 class="text-5 text-white text-center mb-0 d-lg-block">兜兜 &amp; 汉堡</h1>
         </a> 
@@ -196,13 +196,15 @@
         </div>
       </div>
       <button type="button" class="btn btn-outline-primary btn-sm section-toggle-btn toggle-timeline" data-target="#timeline-content">仅看背景</button>
-      <div class="container px-lg-5 mobile-editorial-body-wrap"> 
+      <div class="container px-lg-5 mobile-editorial-body-wrap timeline-stage-wrap">
         <div class="row">
-          <div class="col-lg-11 mx-auto">
+          <div class="col-12 timeline-stage-col">
             <div id="timeline-content" class="chapter-body chapter-body-sheet mobile-editorial-body mobile-editorial-sheet">
               <div id="milestones-empty" class="alert alert-light border text-muted text-center" role="status">暂时没有记录，请在“故事管理”区域添加新的里程碑。</div>
-              <div id="milestones-scroll-hint" class="timeline-scroll-hint d-none" role="note">左右拖动时间线可查看更多记录</div>
-              <div id="milestones-list" class="milestone-timeline"></div>
+              <div class="timeline-shell">
+                <div id="milestones-year-nav" class="timeline-year-nav d-none d-lg-flex is-empty" aria-label="QQ Footprint 年份导航"></div>
+                <div id="milestones-list" class="milestone-timeline"></div>
+              </div>
             </div>
           </div>
         </div>

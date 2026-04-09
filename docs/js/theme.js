@@ -1158,6 +1158,7 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var currentMomentMediaIndex = 0;
 	var hideMomentTimer = null;
 	var currentVisibleMomentIds = [];
+	var milestonesYearObserver = null;
 	var storyDataHydratedOnce = false;
 	var storyRefreshInFlight = null;
 	var storyRefreshQueued = false;
@@ -1907,22 +1908,7 @@ function normalizeMomentsData() {
 	}
 
 	function formatMomentDateForDisplay(value) {
-		var timestamp = parseMomentDateValue(value);
-		if (isNaN(timestamp)) {
-			return '';
-		}
-		try {
-			var formatter = new Intl.DateTimeFormat('zh-CN', {
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit',
-				hour: '2-digit',
-				minute: '2-digit'
-			});
-			return formatter.format(new Date(timestamp));
-		} catch (error) {
-			return new Date(timestamp).toLocaleString();
-		}
+		return formatDateOnlyForDisplay(value);
 	}
 
 	function hasTimeComponent(value) {
@@ -1940,6 +1926,31 @@ function normalizeMomentsData() {
 		return y + '.' + m + '.' + d;
 	}
 
+	function formatDateOnlyForDisplay(value) {
+		if (!value) { return ''; }
+		if (value instanceof Date) {
+			return formatDisplayDate(value);
+		}
+		var trimmed = value.toString().trim();
+		if (!trimmed) { return ''; }
+		var match = trimmed.match(/^(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})$/);
+		if (match) {
+			var year = match[1];
+			var month = match[2].padStart(2, '0');
+			var day = match[3].padStart(2, '0');
+			return year + '.' + month + '.' + day;
+		}
+		var timestamp = parseMomentDateValue(trimmed);
+		if (!isNaN(timestamp)) {
+			return formatDisplayDate(new Date(timestamp));
+		}
+		var parsed = Date.parse(trimmed);
+		if (!isNaN(parsed)) {
+			return formatDisplayDate(new Date(parsed));
+		}
+		return trimmed;
+	}
+
 	function formatDisplayDateTime(value) {
 		if (!value) { return ''; }
 		var date = value instanceof Date ? value : new Date(value);
@@ -1953,31 +1964,7 @@ function normalizeMomentsData() {
 	}
 
 	function formatDateTimeOrDateForDisplay(value) {
-		if (!value) { return ''; }
-		if (value instanceof Date) {
-			return formatDisplayDateTime(value);
-		}
-		var trimmed = value.toString().trim();
-		if (!trimmed) { return ''; }
-		if (hasTimeComponent(trimmed)) {
-			return formatDisplayDateTime(trimmed);
-		}
-		var match = trimmed.match(/^(\d{4})[\/\.-](\d{1,2})[\/\.-](\d{1,2})$/);
-		if (match) {
-			var year = match[1];
-			var month = match[2].padStart(2, '0');
-			var day = match[3].padStart(2, '0');
-			return year + '.' + month + '.' + day;
-		}
-		var parsed = Date.parse(trimmed);
-		if (!isNaN(parsed)) {
-			var parsedDate = new Date(parsed);
-			if (!hasTimeComponent(trimmed) && parsedDate.getHours() === 0 && parsedDate.getMinutes() === 0 && parsedDate.getSeconds() === 0) {
-				return formatDisplayDate(parsedDate);
-			}
-			return formatDisplayDateTime(parsedDate);
-		}
-		return trimmed;
+		return formatDateOnlyForDisplay(value);
 	}
 
 	function normalizeDateTimeInput(value) {
@@ -2573,56 +2560,50 @@ function normalizeMomentsData() {
 	function renderMilestones() {
 		var $mainList = $('#milestones-list');
 		var $mainEmpty = $('#milestones-empty');
-		var $scrollHint = $('#milestones-scroll-hint');
+		var $yearNav = $('#milestones-year-nav');
 		var $managerList = $('#manager-milestones-list');
 		var $managerEmpty = $('#manager-milestones-empty');
 
-	$mainList.empty();
-	$managerList.empty();
+		$mainList.empty();
+		$managerList.empty();
+		if ($yearNav.length) {
+			$yearNav.empty().addClass('is-empty');
+		}
+		disconnectMilestoneYearObserver();
 
-	if (!storyData.milestones.length) {
-		$mainEmpty.removeClass('d-none');
-		$scrollHint.addClass('d-none');
-		$managerEmpty.removeClass('d-none');
-		storyManagerPaginationState.milestones = 0;
-		updateStoryManagerPaginationControls('milestones', 0, 0);
-		return;
-	}
+		if (!storyData.milestones.length) {
+			$mainEmpty.removeClass('d-none');
+			$managerEmpty.removeClass('d-none');
+			storyManagerPaginationState.milestones = 0;
+			updateStoryManagerPaginationControls('milestones', 0, 0);
+			return;
+		}
 
-	$mainEmpty.addClass('d-none');
-	$managerEmpty.addClass('d-none');
-	$scrollHint.addClass('d-none');
+		$mainEmpty.addClass('d-none');
+		$managerEmpty.addClass('d-none');
 
-	var sorted = storyData.milestones.slice().sort(sortMilestonesAscending);
-	var lastYearLabel = null;
-	var $track = $('<div/>', { 'class': 'timeline-track' });
-	var managerItems = [];
-	$mainList.append($track);
+		var sorted = storyData.milestones.slice().sort(sortMilestonesAscending);
+		var groupedMilestones = [];
+		var groupedLookup = {};
+		var managerItems = [];
 
-	sorted.forEach(function (entry) {
-		var dateLabel = formatDateTimeOrDateForDisplay(entry.occurredAt);
-		var yearLabel = formatMilestoneYear(entry.occurredAt);
-
-			if (yearLabel && yearLabel !== lastYearLabel) {
-				$track.append($('<div/>', { 'class': 'timeline-year-badge' }).text(yearLabel));
-				lastYearLabel = yearLabel;
+		sorted.forEach(function (entry) {
+			var dateLabel = formatDateTimeOrDateForDisplay(entry.occurredAt);
+			var yearLabel = formatMilestoneYear(entry.occurredAt) || '未分年';
+			var yearKey = yearLabel === '未分年' ? 'undated' : ('year-' + yearLabel);
+			if (!groupedLookup[yearKey]) {
+				groupedLookup[yearKey] = {
+					key: yearKey,
+					label: yearLabel,
+					id: 'timeline-group-' + yearKey,
+					items: []
+				};
+				groupedMilestones.push(groupedLookup[yearKey]);
 			}
-
-			var $entry = $('<div/>', { 'class': 'timeline-item' });
-			$entry.append($('<span/>', { 'class': 'timeline-dot' }));
-
-			var $card = $('<div/>', { 'class': 'timeline-card' });
-			$card.append($('<span/>', { 'class': 'timeline-date' }).text(dateLabel || '日期待补充'));
-			$card.append($('<h3/>', { 'class': 'timeline-title text-5 fw-600 mb-2' }).text(entry.title || '未命名的里程碑'));
-			if (entry.location) {
-				$card.append($('<span/>', { 'class': 'timeline-location' }).text(entry.location));
-			}
-			if (entry.detail) {
-				$card.append($('<p/>', { 'class': 'timeline-detail mb-0' }).text(entry.detail));
-			}
-
-			$entry.append($card);
-			$track.append($entry);
+			groupedLookup[yearKey].items.push({
+				entry: entry,
+				dateLabel: dateLabel
+			});
 
 			var $managerItem = $('<div/>', { 'class': 'list-group-item d-flex align-items-start justify-content-between gap-3' });
 			var $body = $('<div/>', { 'class': 'flex-grow-1' });
@@ -2637,39 +2618,137 @@ function normalizeMomentsData() {
 			}
 			if (managerMeta.length) {
 				$body.append($('<p/>', { 'class': 'mb-0 small text-muted' }).text(managerMeta.join(' · ')));
-		}
-		var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
-		$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'milestones', 'data-id': entry.id }).text('删除'));
-		$managerItem.append($body, $actions);
-		managerItems.push($managerItem);
-	});
+			}
+			var $actions = $('<div/>', { 'class': 'd-flex flex-column align-items-end gap-2 text-nowrap' });
+			$actions.append($('<button/>', { 'type': 'button', 'class': 'btn btn-sm btn-outline-danger story-delete', 'data-category': 'milestones', 'data-id': entry.id }).text('删除'));
+			$managerItem.append($body, $actions);
+			managerItems.push($managerItem);
+		});
 
-	renderStoryManagerPagedList('milestones', $managerList, managerItems);
+		groupedMilestones.forEach(function (group, index) {
+			var $group = $('<section/>', {
+				'class': 'timeline-year-group',
+				'id': group.id,
+				'data-year-key': group.key
+			});
+			$group.append($('<div/>', { 'class': 'timeline-year-badge' }).text(group.label));
+			var $track = $('<div/>', { 'class': 'timeline-track' });
 
-	enableTimelineWheelScroll($mainList);
-}
+			group.items.forEach(function (record) {
+				var entry = record.entry;
+				var $entry = $('<article/>', { 'class': 'timeline-item' });
+				var $card = $('<div/>', { 'class': 'timeline-card' });
+				$card.append($('<span/>', { 'class': 'timeline-date' }).text(record.dateLabel || '日期待补充'));
+				$card.append($('<h3/>', { 'class': 'timeline-title text-5 fw-600 mb-2' }).text(entry.title || '未命名的里程碑'));
+				if (entry.location) {
+					$card.append($('<span/>', { 'class': 'timeline-location' }).text(entry.location));
+				}
+				if (entry.detail) {
+					$card.append($('<p/>', { 'class': 'timeline-detail mb-0' }).text(entry.detail));
+				}
+				$entry.append($card);
+				$track.append($entry);
+			});
 
-	function enableTimelineWheelScroll($container) {
-		if (!$container || !$container.length) {
+			$group.append($track);
+			$mainList.append($group);
+
+			if ($yearNav.length) {
+				var $yearChip = $('<button/>', {
+					'type': 'button',
+					'class': 'timeline-year-chip' + (index === 0 ? ' is-active' : ''),
+					'data-target': '#' + group.id,
+					'data-year-key': group.key,
+					'aria-pressed': index === 0 ? 'true' : 'false'
+				}).text(group.label);
+				if (index === 0) {
+					$yearChip.attr('aria-current', 'location');
+				}
+				$yearNav.append($yearChip);
+			}
+		});
+
+		renderStoryManagerPagedList('milestones', $managerList, managerItems);
+		bindMilestoneYearNavigation($yearNav, $mainList.find('.timeline-year-group'));
+	}
+
+	function disconnectMilestoneYearObserver() {
+		if (!milestonesYearObserver) {
 			return;
 		}
-		var updateHint = function () {
-			var $hint = $('#milestones-scroll-hint');
-			if (!$hint.length) {
+		milestonesYearObserver.disconnect();
+		milestonesYearObserver = null;
+	}
+
+	function setActiveMilestoneYear(yearKey) {
+		if (!yearKey) {
+			return;
+		}
+		$('#milestones-year-nav .timeline-year-chip').each(function () {
+			var $chip = $(this);
+			var isActive = $chip.data('yearKey') === yearKey;
+			$chip.toggleClass('is-active', isActive).attr('aria-pressed', isActive ? 'true' : 'false');
+			if (isActive) {
+				$chip.attr('aria-current', 'location');
+			} else {
+				$chip.removeAttr('aria-current');
+			}
+		});
+	}
+
+	function bindMilestoneYearNavigation($nav, $groups) {
+		disconnectMilestoneYearObserver();
+		if (!$nav || !$nav.length) {
+			return;
+		}
+		$nav.off('click.timelineYears');
+		if (!$groups || !$groups.length) {
+			$nav.addClass('is-empty');
+			return;
+		}
+
+		$nav.removeClass('is-empty');
+		setActiveMilestoneYear($groups.eq(0).data('yearKey'));
+		$nav.on('click.timelineYears', '.timeline-year-chip', function () {
+			var $chip = $(this);
+			var selector = $chip.data('target');
+			if (!selector) {
 				return;
 			}
-			var node = $container.get(0);
-			if (!node) {
-				$hint.addClass('d-none');
+			var target = document.querySelector(selector);
+			if (!target) {
 				return;
 			}
-			var canScrollHorizontally = node.scrollWidth > (node.clientWidth + 24);
-			$hint.toggleClass('d-none', !canScrollHorizontally);
-		};
-		$container.off('wheel.timelineScroll');
-		updateHint();
-		$(window).off('resize.timelineHint').on('resize.timelineHint', updateHint);
-		setTimeout(updateHint, 60);
+			setActiveMilestoneYear($chip.data('yearKey'));
+			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		});
+
+		if (typeof window.IntersectionObserver !== 'function') {
+			return;
+		}
+		milestonesYearObserver = new window.IntersectionObserver(function (entries) {
+			var visibleEntries = entries.filter(function (entry) {
+				return entry.isIntersecting;
+			});
+			if (!visibleEntries.length) {
+				return;
+			}
+			visibleEntries.sort(function (a, b) {
+				var offsetA = Math.abs(a.boundingClientRect.top - (window.innerHeight * 0.24));
+				var offsetB = Math.abs(b.boundingClientRect.top - (window.innerHeight * 0.24));
+				return offsetA - offsetB;
+			});
+			var activeYearKey = $(visibleEntries[0].target).data('yearKey');
+			setActiveMilestoneYear(activeYearKey);
+		}, {
+			root: null,
+			rootMargin: '-12% 0px -58% 0px',
+			threshold: [0, 0.2, 0.4, 0.7, 1]
+		});
+
+		$groups.each(function () {
+			milestonesYearObserver.observe(this);
+		});
 	}
 
 	function renderMoments() {
@@ -2707,7 +2786,7 @@ function normalizeMomentsData() {
 			var filterClasses = filters.map(function (descriptor) {
 				return descriptor.slug ? 'cat-' + descriptor.slug : '';
 			}).filter(Boolean);
-			var colClasses = ['col-sm-6', 'col-lg-6', 'moment-item'].concat(filterClasses).join(' ').trim();
+			var colClasses = ['col-6', 'col-xl-4', 'col-xxl-3', 'moment-item'].concat(filterClasses).join(' ').trim();
 			var mediaItems = getMomentMediaItems(entry);
 			var $col = $('<div/>', { 'class': colClasses, 'data-moment-id': entry.id });
 			var $box = $('<article/>', { 'class': 'portfolio-box moment-card rounded position-relative overflow-hidden h-100' });
@@ -3092,7 +3171,7 @@ function normalizeMomentsData() {
 	}
 
 	function formatFriendCommentTimestamp(value) {
-		return formatDisplayDateTime(value) || formatDisplayDate(value) || '刚刚';
+		return formatDateOnlyForDisplay(value) || '刚刚';
 	}
 
 	function displayFriendCommentFeedback(message, type, options) {
@@ -4304,12 +4383,12 @@ function bindStoryManagerPaginationControls() {
 		var href = '';
 		var label = '';
 		var detailLink = entry && entry.link ? resolveMediaUrl(entry.link) : '';
-		if (detailLink && isSafePdfHref(detailLink)) {
-			href = detailLink;
-			label = '打开详情';
-		} else if (activeMedia && activeMedia.src && isSafePdfHref(activeMedia.src)) {
+		if (activeMedia && activeMedia.src && isSafePdfHref(activeMedia.src)) {
 			href = activeMedia.src;
 			label = activeMedia.type === 'video' ? '打开视频' : '打开原图';
+		} else if (detailLink && isSafePdfHref(detailLink)) {
+			href = detailLink;
+			label = '打开详情';
 		}
 		if (!href) {
 			$momentLink.text('打开详情').addClass('d-none').removeAttr('href target rel download');

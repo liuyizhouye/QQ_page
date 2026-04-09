@@ -715,6 +715,24 @@ hr {
   align-self: stretch;
 }
 
+.sidebar-portrait-shell {
+  width: min(9.5rem, 100%);
+  aspect-ratio: 3 / 4;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 1.1rem 2.4rem rgba(15, 23, 42, 0.22);
+}
+
+.sidebar-portrait-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 42%;
+  border-radius: 1rem;
+}
+
 /*=== 4.1 Navigation ===*/
 .primary-menu {
   display: -webkit-box !important;
@@ -3690,7 +3708,7 @@ body.moment-viewer-open {
 .moment-viewer-dialog {
   background: #ffffff;
   border-radius: 1.5rem;
-  width: min(100%, 1040px);
+  width: min(100%, 1140px);
   max-height: calc(100vh - 3rem);
   overflow: hidden;
   position: relative;
@@ -3711,6 +3729,11 @@ body.moment-viewer-open {
 }
 
 .moment-viewer-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(18rem, 55vh, 44rem);
+  padding: 1rem;
   border-radius: 1.15rem;
   overflow: hidden;
   box-shadow: 0 1.25rem 2.5rem rgba(15, 23, 42, 0.18);
@@ -3718,11 +3741,21 @@ body.moment-viewer-open {
   position: relative;
 }
 
-.moment-viewer-media img,
+.moment-viewer-media img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(68vh, 860px);
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
 .moment-viewer-media video {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  max-height: min(68vh, 860px);
+  object-fit: contain;
   display: block;
 }
 
@@ -3877,12 +3910,32 @@ body.moment-viewer-open {
     padding: 1.75rem;
   }
 }
+.moment-card {
+  border-radius: 1.15rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(88, 112, 164, 0.08);
+  box-shadow: 0 1rem 2.5rem rgba(15, 23, 42, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.moment-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(13, 110, 253, 0.12);
+  box-shadow: 0 1.35rem 2.9rem rgba(15, 23, 42, 0.12);
+}
+
 .moment-card-media {
   position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #edf2f7;
 }
 
 .moment-card-media img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .object-fit-cover {
@@ -4013,6 +4066,21 @@ body.moment-viewer-open {
 
 .timeline-section-bg > .container > .row {
   width: 100%;
+}
+
+.timeline-stage-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-stage-col {
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .timeline-stage-wrap {
+    max-width: 1480px !important;
+  }
 }
 
 /* Birthday Tribute
@@ -4173,12 +4241,63 @@ body.moment-viewer-open {
 
 /* Milestone Timeline
 --------------------------------------------- */
+.timeline-shell {
+  display: grid;
+  grid-template-columns: minmax(8.75rem, 10rem) minmax(0, 1fr);
+  gap: clamp(1.25rem, 2.2vw, 2.75rem);
+  align-items: start;
+}
+
+.timeline-year-nav {
+  position: sticky;
+  top: 7rem;
+  align-self: start;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-year-nav.is-empty {
+  display: none !important;
+}
+
+.timeline-year-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease, transform 0.24s ease, border-color 0.24s ease;
+  box-shadow: 0 1rem 2rem -1.7rem rgba(15, 23, 42, 0.36);
+}
+
+.timeline-year-chip:hover,
+.timeline-year-chip:focus-visible {
+  color: #0d6efd;
+  border-color: rgba(13, 110, 253, 0.2);
+  background: rgba(255, 255, 255, 0.98);
+  transform: translateY(-1px);
+}
+
+.timeline-year-chip.is-active {
+  color: #0d6efd;
+  border-color: rgba(13, 110, 253, 0.18);
+  background: linear-gradient(135deg, rgba(13, 110, 253, 0.12) 0%, rgba(13, 110, 253, 0.02) 100%);
+  box-shadow: 0 1.2rem 2.4rem -1.7rem rgba(13, 110, 253, 0.42);
+}
+
 .milestone-timeline {
   position: relative;
-  overflow-x: auto;
-  padding: 0 0 2.5rem;
-  scroll-snap-type: x proximity;
-  scrollbar-width: thin;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 3vw, 3rem);
 }
 
 .milestone-timeline::-webkit-scrollbar {
@@ -4194,37 +4313,65 @@ body.moment-viewer-open {
   background: rgba(148, 163, 184, 0.1);
 }
 
+.timeline-year-group {
+  position: relative;
+  scroll-margin-top: 7.75rem;
+}
+
 .timeline-track {
-  display: flex;
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: 1.75rem;
-  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  position: relative;
+  display: grid;
+  gap: 1.2rem;
+  padding-left: 0.5rem;
   min-height: 100%;
 }
 
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  left: 0.4rem;
+  top: 0.85rem;
+  bottom: 0.85rem;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(13, 110, 253, 0.12) 0%, rgba(13, 110, 253, 0.35) 36%, rgba(13, 110, 253, 0.12) 100%);
+}
+
 .timeline-year-badge {
-  flex: 0 0 auto;
-  align-self: center;
-  padding: 0.35rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin-bottom: 1.2rem;
+  padding: 0.45rem 1rem;
   border-radius: 999px;
-  background: rgba(13, 110, 253, 0.1);
+  background: rgba(13, 110, 253, 0.08);
   color: #0d6efd;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  scroll-snap-align: start;
 }
 
 .timeline-item {
   position: relative;
-  flex: 0 0 clamp(260px, 60vw, 340px);
-  scroll-snap-align: start;
+  width: 100%;
+  min-width: 0;
+  padding-left: 1.45rem;
 }
 
 .timeline-dot {
   display: none;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.35rem;
+  width: 0.82rem;
+  height: 0.82rem;
+  border-radius: 999px;
+  background: #0d6efd;
+  box-shadow: 0 0 0 0.38rem rgba(13, 110, 253, 0.12);
 }
 
 .timeline-item::after {
@@ -4233,13 +4380,20 @@ body.moment-viewer-open {
 
 .timeline-card {
   position: relative;
-  margin-top: 0.75rem;
-  padding: 1.75rem;
+  margin-top: 0;
+  padding: 1.7rem 1.8rem;
   border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 1.25rem;
   background: #ffffff;
   box-shadow: 0 1.5rem 3rem rgba(15, 23, 42, 0.08);
   height: 100%;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.timeline-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(13, 110, 253, 0.14);
+  box-shadow: 0 1.8rem 3.3rem rgba(15, 23, 42, 0.11);
 }
 
 .timeline-date {
@@ -4269,20 +4423,35 @@ body.moment-viewer-open {
   color: #475569;
 }
 
+@media (max-width: 991.98px) {
+  .timeline-shell {
+    display: block;
+  }
+
+  .timeline-year-nav {
+    display: none !important;
+  }
+}
+
 @media (max-width: 767.98px) {
   .milestone-timeline {
-    padding-bottom: 2rem;
+    gap: 1.5rem;
   }
+
   .timeline-track {
-    gap: 1.25rem;
-    padding: 0.5rem 0.5rem 0.5rem 0.25rem;
+    gap: 1.05rem;
+    padding-left: 0;
   }
+
+  .timeline-track::before {
+    content: none;
+  }
+
   .timeline-item {
-    flex-basis: 80vw;
+    width: 100%;
+    padding-left: 0.55rem;
   }
-  .timeline-dot {
-    left: 1.8rem;
-  }
+
   .timeline-card {
     padding: 1.5rem;
   }
@@ -4999,8 +5168,14 @@ body.moment-viewer-open {
     overflow: hidden;
   }
 
+  #moments .portfolio-box .portfolio-img {
+    aspect-ratio: 4 / 5;
+  }
+
   #moments .portfolio-box .portfolio-img img {
-    aspect-ratio: 1 / 1;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: auto;
     object-fit: cover;
   }
 
@@ -6249,6 +6424,10 @@ body.celebration-monthly .celebration-badge {
     padding: 0;
   }
 
+  .timeline-track::before {
+    content: none;
+  }
+
   .timeline-year-badge {
     align-self: flex-start;
     margin: 0.15rem 0 0.1rem 0.95rem;
@@ -6341,8 +6520,8 @@ body.celebration-monthly .celebration-badge {
   }
 
   #moments .portfolio-filter > * {
-    flex: 0 0 100% !important;
-    max-width: 100% !important;
+    flex: 0 0 calc(50% - 0.5rem) !important;
+    max-width: calc(50% - 0.5rem) !important;
   }
 
   .moment-card {
@@ -6354,22 +6533,9 @@ body.celebration-monthly .celebration-badge {
 
   .moment-card-media img {
     width: 100%;
-    aspect-ratio: 4 / 4.8;
+    height: 100%;
+    aspect-ratio: auto;
     object-fit: cover;
-  }
-
-  #moments .portfolio-filter > .moment-item:first-child .moment-card {
-    background: #202737;
-    border-color: rgba(32, 39, 55, 0.2);
-    box-shadow: 0 1.8rem 3rem -1.7rem rgba(32, 39, 55, 0.78);
-  }
-
-  #moments .portfolio-filter > .moment-item:first-child .moment-card-media img {
-    aspect-ratio: 4 / 5.2;
-  }
-
-  #moments .portfolio-filter > .moment-item:first-child .portfolio-overlay {
-    background: linear-gradient(180deg, rgba(17, 24, 39, 0.12) 0%, rgba(17, 24, 39, 0.84) 100%);
   }
 
   .portfolio-overlay {
@@ -6398,13 +6564,18 @@ body.celebration-monthly .celebration-badge {
 
   .moment-viewer-media {
     margin-bottom: 1.1rem;
+    min-height: auto;
+    padding: 0.75rem;
     border-radius: 1.25rem;
   }
 
   .moment-viewer-media img,
   .moment-viewer-media video {
     max-height: 48svh;
-    aspect-ratio: 4 / 5;
+    width: 100%;
+    height: auto;
+    aspect-ratio: auto;
+    object-fit: contain;
   }
 
   .moment-viewer-close {
