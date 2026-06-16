@@ -8327,40 +8327,124 @@ body.celebration-monthly .celebration-badge {
     letter-spacing: 0;
   }
 
+  .qq-ui-refresh .mobile-home-map {
+    width: min(100%, 20.5rem);
+    display: flex;
+    gap: 0.52rem;
+    margin-top: 0.92rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .qq-ui-refresh .mobile-home-map::-webkit-scrollbar {
+    display: none;
+  }
+
+  .qq-ui-refresh .mobile-home-map-card {
+    flex: 0 0 8.25rem;
+    min-height: 4.58rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.68rem 0.76rem;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--qq-card-radius);
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff !important;
+    text-align: left;
+    text-decoration: none;
+    box-shadow: 0 0.9rem 1.8rem rgba(0, 0, 0, 0.13);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .qq-ui-refresh .mobile-home-map-card strong {
+    display: block;
+    color: #fff;
+    font-size: 0.94rem;
+    line-height: 1.15;
+  }
+
+  .qq-ui-refresh .mobile-home-map-card small {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.76rem;
+    line-height: 1.2;
+  }
+
+  .qq-ui-refresh .mobile-home-map-step {
+    color: #f2d08b;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+  }
+
+  .qq-ui-refresh .mobile-editorial-section {
+    padding-top: 1.05rem;
+    padding-bottom: 3.35rem;
+    border-top: 0;
+    overflow: hidden;
+  }
+
+  .qq-ui-refresh .mobile-editorial-section::after {
+    content: none;
+  }
+
+  .qq-ui-refresh .mobile-editorial-section > .container,
+  .qq-ui-refresh .mobile-editorial-body-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
   .qq-ui-refresh .mobile-section-cover {
-    min-height: 62svh;
+    min-height: 0;
+    height: 18.75rem;
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
-    margin-left: calc(var(--mobile-page-gutter) * -1);
-    margin-right: calc(var(--mobile-page-gutter) * -1);
-    padding: calc(env(safe-area-inset-top, 0px) + var(--mobile-nav-height) + 0.8rem) 1.05rem 3.25rem;
-    border-radius: 0 0 var(--qq-card-radius) var(--qq-card-radius) !important;
+    margin: 0;
+    padding: 1.1rem;
+    border-radius: calc(var(--qq-card-radius) + 4px) !important;
+    box-shadow:
+      0 1.25rem 2.4rem rgba(32, 33, 31, 0.16),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+
+  .qq-ui-refresh .mobile-section-cover::before {
+    background:
+      linear-gradient(180deg, rgba(8, 10, 12, 0.08) 0%, rgba(8, 10, 12, 0.22) 48%, rgba(8, 10, 12, 0.74) 100%),
+      radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 46%);
+  }
+
+  .qq-ui-refresh .mobile-section-cover::after {
+    height: 8rem;
+    background: linear-gradient(180deg, rgba(8, 10, 12, 0) 0%, rgba(8, 10, 12, 0.62) 100%);
   }
 
   .qq-ui-refresh .mobile-section-cover > * {
-    max-width: min(19rem, 100%);
+    max-width: min(19.25rem, 100%);
   }
 
   .qq-ui-refresh .mobile-section-cover-kicker {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.55rem;
     letter-spacing: 0.12em;
   }
 
   .qq-ui-refresh .mobile-section-cover-title {
     max-width: min(18rem, 100%);
-    font-size: 2.45rem;
-    line-height: 1.03;
+    margin-bottom: 0.55rem;
+    font-size: 2.28rem;
+    line-height: 1.05;
   }
 
   .qq-ui-refresh .mobile-section-cover-text {
     max-width: min(18.5rem, 100%);
-    font-size: 0.98rem;
-    line-height: 1.72;
+    font-size: 0.94rem;
+    line-height: 1.62;
   }
 
   .qq-ui-refresh .mobile-editorial-body {
-    margin-top: -1.15rem;
+    margin-top: -1.65rem;
   }
 
   .qq-ui-refresh .chapter-body-sheet,
@@ -8378,7 +8462,8 @@ body.celebration-monthly .celebration-badge {
   .qq-ui-refresh #moments-content,
   .qq-ui-refresh #comments-content,
   .qq-ui-refresh #liuyizhouye-content {
-    padding: 1rem;
+    padding: 0.95rem;
+    border-radius: calc(var(--qq-card-radius) + 2px) !important;
   }
 
   .qq-ui-refresh #timeline-content::before,
@@ -8389,13 +8474,13 @@ body.celebration-monthly .celebration-badge {
 
   .qq-ui-refresh .milestone-timeline {
     position: relative;
-    padding-left: 1.05rem;
+    padding-left: 0.72rem;
   }
 
   .qq-ui-refresh .milestone-timeline::before {
     content: "";
     position: absolute;
-    left: 0.28rem;
+    left: 0.22rem;
     top: 0.55rem;
     bottom: 0.45rem;
     width: 1px;
@@ -8407,7 +8492,7 @@ body.celebration-monthly .celebration-badge {
   }
 
   .qq-ui-refresh .timeline-year-badge {
-    margin: 0 0 0.75rem 0.8rem;
+    margin: 0 0 0.7rem 0.62rem;
     padding: 0.34rem 0.68rem;
     background: rgba(24, 135, 119, 0.1);
     color: var(--qq-teal-dark);
@@ -8420,13 +8505,13 @@ body.celebration-monthly .celebration-badge {
 
   .qq-ui-refresh .timeline-item {
     position: relative;
-    padding-left: 0.72rem;
+    padding-left: 0.54rem;
   }
 
   .qq-ui-refresh .timeline-item::before {
     content: "";
     position: absolute;
-    left: -1.02rem;
+    left: -0.78rem;
     top: 1.1rem;
     width: 0.68rem;
     height: 0.68rem;
@@ -8437,7 +8522,7 @@ body.celebration-monthly .celebration-badge {
   }
 
   .qq-ui-refresh .timeline-card {
-    padding: 1.18rem 1rem 1.05rem 1.15rem;
+    padding: 1.12rem 0.95rem 1rem 1.08rem;
   }
 
   .qq-ui-refresh .timeline-title {
@@ -8448,7 +8533,7 @@ body.celebration-monthly .celebration-badge {
     position: sticky;
     z-index: 20;
     top: calc(var(--mobile-nav-height) + 0.55rem);
-    margin: -0.25rem -0.1rem 1rem !important;
+    margin: -0.15rem -0.08rem 0.95rem !important;
     padding: 0.4rem;
     border: 0;
     border-radius: 999px;
@@ -8472,7 +8557,8 @@ body.celebration-monthly .celebration-badge {
   }
 
   .qq-ui-refresh .moment-card {
-    padding: 0.45rem;
+    padding: 0.42rem;
+    border-radius: calc(var(--qq-card-radius) + 2px) !important;
   }
 
   .qq-ui-refresh .moment-card-media {
