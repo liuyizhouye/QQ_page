@@ -21,7 +21,7 @@
 
 ```text
 .
-├── .github/workflows/  # GitHub Actions 部署工作流
+├── .github/workflows/  # GitHub Actions 自动/手动部署工作流
 ├── AGENTS.md          # 当前真实架构、运维约束、同步流程、后续待办
 ├── README.md          # 项目总入口
 ├── deploy.ps1         # Windows 本机一键部署到 ECS
@@ -52,7 +52,17 @@ npm run dev
 
 ## 发布到 ECS
 
-推荐使用制品部署，不再让 ECS 直接 `git pull`：
+推荐使用制品部署，不再让 ECS 直接 `git pull`。
+
+### 自动发布
+
+推送到 `main` 后会自动运行 GitHub Actions 工作流 `Deploy to ECS`：
+
+```bash
+git push origin main
+```
+
+工作流会打包仓库制品、上传到 ECS、同步静态站与服务端代码、重启 API 和 Caddy，并做健康检查。通常等待 1-3 分钟后，`https://hanbaodoudou.com/` 会更新。
 
 ### 本机一键发布
 
@@ -88,6 +98,12 @@ npm run dev
 - 重启 `qq-story-api`
 - 重新应用 Caddy Compose 配置
 - 自动执行健康检查
+
+## 静态资源维护
+
+- `docs/` 是公开静态站根目录，只放线上运行必需内容。
+- `docs/vendor/` 当前只保留页面实际引用的 minified CSS/JS、Font Awesome webfonts 和必要运行时图片。
+- 不要把内部文档、设计稿、审查记录、未引用源码版 vendor 文件重新放回 `docs/`。
 
 ## 相关文档
 

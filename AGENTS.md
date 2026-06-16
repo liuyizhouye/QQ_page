@@ -81,7 +81,9 @@ Internet
 - `deploy.ps1`
   - Windows 本机一键部署入口
 - `.github/workflows/deploy.yml`
-  - GitHub Actions 手动部署工作流
+  - GitHub Actions 自动/手动部署工作流
+  - `push` 到 `main` 会自动部署到 ECS
+  - 也保留 `workflow_dispatch` 手动部署入口
 - `server/deploy/cloud/Caddyfile`
   - 当前线上 Caddy 配置源码
 - `server/deploy/cloud/compose.yaml`
@@ -108,8 +110,12 @@ Internet
   - 删除未引用的旧背景和原始大图副本
 - 已补充制品部署链路：
   - 本机 `deploy.ps1`
-  - GitHub Actions `workflow_dispatch`
+  - GitHub Actions `push main` 自动部署
+  - GitHub Actions `workflow_dispatch` 手动部署
   - ECS 远端 `scripts/deploy-ecs.sh`
+- 已完成公开静态资源再清理：
+  - `docs/vendor/` 只保留页面实际引用的 minified CSS/JS、Font Awesome webfonts 与必要运行时图片
+  - 删除 Bootstrap / Font Awesome / Owl / Typed 等未引用的源码版、source map、RTL/ESM、JS sprite 等公开部署冗余文件
 
 ## 6. 当前已知实现细节
 
@@ -135,8 +141,17 @@ Internet
 
 ### 推荐方式
 
+- 日常发布：提交到 `main` 并 `git push origin main`，GitHub Actions 会自动运行 `Deploy to ECS`
 - 本机发布：在仓库根目录运行 `.\deploy.ps1`
-- CI 发布：在 GitHub Actions 手动触发 `Deploy to ECS`
+- 手动 CI 发布：在 GitHub Actions 手动触发 `Deploy to ECS`
+
+### 自动部署触发
+
+- `.github/workflows/deploy.yml` 当前触发条件：
+  - `push` 到 `main`
+  - `workflow_dispatch`
+- 工作流使用 `concurrency` 按分支串行化部署，避免同一分支同时跑多个 ECS 发布任务。
+- 自动部署仍然走制品上传链路，不会让 ECS 自己 `git pull`。
 
 ### 当前发布链路
 
