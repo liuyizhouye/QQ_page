@@ -75,6 +75,77 @@
 		}
 	}
 
+	function initMobileQuickNav() {
+		var links = Array.prototype.slice.call(document.querySelectorAll('[data-mobile-quick-nav-link]'));
+		if (!links.length) {
+			return;
+		}
+		var records = links.map(function (link) {
+			var hash = link.getAttribute('href') || '';
+			var id = hash.charAt(0) === '#' ? hash.slice(1) : '';
+			var section = id ? document.getElementById(id) : null;
+			return { link: link, id: id, section: section };
+		}).filter(function (record) {
+			return record.id && record.section;
+		});
+		if (!records.length) {
+			return;
+		}
+
+		function setActive(id) {
+			records.forEach(function (record) {
+				var active = record.id === id;
+				record.link.classList.toggle('is-active', active);
+				if (active) {
+					record.link.setAttribute('aria-current', 'page');
+					if (isMobileViewport() && typeof record.link.scrollIntoView === 'function') {
+						record.link.scrollIntoView({ block: 'nearest', inline: 'center' });
+					}
+				} else {
+					record.link.removeAttribute('aria-current');
+				}
+			});
+		}
+
+		records.forEach(function (record) {
+			record.link.addEventListener('click', function () {
+				closeMobileNavbar();
+				setActive(record.id);
+			});
+		});
+
+		if (typeof window.IntersectionObserver !== 'function') {
+			setActive(records[0].id);
+			return;
+		}
+
+		var observer = new IntersectionObserver(function (entries) {
+			var visible = entries.filter(function (entry) {
+				return entry.isIntersecting;
+			});
+			if (!visible.length) {
+				return;
+			}
+			visible.sort(function (a, b) {
+				var aDistance = Math.abs(a.boundingClientRect.top - (window.innerHeight * 0.38));
+				var bDistance = Math.abs(b.boundingClientRect.top - (window.innerHeight * 0.38));
+				return aDistance - bDistance;
+			});
+			if (visible[0] && visible[0].target && visible[0].target.id) {
+				setActive(visible[0].target.id);
+			}
+		}, {
+			root: null,
+			rootMargin: '-32% 0px -54% 0px',
+			threshold: [0, 0.18, 0.42, 0.7]
+		});
+
+		records.forEach(function (record) {
+			observer.observe(record.section);
+		});
+		setActive(records[0].id);
+	}
+
 	function hidePreloader() {
 		if (preloaderHidden) {
 			return;
@@ -932,6 +1003,8 @@ function updateBirthdayCounter(elementId, options) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	initMobileQuickNav();
+
 	var toggleConfig = [
 		{ selector: '.toggle-ourstory', hiddenClass: 'ourstory-hidden' },
 		{ selector: '.toggle-timeline', hiddenClass: 'timeline-hidden' },
