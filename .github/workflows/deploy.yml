@@ -1,10 +1,17 @@
 name: Deploy to ECS
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: deploy-ecs-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   deploy:
