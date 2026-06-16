@@ -6986,3 +6986,988 @@ body.celebration-monthly .celebration-badge {
     color: var(--mobile-ink);
   }
 }
+
+/* ===================================
+   QQ Story UI/UX Refresh - 2026
+=================================== */
+.qq-ui-refresh {
+  --qq-ink: #20211f;
+  --qq-muted: #626866;
+  --qq-panel: rgba(255, 255, 255, 0.84);
+  --qq-panel-strong: rgba(255, 255, 255, 0.94);
+  --qq-line: rgba(42, 47, 44, 0.12);
+  --qq-line-strong: rgba(42, 47, 44, 0.2);
+  --qq-teal: #188777;
+  --qq-teal-dark: #0f645b;
+  --qq-coral: #d66f62;
+  --qq-gold: #bf8b3c;
+  --qq-lilac: #7e6aa8;
+  --qq-card-radius: 8px;
+  --qq-shadow-soft: 0 1rem 2.5rem rgba(32, 33, 31, 0.1);
+  --qq-shadow-lift: 0 1.35rem 3rem rgba(32, 33, 31, 0.14);
+  background: #f7f4ee;
+  color: var(--qq-ink);
+}
+
+.qq-ui-refresh h1,
+.qq-ui-refresh h2,
+.qq-ui-refresh h3,
+.qq-ui-refresh h4,
+.qq-ui-refresh h5,
+.qq-ui-refresh h6 {
+  color: var(--qq-ink);
+  letter-spacing: 0;
+}
+
+.qq-ui-refresh p {
+  color: var(--qq-muted);
+}
+
+.qq-ui-refresh a,
+.qq-ui-refresh .text-primary {
+  color: var(--qq-teal) !important;
+}
+
+.qq-ui-refresh a:hover {
+  color: var(--qq-teal-dark) !important;
+}
+
+.qq-ui-refresh .btn {
+  min-height: 2.55rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.qq-ui-refresh .btn-primary {
+  background: var(--qq-teal);
+  border-color: var(--qq-teal);
+  color: #fff !important;
+  box-shadow: 0 0.7rem 1.6rem rgba(24, 135, 119, 0.2);
+}
+
+.qq-ui-refresh .btn-primary:hover,
+.qq-ui-refresh .btn-primary:focus {
+  background: var(--qq-teal-dark);
+  border-color: var(--qq-teal-dark);
+  color: #fff !important;
+}
+
+.qq-ui-refresh .btn-outline-primary {
+  border-color: rgba(24, 135, 119, 0.42);
+  color: var(--qq-teal) !important;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.qq-ui-refresh .btn-outline-primary:hover,
+.qq-ui-refresh .btn-outline-primary:focus {
+  background: rgba(24, 135, 119, 0.1);
+  border-color: var(--qq-teal);
+  color: var(--qq-teal-dark) !important;
+}
+
+.qq-ui-refresh .form-control,
+.qq-ui-refresh .form-select {
+  min-height: 2.9rem;
+  border-radius: var(--qq-card-radius);
+  border-color: var(--qq-line);
+  background-color: rgba(255, 255, 255, 0.92);
+  color: var(--qq-ink);
+  box-shadow: none;
+}
+
+.qq-ui-refresh .form-control:focus,
+.qq-ui-refresh .form-select:focus {
+  border-color: rgba(24, 135, 119, 0.55);
+  box-shadow: 0 0 0 0.2rem rgba(24, 135, 119, 0.12);
+}
+
+.qq-ui-refresh .alert {
+  border-radius: var(--qq-card-radius);
+}
+
+.qq-ui-refresh .card,
+.qq-ui-refresh .modal-content,
+.qq-ui-refresh .timeline-card,
+.qq-ui-refresh .moment-card,
+.qq-ui-refresh .letter-card,
+.qq-ui-refresh .ourstory-block,
+.qq-ui-refresh .letters-block,
+.qq-ui-refresh .memory-block,
+.qq-ui-refresh .letters-column,
+.qq-ui-refresh .memory-subblock,
+.qq-ui-refresh .story-manager-section,
+.qq-ui-refresh .moment-viewer-dialog {
+  border-radius: var(--qq-card-radius) !important;
+}
+
+.qq-ui-refresh .rounded-4,
+.qq-ui-refresh .rounded-lg,
+.qq-ui-refresh .portfolio-img.rounded,
+.qq-ui-refresh .portfolio-box.rounded {
+  border-radius: var(--qq-card-radius) !important;
+}
+
+.qq-ui-refresh .primary-menu {
+  background:
+    linear-gradient(180deg, rgba(26, 40, 38, 0.98) 0%, rgba(37, 49, 43, 0.98) 100%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0.8rem 0 2rem rgba(32, 33, 31, 0.08);
+}
+
+.qq-ui-refresh .sidebar-portrait-shell {
+  width: 9rem;
+  border-radius: var(--qq-card-radius);
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.22);
+}
+
+.qq-ui-refresh .sidebar-portrait-image {
+  border-radius: calc(var(--qq-card-radius) - 2px);
+}
+
+.qq-ui-refresh .primary-menu h1 {
+  color: #fff;
+  font-size: 1.18rem !important;
+}
+
+.qq-ui-refresh.side-header .primary-menu .navbar-nav .nav-link {
+  padding: 0.68rem 1rem;
+  border-radius: var(--qq-card-radius);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+.qq-ui-refresh.side-header .primary-menu .navbar-nav .nav-link::before {
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.qq-ui-refresh.side-header .primary-menu .navbar-nav li:hover > .nav-link,
+.qq-ui-refresh.side-header .primary-menu .navbar-nav .nav-link.active,
+.qq-ui-refresh.side-header .primary-menu .navbar-nav .nav-link:focus-visible {
+  color: #fff;
+}
+
+.qq-ui-refresh .social-icons li a {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.qq-ui-refresh .social-icons li a:hover {
+  color: #fff !important;
+}
+
+.qq-ui-refresh #main-wrapper {
+  background: #f7f4ee;
+}
+
+.qq-ui-refresh #home .hero-mask {
+  opacity: 1 !important;
+  background:
+    linear-gradient(180deg, rgba(13, 21, 21, 0.68) 0%, rgba(13, 21, 21, 0.5) 42%, rgba(13, 21, 21, 0.82) 100%) !important;
+}
+
+.qq-ui-refresh #home .hero-bg {
+  transform: scale(1.01);
+  filter: saturate(1.08) contrast(1.02);
+}
+
+.qq-ui-refresh .qq-hero-copy {
+  max-width: 58rem;
+  margin: 0 auto;
+}
+
+.qq-ui-refresh .qq-eyebrow,
+.qq-ui-refresh .section-kicker {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 0.65rem;
+  color: var(--qq-gold);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.qq-ui-refresh .qq-hero-title {
+  min-height: 5.6rem;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.08;
+  text-shadow: 0 1rem 2.2rem rgba(0, 0, 0, 0.28);
+}
+
+.qq-ui-refresh .qq-hero-subtitle {
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.2rem;
+}
+
+.qq-ui-refresh .qq-hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.qq-ui-refresh .hero-memory-map {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: min(58rem, 100%);
+  margin: 2.35rem auto 0;
+}
+
+.qq-ui-refresh .hero-memory-link {
+  display: flex;
+  min-height: 7.4rem;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--qq-card-radius);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff !important;
+  text-align: left;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
+}
+
+.qq-ui-refresh .hero-memory-link:hover,
+.qq-ui-refresh .hero-memory-link:focus {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff !important;
+}
+
+.qq-ui-refresh .hero-memory-step {
+  color: #f2d08b;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.qq-ui-refresh .hero-memory-title {
+  display: block;
+  margin-top: 0.9rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.qq-ui-refresh .hero-memory-note {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.qq-ui-refresh .scroll-down-arrow {
+  color: var(--qq-teal) !important;
+}
+
+.qq-ui-refresh .story-section-bg,
+.qq-ui-refresh .timeline-section-bg,
+.qq-ui-refresh .moments-section-bg,
+.qq-ui-refresh .comments-section-bg,
+.qq-ui-refresh .letters-section-bg,
+.qq-ui-refresh .manager-section-bg {
+  background-color: #f7f4ee;
+}
+
+.qq-ui-refresh .story-section-bg::before,
+.qq-ui-refresh .timeline-section-bg::before,
+.qq-ui-refresh .moments-section-bg::before,
+.qq-ui-refresh .comments-section-bg::before,
+.qq-ui-refresh .letters-section-bg::before,
+.qq-ui-refresh .manager-section-bg::before {
+  background:
+    linear-gradient(90deg, rgba(247, 244, 238, 0.9) 0%, rgba(247, 244, 238, 0.5) 46%, rgba(247, 244, 238, 0.8) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.12) 46%, rgba(255, 255, 255, 0.34) 100%);
+}
+
+.qq-ui-refresh .section-full {
+  padding-top: 5.5rem;
+  padding-bottom: 5.5rem;
+}
+
+.qq-ui-refresh .section-intro {
+  width: min(100%, 1120px);
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 0 auto 1.5rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--qq-line-strong);
+}
+
+.qq-ui-refresh .section-intro h2 {
+  margin: 0;
+  font-size: 2.35rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.qq-ui-refresh .section-intro p {
+  max-width: 34rem;
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.8;
+  text-align: left;
+}
+
+.qq-ui-refresh .chapter-body-sheet {
+  width: min(100%, 1120px);
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: var(--qq-card-radius);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.78) 100%);
+  box-shadow: var(--qq-shadow-soft);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.qq-ui-refresh .ourstory-panel,
+.qq-ui-refresh .letters-panel,
+.qq-ui-refresh .memory-panel {
+  gap: 1.25rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
+}
+
+.qq-ui-refresh .ourstory-block,
+.qq-ui-refresh .letters-block,
+.qq-ui-refresh .memory-block,
+.qq-ui-refresh .letters-column,
+.qq-ui-refresh .memory-subblock,
+.qq-ui-refresh .story-manager-section,
+.qq-ui-refresh .comment-compose-card,
+.qq-ui-refresh #comments-list .card {
+  border: 1px solid var(--qq-line) !important;
+  background: var(--qq-panel-strong) !important;
+  box-shadow: none !important;
+}
+
+.qq-ui-refresh .ourstory-block {
+  padding: 1.5rem;
+}
+
+.qq-ui-refresh #story .ourstory-block h2 {
+  font-size: 2rem !important;
+  line-height: 1.22;
+}
+
+.qq-ui-refresh #story .list-style-2 > li {
+  padding: 0.85rem 0;
+  border-color: var(--qq-line) !important;
+}
+
+.qq-ui-refresh .brands-grid.separator-border > .row > * {
+  border: 0;
+}
+
+.qq-ui-refresh #story .brands-grid .featured-box {
+  min-height: 100%;
+  padding: 1.2rem 0.9rem;
+  border: 1px solid rgba(24, 135, 119, 0.14);
+  border-radius: var(--qq-card-radius);
+  background: rgba(246, 251, 248, 0.86);
+}
+
+.qq-ui-refresh #story .brands-grid .featured-box h4 {
+  color: var(--qq-teal-dark) !important;
+}
+
+.qq-ui-refresh .timeline-stage-wrap {
+  width: 100%;
+}
+
+.qq-ui-refresh .timeline-section-bg > .container {
+  min-height: auto;
+  display: block;
+  align-items: initial;
+  justify-content: initial;
+}
+
+.qq-ui-refresh .timeline-section-bg > .container > .row {
+  width: auto;
+}
+
+.qq-ui-refresh .timeline-shell {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 1.35rem;
+  align-items: start;
+}
+
+.qq-ui-refresh .timeline-year-nav {
+  position: sticky;
+  top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: calc(100vh - 3rem);
+  padding: 0.35rem;
+  border: 1px solid var(--qq-line);
+  border-radius: var(--qq-card-radius);
+  background: rgba(255, 255, 255, 0.7);
+  overflow: auto;
+}
+
+.qq-ui-refresh .timeline-year-chip {
+  width: 100%;
+  min-height: 2.25rem;
+  border: 0;
+  border-radius: calc(var(--qq-card-radius) - 2px);
+  background: transparent;
+  color: var(--qq-muted);
+  font-weight: 800;
+  text-align: left;
+  padding: 0.45rem 0.65rem;
+}
+
+.qq-ui-refresh .timeline-year-chip.is-active,
+.qq-ui-refresh .timeline-year-chip:hover,
+.qq-ui-refresh .timeline-year-chip:focus {
+  background: rgba(24, 135, 119, 0.12);
+  color: var(--qq-teal-dark);
+}
+
+.qq-ui-refresh .milestone-timeline {
+  overflow: visible;
+  padding: 0;
+}
+
+.qq-ui-refresh .timeline-year-group {
+  margin-bottom: 1.4rem;
+}
+
+.qq-ui-refresh .timeline-year-badge {
+  display: inline-flex;
+  margin-bottom: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid rgba(191, 139, 60, 0.26);
+  border-radius: 999px;
+  background: rgba(191, 139, 60, 0.1);
+  color: #7a571f;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.qq-ui-refresh .timeline-track {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0;
+}
+
+.qq-ui-refresh .timeline-track::before,
+.qq-ui-refresh .timeline-item::before {
+  content: none;
+}
+
+.qq-ui-refresh .timeline-item {
+  width: 100%;
+  padding: 0;
+}
+
+.qq-ui-refresh .timeline-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 12.5rem;
+  padding: 1.35rem;
+  border-color: var(--qq-line);
+  background: var(--qq-panel-strong);
+}
+
+.qq-ui-refresh .timeline-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(24, 135, 119, 0.28);
+  box-shadow: var(--qq-shadow-lift);
+}
+
+.qq-ui-refresh .timeline-date {
+  width: fit-content;
+  margin-bottom: 0.95rem;
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  background: rgba(24, 135, 119, 0.1);
+  color: var(--qq-teal-dark);
+  font-size: 0.72rem;
+}
+
+.qq-ui-refresh .timeline-title {
+  font-size: 1.28rem !important;
+  line-height: 1.35;
+}
+
+.qq-ui-refresh .timeline-location {
+  color: var(--qq-coral);
+}
+
+.qq-ui-refresh .moments-section-bg .chapter-body-sheet {
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.qq-ui-refresh #moments-menu-wrapper {
+  margin-bottom: 1.6rem !important;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--qq-line);
+}
+
+.qq-ui-refresh #moments-menu {
+  gap: 0.55rem;
+}
+
+.qq-ui-refresh #moments-menu .nav-link {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.54rem 0.95rem;
+  background: rgba(255, 255, 255, 0.76);
+  color: var(--qq-muted);
+  font-weight: 800;
+}
+
+.qq-ui-refresh #moments-menu .nav-link.active,
+.qq-ui-refresh #moments-menu .nav-link:hover,
+.qq-ui-refresh #moments-menu .nav-link:focus {
+  border-color: rgba(24, 135, 119, 0.2);
+  background: rgba(24, 135, 119, 0.12);
+  color: var(--qq-teal-dark);
+}
+
+.qq-ui-refresh .moment-card {
+  border: 1px solid var(--qq-line);
+  background: #fff;
+  box-shadow: none;
+}
+
+.qq-ui-refresh .moment-card:hover,
+.qq-ui-refresh .moment-card:focus-within {
+  transform: translateY(-3px);
+  box-shadow: var(--qq-shadow-lift);
+}
+
+.qq-ui-refresh .moment-card-media {
+  aspect-ratio: 1 / 1;
+  border-radius: var(--qq-card-radius);
+  background: #efece4;
+}
+
+.qq-ui-refresh .portfolio .portfolio-box .portfolio-overlay {
+  opacity: 1;
+  align-items: flex-end;
+  text-align: left;
+  background:
+    linear-gradient(180deg, rgba(18, 22, 21, 0) 25%, rgba(18, 22, 21, 0.78) 100%);
+}
+
+.qq-ui-refresh .portfolio .portfolio-box:hover .portfolio-img img {
+  filter: none;
+  transform: scale(1.025);
+}
+
+.qq-ui-refresh .portfolio .portfolio-box .portfolio-overlay-details {
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+}
+
+.qq-ui-refresh .portfolio .portfolio-box .portfolio-overlay-details h5 {
+  margin-bottom: 0.35rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 800 !important;
+  line-height: 1.35;
+}
+
+.qq-ui-refresh .portfolio .portfolio-box .portfolio-overlay-details span {
+  display: -webkit-box;
+  max-height: 3rem;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.8) !important;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.qq-ui-refresh .moment-media-count-badge,
+.qq-ui-refresh .moment-media-indicator {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--qq-ink);
+}
+
+.qq-ui-refresh .comments-layout {
+  align-items: flex-start;
+}
+
+.qq-ui-refresh .comments-stream-heading {
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--qq-line);
+}
+
+.qq-ui-refresh .comment-compose-card {
+  position: sticky;
+  top: 1.25rem;
+}
+
+.qq-ui-refresh #comments-list .card {
+  position: relative;
+  overflow: hidden;
+}
+
+.qq-ui-refresh #comments-list .card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0.28rem;
+  background: linear-gradient(180deg, var(--qq-coral) 0%, var(--qq-gold) 100%);
+}
+
+.qq-ui-refresh #comments-list .card-body {
+  padding: 1.15rem 1.35rem 1.15rem 1.65rem !important;
+}
+
+.qq-ui-refresh #comments-list h3 {
+  color: var(--qq-ink);
+  font-size: 1.05rem !important;
+}
+
+.qq-ui-refresh #comments-list p {
+  color: var(--qq-muted) !important;
+}
+
+.qq-ui-refresh .min-width-0 {
+  min-width: 0;
+}
+
+.qq-ui-refresh .comment-author-mark {
+  flex: 0 0 auto;
+  display: inline-flex;
+  width: 2.45rem;
+  height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(214, 111, 98, 0.14);
+  color: #9c3f36;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.qq-ui-refresh .comment-card-copy {
+  padding-top: 0.1rem;
+}
+
+.qq-ui-refresh #comment-message-counter {
+  font-variant-numeric: tabular-nums;
+}
+
+.qq-ui-refresh .letters-block[data-protected-cover],
+.qq-ui-refresh .memory-block[data-protected-cover] {
+  min-height: 18rem;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(246, 251, 248, 0.88) 100%) !important;
+}
+
+.qq-ui-refresh .protected-lock-icon {
+  display: inline-flex;
+  width: 3.25rem;
+  height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(24, 135, 119, 0.18);
+  border-radius: 999px;
+  background: rgba(24, 135, 119, 0.1);
+  color: var(--qq-teal-dark);
+  font-size: 1.25rem;
+}
+
+.qq-ui-refresh [data-protected-cover] .input-group {
+  border: 1px solid var(--qq-line);
+  border-radius: var(--qq-card-radius);
+  background: #fff;
+  padding: 0.25rem;
+  box-shadow: 0 0.8rem 2rem rgba(32, 33, 31, 0.08);
+}
+
+.qq-ui-refresh [data-protected-cover] .input-group .form-control,
+.qq-ui-refresh [data-protected-cover] .input-group .btn {
+  border-radius: calc(var(--qq-card-radius) - 2px) !important;
+}
+
+.qq-ui-refresh [data-protected-cover] .input-group .form-control {
+  border: 0;
+}
+
+.qq-ui-refresh .letters-column {
+  padding: 1.25rem;
+}
+
+.qq-ui-refresh .letters-column-header {
+  align-items: stretch !important;
+  text-align: left !important;
+}
+
+.qq-ui-refresh .letters-column-title {
+  width: 100%;
+  text-align: left !important;
+  border-bottom: 1px solid var(--qq-line);
+  padding-bottom: 0.8rem;
+}
+
+.qq-ui-refresh .letter-card {
+  align-items: flex-start !important;
+  text-align: left !important;
+  padding: 1.05rem !important;
+  background: #fff !important;
+}
+
+.qq-ui-refresh .letter-card:hover,
+.qq-ui-refresh .letter-card:focus-within {
+  transform: translateY(-2px);
+  box-shadow: var(--qq-shadow-soft);
+}
+
+.qq-ui-refresh .letter-card-content {
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+
+.qq-ui-refresh .letter-date-badge {
+  align-self: flex-start !important;
+  margin-bottom: 0;
+  background: rgba(126, 106, 168, 0.12);
+  color: var(--qq-lilac);
+}
+
+.qq-ui-refresh .story-admin-auth {
+  border-radius: var(--qq-card-radius) !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+}
+
+.qq-ui-refresh .story-admin-badge {
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+}
+
+.qq-ui-refresh .memory-workspace .row {
+  align-items: stretch;
+}
+
+.qq-ui-refresh .memory-subblock {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.qq-ui-refresh .memory-tabs {
+  gap: 0.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--qq-line);
+}
+
+.qq-ui-refresh .memory-tabs .nav-link {
+  border-radius: var(--qq-card-radius);
+  background: rgba(32, 33, 31, 0.05);
+  color: var(--qq-muted);
+  font-weight: 800;
+}
+
+.qq-ui-refresh .memory-tabs .nav-link.active {
+  background: rgba(24, 135, 119, 0.14);
+  color: var(--qq-teal-dark);
+}
+
+.qq-ui-refresh .story-manager-section .list-group-item {
+  border-color: var(--qq-line);
+}
+
+.qq-ui-refresh .story-form .form-label,
+.qq-ui-refresh .form-text {
+  color: var(--qq-muted) !important;
+}
+
+.qq-ui-refresh .epilogue-intro {
+  border-color: rgba(42, 47, 44, 0.18);
+}
+
+.qq-ui-refresh .liuyizhouye-letter,
+.qq-ui-refresh .liuyizhouye-media {
+  border-radius: var(--qq-card-radius);
+}
+
+.qq-ui-refresh #back-to-top {
+  border-radius: 999px !important;
+  background: var(--qq-teal);
+}
+
+@media (min-width: 992px) and (max-width: 1320px) {
+  .qq-ui-refresh .hero-memory-map {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(44rem, 100%);
+  }
+
+  .qq-ui-refresh .qq-hero-title {
+    font-size: 3.25rem;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .qq-ui-refresh .timeline-track {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .qq-ui-refresh .primary-menu.navbar {
+    background: rgba(26, 40, 38, 0.98) !important;
+  }
+
+  .qq-ui-refresh .primary-menu .navbar-toggler {
+    border-radius: var(--qq-card-radius);
+  }
+
+  .qq-ui-refresh .primary-menu .navbar-collapse {
+    background: rgba(26, 40, 38, 0.98);
+  }
+
+  .qq-ui-refresh .timeline-shell {
+    display: block;
+  }
+
+  .qq-ui-refresh .timeline-year-nav {
+    display: none !important;
+  }
+
+  .qq-ui-refresh .comment-compose-card {
+    position: static;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .qq-ui-refresh {
+    --qq-card-radius: 8px;
+  }
+
+  .qq-ui-refresh .chapter-cover-title,
+  .qq-ui-refresh .mobile-section-cover-title {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    letter-spacing: 0;
+  }
+
+  .qq-ui-refresh .mobile-section-cover > * {
+    max-width: 100%;
+  }
+
+  .qq-ui-refresh .mobile-section-cover-text {
+    max-width: 100%;
+  }
+
+  .qq-ui-refresh .mobile-section-cover {
+    border-radius: 0;
+  }
+
+  .qq-ui-refresh .chapter-body-sheet,
+  .qq-ui-refresh .mobile-editorial-sheet {
+    width: 100%;
+    border-radius: var(--qq-card-radius) !important;
+    box-shadow: 0 0.75rem 1.8rem rgba(32, 33, 31, 0.08);
+  }
+
+  .qq-ui-refresh .mobile-editorial-section {
+    background: var(--mobile-section-bg);
+  }
+
+  .qq-ui-refresh .ourstory-panel,
+  .qq-ui-refresh .letters-panel,
+  .qq-ui-refresh .memory-panel {
+    padding: 1rem;
+  }
+
+  .qq-ui-refresh .brands-grid,
+  .qq-ui-refresh .letters-block-inner,
+  .qq-ui-refresh .memory-block-inner {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .qq-ui-refresh .brands-grid > .row,
+  .qq-ui-refresh [data-protected-cover] .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .qq-ui-refresh #story .brands-grid .featured-box,
+  .qq-ui-refresh .timeline-card,
+  .qq-ui-refresh .moment-card,
+  .qq-ui-refresh #comments-list .card,
+  .qq-ui-refresh .comment-compose-card,
+  .qq-ui-refresh .letters-column,
+  .qq-ui-refresh .letter-card,
+  .qq-ui-refresh .story-manager-section,
+  .qq-ui-refresh .memory-subblock {
+    border-radius: var(--qq-card-radius) !important;
+  }
+
+  .qq-ui-refresh .timeline-card {
+    min-height: 0;
+  }
+
+  .qq-ui-refresh .timeline-date {
+    font-size: 0.72rem;
+  }
+
+  .qq-ui-refresh #moments .portfolio-filter > * {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .qq-ui-refresh .moment-card-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .qq-ui-refresh .portfolio .portfolio-box .portfolio-overlay-details {
+    padding: 0.9rem;
+  }
+
+  .qq-ui-refresh .comments-stream-heading {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 0.25rem !important;
+  }
+
+  .qq-ui-refresh [data-protected-cover] .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.35rem;
+  }
+
+  .qq-ui-refresh [data-protected-cover] .input-group .btn {
+    width: 100%;
+  }
+
+  .qq-ui-refresh .letters-column-title {
+    text-align: left !important;
+  }
+
+  .qq-ui-refresh .story-admin-bar-main,
+  .qq-ui-refresh .story-admin-bar-actions {
+    align-items: stretch;
+  }
+}

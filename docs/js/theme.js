@@ -84,31 +84,6 @@
 		$('.preloader').delay(150).fadeOut('slow');
 	}
 
-	function scheduleInitialStoryHydration() {
-		var run = function () {
-			if (storyDataHydratedOnce || storyRefreshInFlight) {
-				return;
-			}
-			if (typeof window.QQStoryRefreshStoryData === 'function') {
-				window.QQStoryRefreshStoryData();
-				return;
-			}
-			setTimeout(run, 50);
-		};
-		setTimeout(run, 10);
-	}
-
-	function scheduleInitialCommentsRecovery() {
-		setTimeout(function () {
-			if (friendCommentsSubmitting) {
-				return;
-			}
-			if (!friendCommentsHasFetched || !friendComments.length) {
-				initializeFriendComments({ forceFetch: true, page: friendCommentsState.page || 1 });
-			}
-		}, 450);
-	}
-
 	function syncChapterCoverCopy() {
 		Array.prototype.slice.call(document.querySelectorAll('[data-sync-copy-from]')).forEach(function (node) {
 			var selector = node.getAttribute('data-sync-copy-from');
@@ -125,6 +100,30 @@
 			}
 			node.textContent = text;
 		});
+	}
+
+	function initCommentMessageCounter() {
+		var input = document.getElementById('comment-message');
+		var counter = document.getElementById('comment-message-counter');
+		if (!input || !counter) {
+			return;
+		}
+
+		function updateCounterText() {
+			var max = Number(input.getAttribute('maxlength') || 500);
+			var length = (input.value || '').length;
+			counter.textContent = length + ' / ' + max;
+			counter.classList.toggle('text-danger', length >= max);
+		}
+
+		input.addEventListener('input', updateCounterText);
+		var form = input.closest('form');
+		if (form) {
+			form.addEventListener('reset', function () {
+				window.setTimeout(updateCounterText, 0);
+			});
+		}
+		updateCounterText();
 	}
 
 	function parseCelebrationPreviewDate() {
@@ -544,6 +543,7 @@ $(window).on('load', function () {
 });
 
 document.addEventListener('DOMContentLoaded', syncChapterCoverCopy);
+document.addEventListener('DOMContentLoaded', initCommentMessageCounter);
 document.addEventListener('DOMContentLoaded', scheduleCelebrationInitialization);
 
 
@@ -1187,6 +1187,31 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var storyAdminStatusTone = 'muted';
 	var defaultStoryAdminStatusText = '未启用写入权限。点保存或删除时，也会自动带你回到这里验证管理员 API key。';
 	var storyAdminEnabledStatusText = '写入权限已启用，当前页面的新增、上传和删除都可以直接操作。';
+
+	function scheduleInitialStoryHydration() {
+		var run = function () {
+			if (storyDataHydratedOnce || storyRefreshInFlight) {
+				return;
+			}
+			if (typeof window.QQStoryRefreshStoryData === 'function') {
+				window.QQStoryRefreshStoryData();
+				return;
+			}
+			setTimeout(run, 50);
+		};
+		setTimeout(run, 10);
+	}
+
+	function scheduleInitialCommentsRecovery() {
+		setTimeout(function () {
+			if (friendCommentsSubmitting) {
+				return;
+			}
+			if (!friendCommentsHasFetched || !friendComments.length) {
+				initializeFriendComments({ forceFetch: true, page: friendCommentsState.page || 1 });
+			}
+		}, 450);
+	}
 
 	window.addEventListener('qqstoryprotectedaccesschange', function () {
 		if (!hasProtectedContentAccess()) {
@@ -2794,7 +2819,7 @@ function normalizeMomentsData() {
 			var primaryMedia = mediaItems[0] || null;
 			var coverSrc = getMomentCoverSrc(entry);
 			var mediaAlt = entry.title || 'moment media';
-			$mediaWrap.append($('<img/>', { 'class': 'img-fluid d-block', 'src': coverSrc, 'alt': mediaAlt }));
+			$mediaWrap.append($('<img/>', { 'class': 'img-fluid d-block', 'src': coverSrc, 'alt': mediaAlt, 'loading': 'lazy', 'decoding': 'async' }));
 			if (primaryMedia && primaryMedia.type === 'video') {
 				$mediaWrap.append($('<span/>', { 'class': 'moment-media-indicator', 'aria-hidden': 'true' }).append($('<i/>', { 'class': 'fas fa-play' })));
 			}
@@ -3052,14 +3077,18 @@ function normalizeMomentsData() {
 		friendComments.forEach(function (entry) {
 			var displayName = entry.author || '匿名好友';
 			var displayTime = formatFriendCommentTimestamp(entry.submittedAt);
-			var $card = $('<div/>', { 'class': 'card border-0 shadow-sm' });
-			var $body = $('<div/>', { 'class': 'card-body p-4' });
+			var initial = displayName.charAt(0).toUpperCase();
+			var $card = $('<div/>', { 'class': 'card border-0 shadow-sm comment-card' });
+			var $body = $('<div/>', { 'class': 'card-body p-4 d-flex gap-3' });
+			var $avatar = $('<span/>', { 'class': 'comment-author-mark', 'aria-hidden': 'true' }).text(initial);
+			var $copy = $('<div/>', { 'class': 'comment-card-copy flex-grow-1 min-width-0' });
 			var $header = $('<div/>', { 'class': 'd-flex flex-wrap justify-content-between align-items-start gap-2 mb-2' });
 			$header.append($('<h3/>', { 'class': 'text-5 fw-600 mb-0 text-break' }).text(displayName));
 			$header.append($('<span/>', { 'class': 'small text-muted ms-auto text-nowrap' }).text(displayTime));
 			var $message = $('<p/>', { 'class': 'mb-0 text-muted lh-lg text-break' }).text(entry.message);
 			$message.css('white-space', 'pre-wrap');
-			$body.append($header, $message);
+			$copy.append($header, $message);
+			$body.append($avatar, $copy);
 			$card.append($body);
 			$commentList.append($card);
 		});
