@@ -127,6 +127,7 @@ rsync -av --delete /root/QQ_page/docs/ /srv/www/hanbaodoudou.com/
 
 后续代码更新不要在 ECS 上直接 `git pull`。当前标准做法是：
 
+- 推送 `main`，由 GitHub Actions 自动运行 `Deploy to ECS`
 - 本机运行仓库根目录 `.\deploy.ps1`
 - 或在 GitHub Actions 手动触发 `Deploy to ECS`
 

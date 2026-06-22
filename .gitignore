@@ -2,6 +2,7 @@
 .env
 .env.local
 .env.*.local
+server/.env
 
 # 数据库文件
 *.db
@@ -25,8 +26,7 @@ Thumbs.db
 *.swp
 *.swo
 
-# 上传文件（可选，如果不想提交用户上传的文件）
-server/.env
+# 运行时数据目录由本机或 ECS 自动创建，不进入仓库制品
 server/database/
 server/uploads/
 server/logs/
