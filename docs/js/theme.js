@@ -2081,6 +2081,12 @@ function normalizeMomentsData() {
 		if (!value) { return NaN; }
 		var trimmed = value.toString().trim();
 		if (!trimmed) { return NaN; }
+		if (/^\d{4}-\d{2}-\d{2}T/.test(trimmed) || /(?:Z|[+-]\d{2}:?\d{2})$/.test(trimmed)) {
+			var directParsed = Date.parse(trimmed);
+			if (!isNaN(directParsed)) {
+				return directParsed;
+			}
+		}
 		var normalized = trimmed.replace(/[\/\.]/g, '-').replace(/[年]/g, '-').replace(/月/g, '-').replace(/日/g, '');
 		var match = normalized.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[T\s](\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?(?:([+-])(\d{2}):?(\d{2}))?$/);
 		if (match) {
@@ -4195,6 +4201,15 @@ function bindStoryManagerPaginationControls() {
 
 	function initMomentsIsotope() {
 		var $grid = $('#moments-list');
+		if (isMobileViewport()) {
+			if (momentsIsotope) {
+				destroyMomentsIsotope();
+			}
+			$grid.children().removeClass('d-none');
+			applyMomentVisibilityFallback(currentMomentsFilter);
+			refreshVisibleMomentIds();
+			return;
+		}
 		if (!$grid.length || !$grid.children().length || typeof $grid.imagesLoaded !== 'function' || typeof $grid.isotope !== 'function') {
 			applyMomentVisibilityFallback(currentMomentsFilter);
 			return;

@@ -4458,13 +4458,15 @@ body.moment-viewer-open {
 }
 .section-toggle-btn {
   position: absolute;
-  bottom: 3rem;
+  top: 1.4rem;
+  bottom: auto;
   right: 1.5rem;
   z-index: 10;
 }
 
 .story-section-bg .section-toggle-btn {
-  bottom: 1.5rem;
+  top: 1.4rem;
+  bottom: auto;
 }
 
 @media (max-width: 767.98px) {
@@ -7134,6 +7136,42 @@ body.celebration-monthly .celebration-badge {
   font-size: 1.18rem !important;
 }
 
+@media (min-width: 992px) {
+  .qq-ui-refresh .primary-menu .container-fluid {
+    justify-content: flex-start;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .qq-ui-refresh .primary-menu a[href="index.html"] {
+    margin-top: 0.65rem !important;
+    margin-bottom: 1.2rem !important;
+  }
+
+  .qq-ui-refresh .sidebar-portrait-shell {
+    width: 7.5rem;
+  }
+
+  .qq-ui-refresh .primary-menu h1 {
+    margin-top: 0.7rem;
+    font-size: 1.06rem !important;
+  }
+
+  .qq-ui-refresh #header-nav {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .qq-ui-refresh.side-header .primary-menu .navbar-nav .nav-link {
+    padding: 0.5rem 0.9rem !important;
+    font-size: 0.95rem;
+  }
+
+  .qq-ui-refresh .primary-menu .social-icons {
+    margin-top: 1rem !important;
+  }
+}
+
 .qq-ui-refresh.side-header .primary-menu .navbar-nav .nav-link {
   padding: 0.68rem 1rem;
   border-radius: var(--qq-card-radius);
@@ -7162,6 +7200,10 @@ body.celebration-monthly .celebration-badge {
 
 .qq-ui-refresh #main-wrapper {
   background: #f7f4ee;
+}
+
+.qq-ui-refresh .typed-strings {
+  display: none !important;
 }
 
 .qq-ui-refresh #home .hero-mask {
@@ -8124,8 +8166,14 @@ body.celebration-monthly .celebration-badge {
     max-width: 100% !important;
   }
 
+  .qq-ui-refresh #moments-list {
+    height: auto !important;
+  }
+
   .qq-ui-refresh #moments-list > .moment-item {
     width: 100% !important;
+    position: static !important;
+    transform: none !important;
   }
 
   .qq-ui-refresh .moment-card-media {
@@ -8195,7 +8243,7 @@ body.celebration-monthly .celebration-badge {
   }
 
   body.qq-ui-refresh {
-    padding-bottom: calc(5.2rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(6.1rem + env(safe-area-inset-bottom, 0px));
     background: #f4eee7;
   }
 
@@ -8321,9 +8369,9 @@ body.celebration-monthly .celebration-badge {
   }
 
   .qq-ui-refresh .mobile-home-title {
-    max-width: 13.5rem;
-    font-size: 3rem;
-    line-height: 1;
+    max-width: 17.25rem;
+    font-size: 2.72rem;
+    line-height: 1.04;
     letter-spacing: 0;
   }
 
@@ -8381,7 +8429,7 @@ body.celebration-monthly .celebration-badge {
 
   .qq-ui-refresh .mobile-editorial-section {
     padding-top: 1.05rem;
-    padding-bottom: 3.35rem;
+    padding-bottom: calc(5.2rem + env(safe-area-inset-bottom, 0px));
     border-top: 0;
     overflow: hidden;
   }
@@ -8629,7 +8677,8 @@ body.celebration-monthly .celebration-badge {
 
 @media (max-width: 375px) {
   .qq-ui-refresh .mobile-home-title {
-    font-size: 2.65rem;
+    max-width: 15.75rem;
+    font-size: 2.42rem;
   }
 
   .qq-ui-refresh .mobile-section-cover-title {
