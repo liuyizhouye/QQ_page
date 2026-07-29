@@ -51,6 +51,14 @@
 		return window.matchMedia('(max-width: 991.98px)').matches;
 	}
 
+	function prefersReducedMotion() {
+		return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+	}
+
+	function getPreferredScrollBehavior() {
+		return prefersReducedMotion() ? 'auto' : 'smooth';
+	}
+
 	function getScrollOffset() {
 		if (isTabletViewport()) {
 			var offset = 0;
@@ -77,6 +85,8 @@
 
 	function initMobileQuickNav() {
 		var links = Array.prototype.slice.call(document.querySelectorAll('[data-mobile-quick-nav-link]'));
+		var moreTrigger = document.querySelector('[data-mobile-more-trigger]');
+		var moreModal = document.getElementById('mobile-more-menu');
 		if (!links.length) {
 			return;
 		}
@@ -92,19 +102,30 @@
 			return;
 		}
 
+		var moreSectionIds = records.filter(function (record) {
+			return !!record.link.closest('[data-mobile-more-link]');
+		}).map(function (record) {
+			return record.id;
+		});
+
 		function setActive(id) {
 			records.forEach(function (record) {
 				var active = record.id === id;
 				record.link.classList.toggle('is-active', active);
 				if (active) {
-					record.link.setAttribute('aria-current', 'page');
-					if (isMobileViewport() && typeof record.link.scrollIntoView === 'function') {
+					record.link.setAttribute('aria-current', 'location');
+					if (isMobileViewport() && record.link.closest('.mobile-quick-nav') && typeof record.link.scrollIntoView === 'function') {
 						record.link.scrollIntoView({ block: 'nearest', inline: 'center' });
 					}
 				} else {
 					record.link.removeAttribute('aria-current');
 				}
 			});
+
+			if (moreTrigger) {
+				var moreActive = moreSectionIds.indexOf(id) !== -1;
+				moreTrigger.classList.toggle('is-active', moreActive);
+			}
 		}
 
 		records.forEach(function (record) {
@@ -113,6 +134,15 @@
 				setActive(record.id);
 			});
 		});
+
+		if (moreModal && moreTrigger) {
+			moreModal.addEventListener('show.bs.modal', function () {
+				moreTrigger.setAttribute('aria-expanded', 'true');
+			});
+			moreModal.addEventListener('hidden.bs.modal', function () {
+				moreTrigger.setAttribute('aria-expanded', 'false');
+			});
+		}
 
 		if (typeof window.IntersectionObserver !== 'function') {
 			setActive(records[0].id);
@@ -146,11 +176,79 @@
 		setActive(records[0].id);
 	}
 
+	function initMobileChromeVisibility() {
+		if (!isMobileViewport()) {
+			return;
+		}
+
+		var body = document.body;
+		var header = document.getElementById('header');
+		if (!body || !header) {
+			return;
+		}
+
+		var lastScrollY = Math.max(window.scrollY || 0, 0);
+		var ticking = false;
+
+		function updateChrome() {
+			var currentScrollY = Math.max(window.scrollY || 0, 0);
+			var scrollingDown = currentScrollY > lastScrollY + 6;
+			var scrollingUp = currentScrollY < lastScrollY - 6;
+			var navbarOpen = !!document.querySelector('#header-nav.show');
+			var modalOpen = body.classList.contains('modal-open');
+			var activeElement = document.activeElement;
+			var editing = !!(activeElement && /^(INPUT|TEXTAREA|SELECT)$/.test(activeElement.tagName));
+
+			if (currentScrollY < 96 || scrollingUp || navbarOpen || modalOpen || editing) {
+				body.classList.remove('mobile-header-hidden');
+			} else if (scrollingDown) {
+				body.classList.add('mobile-header-hidden');
+			}
+
+			var scrollable = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+			var progress = Math.min(100, Math.max(0, (currentScrollY / scrollable) * 100));
+			document.documentElement.style.setProperty('--qq-page-progress', progress.toFixed(2) + '%');
+			lastScrollY = currentScrollY;
+			ticking = false;
+		}
+
+		window.addEventListener('scroll', function () {
+			if (!ticking) {
+				window.requestAnimationFrame(updateChrome);
+				ticking = true;
+			}
+		}, { passive: true });
+
+		window.addEventListener('resize', updateChrome);
+		header.addEventListener('focusin', function () {
+			body.classList.remove('mobile-header-hidden');
+		});
+		document.addEventListener('focusin', function (event) {
+			var target = event.target;
+			if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) {
+				body.classList.add('mobile-input-active');
+			}
+		});
+		document.addEventListener('focusout', function () {
+			setTimeout(function () {
+				var activeElement = document.activeElement;
+				if (!activeElement || !/^(INPUT|TEXTAREA|SELECT)$/.test(activeElement.tagName)) {
+					body.classList.remove('mobile-input-active');
+				}
+			}, 40);
+		});
+		updateChrome();
+	}
+
 	function hidePreloader() {
 		if (preloaderHidden) {
 			return;
 		}
 		preloaderHidden = true;
+		if (prefersReducedMotion()) {
+			$('.lds-ellipsis, .preloader').stop(true, true).hide();
+			return;
+		}
 		$('.lds-ellipsis').fadeOut();
 		$('.preloader').delay(150).fadeOut('slow');
 	}
@@ -252,7 +350,7 @@
 	}
 
 	function prefersReducedCelebrationMotion() {
-		return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+		return prefersReducedMotion();
 	}
 
 	function resolveCelebrationContext() {
@@ -642,6 +740,34 @@ $(window).on('scroll',function() {
 	}
 });
 
+function scrollToSection(targetSelector) {
+	var $target = $(targetSelector);
+	if (!$target.length) {
+		return;
+	}
+	var offsetAdjustment = getScrollOffset();
+	var destination = Math.max($target.offset().top - offsetAdjustment, 0);
+	if (isTabletViewport()) {
+		closeMobileNavbar();
+	}
+	if (document.body) {
+		document.body.classList.remove('mobile-header-hidden');
+	}
+	if (window.history && typeof window.history.pushState === 'function' && window.location.hash !== targetSelector) {
+		window.history.pushState(null, '', targetSelector);
+	}
+	if (prefersReducedMotion()) {
+		$('html, body').stop(true, true).scrollTop(destination);
+	} else {
+		$('html, body').stop(true).animate({ scrollTop: destination }, 520, 'easeInOutExpo', function () {
+			if (document.body) {
+				document.body.classList.remove('mobile-header-hidden');
+			}
+		});
+	}
+	setSideNavActive(targetSelector);
+}
+
 // Sections Scroll
 $('.smooth-scroll').on('click', function (event) {
 	var targetSelector = $(this).attr('href');
@@ -653,13 +779,17 @@ $('.smooth-scroll').on('click', function (event) {
 		return;
 	}
 	event.preventDefault();
-	var offsetAdjustment = getScrollOffset();
-	var destination = Math.max($target.offset().top - offsetAdjustment, 0);
-	if (isTabletViewport()) {
-		closeMobileNavbar();
+
+	var mobileMoreModal = this.closest ? this.closest('.mobile-more-modal') : null;
+	if (mobileMoreModal && window.bootstrap && window.bootstrap.Modal) {
+		mobileMoreModal.addEventListener('hidden.bs.modal', function handleMobileMoreHidden() {
+			scrollToSection(targetSelector);
+		}, { once: true });
+		window.bootstrap.Modal.getOrCreateInstance(mobileMoreModal).hide();
+		return;
 	}
-	$('html, body').stop().animate({ scrollTop: destination }, 1500, 'easeInOutExpo');
-	setSideNavActive(targetSelector);
+
+	scrollToSection(targetSelector);
 });
 
 // Mobile Menu
@@ -705,7 +835,7 @@ function initSideHeaderScrollSpy() {
 			var matches = link.getAttribute('href') === selector;
 			link.classList.toggle('active', matches);
 			if (matches) {
-				link.setAttribute('aria-current', 'page');
+				link.setAttribute('aria-current', 'location');
 			} else {
 				link.removeAttribute('aria-current');
 			}
@@ -932,7 +1062,7 @@ $(".portfolio-filter").each(function() {
 /*------------------------------------
     Parallax Background
 -------------------------------------- */
-if (!isMobileViewport()) {
+if (!isMobileViewport() && !prefersReducedMotion()) {
 	$(".parallax").each(function () {
 	$(this).parallaxie({
 		speed: 0.5,
@@ -945,6 +1075,13 @@ if (!isMobileViewport()) {
 -------------------------------------- */
 $(".counter").each(function () {
     $(this).appear(function () {
+		if (prefersReducedMotion()) {
+			var finalValue = $(this).attr('data-to');
+			if (typeof finalValue !== 'undefined') {
+				$(this).text(finalValue);
+			}
+			return;
+		}
         $(this).countTo({
 			speed: 1800,
 		});
@@ -1004,6 +1141,7 @@ function updateBirthdayCounter(elementId, options) {
 
 document.addEventListener('DOMContentLoaded', function () {
 	initMobileQuickNav();
+	initMobileChromeVisibility();
 
 	var toggleConfig = [
 		{ selector: '.toggle-ourstory', hiddenClass: 'ourstory-hidden' },
@@ -1026,9 +1164,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			if (!target) {
 				return;
 			}
+			if (target.id) {
+				button.setAttribute('aria-controls', target.id);
+			}
+			button.setAttribute('aria-expanded', 'true');
 			button.addEventListener('click', function () {
 				var hidden = target.classList.toggle(config.hiddenClass);
 				button.textContent = hidden ? '恢复内容' : '仅看背景';
+				button.setAttribute('aria-expanded', hidden ? 'false' : 'true');
 			});
 		});
 	});
@@ -1084,15 +1227,20 @@ document.addEventListener('DOMContentLoaded', function () {
     Typed
 -------------------------------------- */
 if (!isMobileViewport()) {
-	$(".typed").each(function() {
-	var typed = new Typed('.typed', {
-	    stringsElement: '.typed-strings',
-		loop: true,
-		typeSpeed: 100,
-	    backSpeed: 50,
-		backDelay: 1500,
-	});
-	});
+	if (prefersReducedMotion()) {
+		var typedFallback = document.querySelector('.typed-strings p');
+		$('.typed').text(typedFallback ? typedFallback.textContent : '');
+	} else {
+		$(".typed").each(function() {
+		var typed = new Typed('.typed', {
+		    stringsElement: '.typed-strings',
+			loop: true,
+			typeSpeed: 100,
+		    backSpeed: 50,
+			backDelay: 1500,
+		});
+		});
+	}
 }
 
 /*------------------------
@@ -1219,7 +1367,8 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var friendCommentsSubmitting = false;
 	var defaultCommentEmptyText = '暂时没有留言，邀请好友写下祝福吧。';
 	var DEFAULT_MOMENT_COVER = 'images/profile_new.webp';
-	var MAX_MOMENT_FILE_SIZE = 20 * 1024 * 1024;
+	var MAX_INLINE_UPLOAD_SIZE = 14 * 1024 * 1024;
+	var MAX_MOMENT_FILE_SIZE = MAX_INLINE_UPLOAD_SIZE;
 	var MOMENT_ACCEPTED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'video/mp4', 'video/webm'];
 	var MOMENT_ACCEPTED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.mp4', '.webm'];
 	var MOMENT_ACCEPTED_FILE_LABEL = 'JPG、JPEG、PNG、GIF、WEBP、MP4、WEBM';
@@ -1230,6 +1379,7 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 	var currentMomentId = null;
 	var currentMomentMediaIndex = 0;
 	var hideMomentTimer = null;
+	var momentViewerReturnFocus = null;
 	var currentVisibleMomentIds = [];
 	var milestonesYearObserver = null;
 	var storyDataHydratedOnce = false;
@@ -1349,15 +1499,38 @@ var storyManagerPaginationState = { milestones: 0, moments: 0, loveNotes: 0, com
 		if (!isMomentViewerOpen()) {
 			return;
 		}
+		var keyTarget = event.target;
+		var targetUsesArrowKeys = !!(keyTarget && (
+			/^(INPUT|TEXTAREA|SELECT|VIDEO|AUDIO)$/.test(keyTarget.tagName) ||
+			keyTarget.isContentEditable
+		));
 		if (event.key === 'Escape') {
 			event.preventDefault();
 			hideMomentViewer();
-		} else if (event.key === 'ArrowLeft') {
+		} else if (event.key === 'ArrowLeft' && !targetUsesArrowKeys) {
 			event.preventDefault();
 			showMomentByIndex(currentMomentIndex - 1);
-		} else if (event.key === 'ArrowRight') {
+		} else if (event.key === 'ArrowRight' && !targetUsesArrowKeys) {
 			event.preventDefault();
 			showMomentByIndex(currentMomentIndex + 1);
+		} else if (event.key === 'Tab') {
+			var focusable = $momentViewer
+				.find('button:not([disabled]), a[href], video[controls], [tabindex]:not([tabindex="-1"])')
+				.filter(':visible')
+				.toArray();
+			if (!focusable.length) {
+				event.preventDefault();
+				return;
+			}
+			var firstFocusable = focusable[0];
+			var lastFocusable = focusable[focusable.length - 1];
+			if (event.shiftKey && document.activeElement === firstFocusable) {
+				event.preventDefault();
+				lastFocusable.focus();
+			} else if (!event.shiftKey && document.activeElement === lastFocusable) {
+				event.preventDefault();
+				firstFocusable.focus();
+			}
 		}
 	});
 
@@ -1780,6 +1953,12 @@ function normalizeMomentsData() {
 		if (!files || !files.length) {
 			return Promise.resolve([]);
 		}
+		var totalFileSize = files.reduce(function (total, file) {
+			return total + (file && file.size ? file.size : 0);
+		}, 0);
+		if (totalFileSize > MAX_INLINE_UPLOAD_SIZE) {
+			return Promise.reject(new Error('所选媒体合计超过 14MB。请减少文件数量或压缩后重新上传'));
+		}
 		var tasks = files.map(function (file) {
 			return new Promise(function (resolve, reject) {
 				if (!isAllowedMomentFile(file)) {
@@ -1787,7 +1966,7 @@ function normalizeMomentsData() {
 					return;
 				}
 				if (file.size > MAX_MOMENT_FILE_SIZE) {
-					reject(new Error('文件 "' + file.name + '" 超过 20MB， 请压缩后重新上传'));
+					reject(new Error('文件 "' + file.name + '" 超过 14MB，请压缩后重新上传'));
 					return;
 				}
 				var reader = new FileReader();
@@ -2343,7 +2522,7 @@ function normalizeMomentsData() {
 		if (shouldExpand && options && options.scrollIntoView) {
 			var panelAnchor = document.querySelector('#memory .story-admin-bar');
 			if (panelAnchor && typeof panelAnchor.scrollIntoView === 'function') {
-				panelAnchor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+				panelAnchor.scrollIntoView({ behavior: getPreferredScrollBehavior(), block: 'nearest' });
 			}
 		}
 		if (shouldExpand && options && options.focusInput && $storyAdminKeyInput && $storyAdminKeyInput.length) {
@@ -2605,10 +2784,11 @@ function normalizeMomentsData() {
 				return { data: [] };
 			})
 			: Promise.resolve({ data: [] });
-		var commentsRequest = window.QQStoryApiClient.getComments(
-			{ pageSize: 100 },
-			{ auth: hasStoryManagerWriteAccess() }
-		).catch(function (error) {
+		var commentsRequest = hasProtectedContentAccess()
+			? window.QQStoryApiClient.getComments(
+				{ pageSize: 100 },
+				{ auth: hasStoryManagerWriteAccess() }
+			).catch(function (error) {
 			if (error && error.status === 401) {
 				console.warn('管理员 API key 已失效，留言管理将回退为公开视图。', error);
 				clearStoryManagerAdminKey();
@@ -2621,7 +2801,8 @@ function normalizeMomentsData() {
 			}
 			console.error('无法获取留言', error);
 			return { data: [] };
-		});
+			})
+			: Promise.resolve({ data: [] });
 		setStoryLoading(true);
 		storyRefreshInFlight = Promise.all([
 			window.QQStoryApiClient.getMilestones().catch(function (error) {
@@ -2762,8 +2943,7 @@ function normalizeMomentsData() {
 					'type': 'button',
 					'class': 'timeline-year-chip' + (index === 0 ? ' is-active' : ''),
 					'data-target': '#' + group.id,
-					'data-year-key': group.key,
-					'aria-pressed': index === 0 ? 'true' : 'false'
+					'data-year-key': group.key
 				}).text(group.label);
 				if (index === 0) {
 					$yearChip.attr('aria-current', 'location');
@@ -2791,9 +2971,16 @@ function normalizeMomentsData() {
 		$('#milestones-year-nav .timeline-year-chip').each(function () {
 			var $chip = $(this);
 			var isActive = $chip.data('yearKey') === yearKey;
-			$chip.toggleClass('is-active', isActive).attr('aria-pressed', isActive ? 'true' : 'false');
+			$chip.toggleClass('is-active', isActive);
 			if (isActive) {
 				$chip.attr('aria-current', 'location');
+				if (isMobileViewport() && this && typeof this.scrollIntoView === 'function') {
+					this.scrollIntoView({
+						behavior: getPreferredScrollBehavior(),
+						block: 'nearest',
+						inline: 'center'
+					});
+				}
 			} else {
 				$chip.removeAttr('aria-current');
 			}
@@ -2824,7 +3011,7 @@ function normalizeMomentsData() {
 				return;
 			}
 			setActiveMilestoneYear($chip.data('yearKey'));
-			target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			target.scrollIntoView({ behavior: getPreferredScrollBehavior(), block: 'start' });
 		});
 
 		if (typeof window.IntersectionObserver !== 'function') {
@@ -3188,7 +3375,7 @@ function normalizeMomentsData() {
 		fetchFriendComments(target);
 		if ($commentList && $commentList.length) {
 			try {
-				$commentList.get(0).scrollIntoView({ behavior: 'smooth', block: 'start' });
+				$commentList.get(0).scrollIntoView({ behavior: getPreferredScrollBehavior(), block: 'start' });
 			} catch (error) {
 				// Ignore
 			}
@@ -3847,6 +4034,14 @@ function bindStoryManagerPaginationControls() {
 					letterUploadState.data = null;
 					return;
 				}
+				if (file.size > MAX_INLINE_UPLOAD_SIZE) {
+					setLetterUploadStatus('PDF 超过 14MB，请压缩后重新上传', 'error');
+					if (letterUploadState.$input && letterUploadState.$input.length) {
+						letterUploadState.$input.val('');
+					}
+					letterUploadState.data = null;
+					return;
+				}
 				setLetterUploadStatus('正在读取 ' + file.name + ' …');
 				var reader = new FileReader();
 				reader.onload = function (event) {
@@ -4371,11 +4566,7 @@ function bindStoryManagerPaginationControls() {
 			: (sameMoment ? currentMomentMediaIndex : 0);
 		var primaryMedia = mediaItems[currentMomentMediaIndex] || mediaItems[0] || null;
 
-		if (entry.title) {
-			$momentTitle.text(entry.title).removeClass('d-none');
-		} else {
-			$momentTitle.text('').addClass('d-none');
-		}
+		$momentTitle.text(entry.title || '未命名瞬间').removeClass('d-none');
 
 		var dateLabel = formatMomentDateForDisplay(entry.occurredAt);
 		if (dateLabel) {
@@ -4599,9 +4790,16 @@ function bindStoryManagerPaginationControls() {
 		}
 		clearTimeout(hideMomentTimer);
 		if ($momentViewer.hasClass('d-none')) {
+			momentViewerReturnFocus = document.activeElement && document.activeElement !== document.body
+				? document.activeElement
+				: null;
 			$momentViewer.removeClass('d-none');
+			$momentViewer.attr('aria-hidden', 'false');
 			requestAnimationFrame(function () {
 				$momentViewer.addClass('show');
+				if ($momentClose.length) {
+					$momentClose.trigger('focus');
+				}
 			});
 			$('body').addClass('moment-viewer-open');
 		}
@@ -4614,13 +4812,23 @@ function bindStoryManagerPaginationControls() {
 		if ($momentViewer.hasClass('d-none') && !isMomentViewerOpen()) {
 			return;
 		}
+		var focusTarget = momentViewerReturnFocus;
+		momentViewerReturnFocus = null;
+		if (focusTarget && document.documentElement.contains(focusTarget)) {
+			try {
+				focusTarget.focus();
+			} catch (error) {
+				// Ignore focus restoration failures for removed cards.
+			}
+		}
 		clearTimeout(hideMomentTimer);
 		$momentViewer.removeClass('show');
+		$momentViewer.attr('aria-hidden', 'true');
 		$('body').removeClass('moment-viewer-open');
 		currentMomentIndex = -1;
 		currentMomentId = null;
 		currentMomentMediaIndex = 0;
-		var delay = immediate ? 0 : 250;
+		var delay = (immediate || prefersReducedMotion()) ? 0 : 250;
 		if (delay === 0) {
 			$momentViewer.addClass('d-none');
 			resetMomentViewerMedia();
@@ -4668,7 +4876,11 @@ $(function () {
 		}
 	});
 	$('#back-to-top').on("click", function() {
-		$('html, body').animate({scrollTop:0}, 'slow');
+		if (prefersReducedMotion()) {
+			$('html, body').stop(true, true).scrollTop(0);
+		} else {
+			$('html, body').stop(true).animate({scrollTop:0}, 420, 'swing');
+		}
 		return false;
 	});
 });
