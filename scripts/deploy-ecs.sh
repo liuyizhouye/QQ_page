@@ -97,6 +97,8 @@ popd >/dev/null
 echo "==> Reloading Caddy"
 pushd "$CADDY_ROOT" >/dev/null
 docker compose up -d
+docker compose exec -T caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
 popd >/dev/null
 
 echo "==> Running health checks"
