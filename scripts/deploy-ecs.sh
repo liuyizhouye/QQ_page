@@ -35,6 +35,27 @@ wait_for_http() {
   return 1
 }
 
+wait_for_header() {
+  local name="$1"
+  local url="$2"
+  local expected="$3"
+  local attempt
+  local headers
+
+  for attempt in $(seq 1 10); do
+    headers="$(curl --fail --silent --show-error --head --max-time 20 "$url" || true)"
+    if printf '%s\n' "$headers" | grep --fixed-strings --ignore-case --quiet "$expected"; then
+      echo "Header check passed: $name"
+      return 0
+    fi
+
+    sleep 2
+  done
+
+  echo "Header check failed: $name ($url, expected: $expected)" >&2
+  return 1
+}
+
 if [[ ! -f "$ARTIFACT_PATH" ]]; then
   echo "Release artifact not found: $ARTIFACT_PATH" >&2
   exit 1
@@ -94,11 +115,10 @@ fi
 pm2 save
 popd >/dev/null
 
-echo "==> Reloading Caddy"
+echo "==> Validating and reloading Caddy"
 pushd "$CADDY_ROOT" >/dev/null
-docker compose up -d
-docker compose exec -T caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
-docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+docker compose run --rm --no-deps caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker compose up -d --force-recreate caddy
 popd >/dev/null
 
 echo "==> Running health checks"
@@ -106,5 +126,7 @@ sleep 3
 wait_for_http "local-api" "http://127.0.0.1:8080/health"
 wait_for_http "public-api" "https://api.hanbaodoudou.com/health"
 wait_for_http "public-site" "https://hanbaodoudou.com"
+wait_for_header "html-cache-policy" "https://hanbaodoudou.com/" "cache-control: no-cache"
+wait_for_header "versioned-static-cache" "https://hanbaodoudou.com/css/stylesheet.css?v=deployment-check" "immutable"
 
 echo "Deploy completed successfully: $RELEASE_ID"
